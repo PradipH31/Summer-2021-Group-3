@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/Textfield';
 import '../css/login.css'
 
-const Login = () => {
+const Login = (props) => {
     return (
         <div className="login-appearance">
             <h1>Log In</h1>
@@ -28,8 +28,12 @@ const Login = () => {
                 </div>
                 <br />
                 <label>
-                    <div class="login-button-container">
-                        <Button variant="contained" color="primary" className="centered-button">
+                    <div className="login-button-container">
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            className="centered-button"
+                            onClick={props.page}>
                             Log In
                         </Button>
                     </div>

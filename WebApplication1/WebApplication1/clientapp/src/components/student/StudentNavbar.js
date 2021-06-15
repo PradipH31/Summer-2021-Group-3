@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,13 +77,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StudentNavbar = () => {
+const StudentNavbar = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const [header, setHeader] = useState("Classes");
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -102,6 +104,11 @@ const StudentNavbar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const log_out = () => {
+    handleMenuClose();
+    props.page("login")
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -114,7 +121,7 @@ const StudentNavbar = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={log_out}>Log out</MenuItem>
     </Menu>
   );
 
@@ -172,17 +179,23 @@ const StudentNavbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Classes
+            {header}
           </Typography>
-          
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 1 new mails" color="inherit">
+            <IconButton 
+              aria-label="show 1 new mails"  
+              color="inherit"
+              onClick={()=>{setHeader("Messages")}}>
               <Badge badgeContent={1} color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 3 new notifications" color="inherit">
+            <IconButton
+              aria-label="show 3 new notifications"
+              color="inherit"
+              onClick={()=> setHeader("Notification")}>
               <Badge badgeContent={3} color="secondary">
                 <NotificationsIcon />
               </Badge>
