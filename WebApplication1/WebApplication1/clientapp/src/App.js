@@ -1,7 +1,7 @@
 import './App.css';
 import StudentHome from './components/student/StudentHome'
-import Login from './components/Login'
-import {useState} from 'react';
+import Login from './components/login'
+import { useState } from 'react';
 
 function App() {
 
