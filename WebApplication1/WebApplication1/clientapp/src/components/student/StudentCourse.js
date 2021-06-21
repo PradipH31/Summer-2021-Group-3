@@ -90,12 +90,12 @@ const StudentCourse = () => {
                 </IconButton>
               }
               title={item.className}
-              subheader="June 14, 2021"
+              subheader={item.classOwner}
             />
             <CardMedia
               className={classes.media}
               image="/static/images/paleontology-101.jpg"
-              title="Palentology 101"
+              title={item.className}
             />
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
@@ -109,7 +109,7 @@ const StudentCourse = () => {
       )
     })
     return (
-      <div>
+      <div style={flexContainer}>
         {itemList}
       </div>
     );
