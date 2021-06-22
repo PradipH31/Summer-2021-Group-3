@@ -2,42 +2,51 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '36ch',
+    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
   },
 }));
 
-const Participants = () => {
+export default function SelectedListItem() {
   const classes = useStyles();
+  const [selectedIndex, setSelectedIndex] = React.useState();
 
-  const part = ['Caleb Charpentier', 'Sam Dylan', 'Benjamin Button'];
-  const listPart = part.map((people) =>
-    <li>people</li>
-  )
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+
+  const people = ['Caleb', 'Anthony', 'Shane'];
+  const partList = people.map((person, index) =>
+  <div>
+    <ListItem
+      button
+      selected={selectedIndex === index}
+      onClick={(event) => handleListItemClick(event, index)}
+    >
+      <ListItemIcon>
+        <Avatar alt={`${person}`} />
+      </ListItemIcon>
+      <ListItemText>
+        {person}
+      </ListItemText>
+    </ListItem>
+    <Divider />
+    </div>
+  );
+
   return (
-    <List className={classes.root}>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          {/* <Avatar alt="Caleb Charpentier" src="/static/images/avatar/1.jpg" /> */}
-        </ListItemAvatar>
-        <ListItemText
-          primary="${listPart}"
-        />
-      </ListItem>
-    </List>
+    <div className={classes.root}>
+      <List component="nav" aria-label="main mailbox folders">
+        {partList}
+      </List>
+    </div>
   );
 }
-
-export default Participants;

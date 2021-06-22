@@ -66,7 +66,7 @@ const StudentCourse = () => {
   const flexContainer = {
     display: 'flex',
     flexDirection: 'row',
-
+    'flex-wrap': 'wrap'
   };
 
   if (error) {
@@ -76,7 +76,7 @@ const StudentCourse = () => {
   } else {
     itemList = items.map(item => {
       return (
-        <div>
+        <div style={{padding: "1%"}}>
           <Card className={classes.root}>
             <CardHeader
               avatar={
@@ -94,7 +94,7 @@ const StudentCourse = () => {
             />
             <CardMedia
               className={classes.media}
-              image="/static/images/paleontology-101.jpg"
+              // image="/static/images/paleontology-101.jpg"
               title={item.className}
             />
             <CardContent>
