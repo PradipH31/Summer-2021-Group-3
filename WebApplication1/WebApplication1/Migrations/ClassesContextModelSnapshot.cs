@@ -7,7 +7,7 @@ using WebApplication1.Data;
 
 namespace WebApplication1.Migrations
 {
-    [DbContext(typeof(ClassesContext))]
+    [DbContext(typeof(DataContext))]
     partial class ClassesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

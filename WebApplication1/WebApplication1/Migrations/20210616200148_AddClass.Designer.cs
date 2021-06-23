@@ -8,7 +8,7 @@ using WebApplication1.Data;
 
 namespace WebApplication1.Migrations
 {
-    [DbContext(typeof(ClassesContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20210616200148_AddClass")]
     partial class AddClass
     {

@@ -8,9 +8,9 @@ using WebApplication1.Features.Classes;
 
 namespace WebApplication1.Data
 {
-    public class ClassesContext : DbContext
+    public class DataContext : DbContext
     {
-        public ClassesContext(DbContextOptions<ClassesContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
         }
