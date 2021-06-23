@@ -9,13 +9,15 @@ import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: 'auto',
+    // width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
+    margin: 'auto'
   },
 }));
 
-export default function SelectedListItem() {
+const Participants = () => {
   const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = React.useState();
 
@@ -25,20 +27,20 @@ export default function SelectedListItem() {
 
   const people = ['Caleb', 'Anthony', 'Shane'];
   const partList = people.map((person, index) =>
-  <div>
-    <ListItem
-      button
-      selected={selectedIndex === index}
-      onClick={(event) => handleListItemClick(event, index)}
-    >
-      <ListItemIcon>
-        <Avatar alt={`${person}`} />
-      </ListItemIcon>
-      <ListItemText>
-        {person}
-      </ListItemText>
-    </ListItem>
-    <Divider />
+    <div>
+      <ListItem
+        button
+        selected={selectedIndex === index}
+        onClick={(event) => handleListItemClick(event, index)}
+      >
+        <ListItemIcon>
+          <Avatar alt={`${person}`} />
+        </ListItemIcon>
+        <ListItemText>
+          {person}
+        </ListItemText>
+      </ListItem>
+      <Divider />
     </div>
   );
 
@@ -50,3 +52,5 @@ export default function SelectedListItem() {
     </div>
   );
 }
+
+export default Participants

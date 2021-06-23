@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { CircularProgress } from '@material-ui/core';
 
 const StudentCourse = () => {
   const [error, setError] = useState(null);
@@ -66,17 +67,21 @@ const StudentCourse = () => {
   const flexContainer = {
     display: 'flex',
     flexDirection: 'row',
-    'flex-wrap': 'wrap'
+    flexWrap: 'wrap'
   };
 
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
   } else {
-    itemList = items.map(item => {
+    itemList = items.map((item) => {
       return (
-        <div style={{padding: "1%"}}>
+        <div style={{ padding: "1%" }}>
           <Card className={classes.root}>
             <CardHeader
               avatar={
