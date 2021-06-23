@@ -7,6 +7,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import StudentCourse from './StudentCourse';
 
 const StudentHome = (props) => {
     return (
@@ -29,6 +30,9 @@ const StudentHome = (props) => {
             </div>
             <div className="student-body">
                 <Switch>
+                    <Route path={`/classes/:id`}>
+                        <StudentCourse />
+                    </Route>
                     <Route path="/classes">
                         <StudentCourseList />
                     </Route>
@@ -38,6 +42,7 @@ const StudentHome = (props) => {
                     <Route path="/">
                         <StudentCourseList />
                     </Route>
+
                 </Switch>
             </div>
         </Router>

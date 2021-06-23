@@ -11,22 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { CircularProgress } from '@material-ui/core';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import StudentCourse from './StudentCourse';
+import { Link } from "react-router-dom";
 
 const StudentCourseList = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
   useEffect(() => {
     fetch("/Classes")
       .then(res => res.json())
@@ -131,12 +122,6 @@ const StudentCourseList = () => {
             {itemList}
           </ul>
         </nav>
-
-        <Switch>
-          <Route path={`/classes/:id`}>
-            <StudentCourse />
-          </Route>
-        </Switch>
       </div>
     );
   }
