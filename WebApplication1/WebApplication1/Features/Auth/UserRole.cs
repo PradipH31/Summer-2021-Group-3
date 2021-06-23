@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Features.Users
+namespace WebApplication1.Features.Auth
 {
-    public class Users
+    public class UserRole
     {
     }
 }
