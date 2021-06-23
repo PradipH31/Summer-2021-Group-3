@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication1
 {
@@ -28,8 +29,10 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DBContext>
+            services.AddDbContext<ClassesContext>
                 (opt => opt.UseSqlServer(Configuration["Data:CommandAPIConnection:ConnectionString"]));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<WebApplication1Context>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -50,6 +53,8 @@ namespace WebApplication1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

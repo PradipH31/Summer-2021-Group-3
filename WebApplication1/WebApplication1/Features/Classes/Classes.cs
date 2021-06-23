@@ -11,5 +11,9 @@ namespace WebApplication1.Features.Classes
 		public string ClassName { get; set; }
 		public string ClassDescription { get; set; }
 		public string ClassOwner { get; set; }
+		public string Grade { get; set; }
+        public DateTime CreatedDate { get; set; }
+		public string ImageURL { get; set; }
+
 	}
 }

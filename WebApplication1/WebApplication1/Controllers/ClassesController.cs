@@ -13,9 +13,9 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class ClassesController : ControllerBase
     {
-        private readonly DBContext _context;
+        private readonly ClassesContext _context;
 
-        public ClassesController(DBContext context) => _context = context;
+        public ClassesController(ClassesContext context) => _context = context;
 
         [HttpGet]
         public ActionResult<IEnumerable<Classes>> GetClasses()
@@ -55,5 +55,6 @@ namespace WebApplication1.Controllers
 
             return ClassDescription;
         }
+        
     }
 }

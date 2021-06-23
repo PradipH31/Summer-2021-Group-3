@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Features.Classes;
 
+
 namespace WebApplication1.Data
 {
-    public class DBContext : DbContext
+    public class ClassesContext : DbContext
     {
-        public DBContext(DbContextOptions<DBContext> options) : base(options)
+        public ClassesContext(DbContextOptions<ClassesContext> options) : base(options)
         {
 
         }
