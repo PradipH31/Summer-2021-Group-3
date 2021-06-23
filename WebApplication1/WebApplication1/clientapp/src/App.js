@@ -6,15 +6,15 @@ import { useState } from 'react';
 function App() {
 
   const [page, setPage] = useState("login");
-  let compPage = <StudentHome page={setPage}/>
+  let pageStatus = <StudentHome page={setPage}/>
 
   if(page==="login"){
-    compPage = <Login page={setPage}/>
+    pageStatus = <Login page={setPage}/>
   }
     
   return (
     <div className="App">
-      {compPage}
+      {pageStatus}
     </div>
   );
 }

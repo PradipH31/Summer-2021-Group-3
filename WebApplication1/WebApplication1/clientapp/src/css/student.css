@@ -3,3 +3,8 @@
     background: #f0e9e9;
     margin: 0 1%;
 }
+
+a {
+    color: unset;
+    text-decoration: unset;
+}
