@@ -23,6 +23,44 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
 
+const StudentHome = (props) => {
+    return (
+        <div className="student-page">
+
+            <Router>
+                <div>
+                    <nav>
+                        <ul style={{
+                            listStyleType: 'unset',
+                            display: 'unset',
+                            paddingInlineStart: 'unset',
+                            marginBlockStart: 'unset',
+                            marginBlockEnd: 'unset'
+                        }}>
+                            <StudentNavbar
+                                page={props.page}
+                                style={{ marginLeft: '30%' }}
+                            />
+                        </ul>
+                    </nav>
+
+                </div>
+
+                <div className="student-body">
+                    <Switch>
+                        <Route path="/classes">
+                            <StudentCourse />
+                        </Route>
+                        <Route path="/messages">
+                            <Messages />
+                        </Route>
+                    </Switch>
+                </div>
+            </Router>
+        </div>
+    );
+};
+
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
@@ -187,38 +225,5 @@ export const StudentNavbar = (props) => {
         </div>
     );
 }
-
-const StudentHome = (props) => {
-    return (
-        <div className="student-page">
-
-            <Router>
-                <div>
-                    <nav>
-                        <ul>
-                            <StudentNavbar page={props.page} />
-                        </ul>
-                    </nav>
-
-                </div>
-
-                <div className="student-body">
-                    {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-                    <Switch>
-                        <Route path="/classes">
-                            <StudentCourse />
-                        </Route>
-                        <Route path="/messages">
-                            <Messages />
-                        </Route>
-                    </Switch>
-                    {/* <StudentCourse /> */}
-                    {/* <Messages /> */}
-                </div>
-            </Router>
-        </div>
-    );
-};
 
 export default StudentHome;
