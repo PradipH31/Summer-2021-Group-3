@@ -78,10 +78,10 @@ const Participants = () => {
         scroll={'paper'}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
-        fullWidth={'true'}
+        fullWidth={true}
         maxWidth={'lg'}
       >
-        <DialogTitle id="scroll-dialog-title" style={{ textAlign: 'center' }}>
+        <DialogTitle id="scroll-dialog-title" style={{ textAlign: 'center', backgroundColor: '#F8B77F' }}>
           Conversations with {userName}
         </DialogTitle>
         <DialogContent dividers={true}>
