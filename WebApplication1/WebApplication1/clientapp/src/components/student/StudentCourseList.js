@@ -26,9 +26,6 @@ const StudentCourseList = () => {
           setIsLoaded(true);
           setItems(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -68,7 +65,7 @@ const StudentCourseList = () => {
   } else if (!isLoaded) {
     return (
       <div>
-        <CircularProgress />
+        <CircularProgress size={'30%'}/>
       </div>
     );
   } else {
@@ -116,6 +113,7 @@ const StudentCourseList = () => {
             marginBlockStart: 'unset',
             paddingInlineStart: 'unset',
             display: 'flex',
+            justifyContent: 'center',
             flexDirection: 'row',
             flexWrap: 'wrap',
           }}>
