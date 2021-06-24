@@ -1,5 +1,6 @@
 import './App.css';
 import StudentHome from './components/student/StudentHome'
+import TeacherHome from './components/teacher/TeacherHome'
 import Login from './components/login'
 import { useState } from 'react';
 
@@ -9,7 +10,8 @@ function App() {
   let pageStatus = <StudentHome page={setPage}/>
 
   if(page==="login"){
-    pageStatus = <Login page={setPage}/>
+    pageStatus = <TeacherHome page={setPage}/>
+    // pageStatus = <Login page={setPage}/>
   }
     
   return (
