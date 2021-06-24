@@ -21,7 +21,12 @@ namespace WebApplication1.Data
         public DbSet<Classes> ClassDescription { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             var UserRoleBuilder = builder.Entity<UserRole>();
+
+            UserRoleBuilder.HasKey(x => new { x.UserId, x.RoleId });
+
             UserRoleBuilder.HasOne(x => x.Role)
                 .WithMany(x => x.Users)
                 .HasForeignKey(x => x.RoleId);
