@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Features.Auth
 {
-    public class Roles
+    internal static class Roles
     {
-        public virtual string Student { get; set; }
-        public virtual string Instructor { get; set; }
-        public virtual string Guest { get; set; }
+        public const string Student = nameof(Student);
+        public const string Instructor = nameof(Instructor);
+        public const string Guest = nameof(Guest);
     }
 }
