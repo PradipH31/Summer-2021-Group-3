@@ -1,82 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Web.Mvc;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-namespace FileUploadDatabase.Controllers
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+
+namespace WebApplication1.Controllers
 {
-    public class HomeController : Controller
+    [Route("[controller]")]
+    public class UploadsController : ControllerBase
     {
-        public bool Infile(IFormFile imgfile)
+        const String folderName = "UserFiles";
+        readonly String folderPath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        public UploadsController()
         {
-            return (imgfile != null && imgfile.Length > 0) ? true : false;
-        }
-        public ActionResult Index()
-        {
-            foreach (string Save in Request.Files)
+            if (!Directory.Exists(folderPath))
             {
-                if (!Infile(Request.Files[Save])) continue;
-                string fileType = Request.Files[Save].ContentType;
-                Stream file_Strm = Request.Files[Save].InputStream;
-                string file_Name = Path.GetFileName(Request.Files[Save].FileName);
-                int fileSize = Request.Files[Save].ContentLength;
-                byte[] fileRcrd = new byte[fileSize];
-                file_Strm.Read(fileRcrd, 0, fileSize);
-                const string connect = @"Server=.;Database=Demo; User Id=sa; password=wintellect;";
-                using (var conn = new SqlConnection(connect))
-                {
-                    var qry = "INSERT INTO Datafile (Filerecord, Filetype, Name)VALUES (@Filerecord, @Filetype, @Name)";
-                    var cmd = new SqlCommand(qry, conn);
-                    cmd.Parameters.AddWithValue("@Filerecord", fileRcrd);
-                    cmd.Parameters.AddWithValue("@Filetype", fileType);
-                    cmd.Parameters.AddWithValue("@Name", file_Name);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                Directory.CreateDirectory(folderPath);
             }
-            return View();
         }
-        public ActionResult DownloadImage()
+
+        [HttpPost]
+        public async Task<IActionResult> Post(
+            [FromForm(Name = "myFile")] IFormFile myFile)
         {
-            const string connect = @"Server=.;Database=Demo;User id=sa;password=wintellect;";
-            List<string> fileList = new List<string>();
-            using (var con = new SqlConnection(connect))
+            using (var fileContentStream = new MemoryStream())
             {
-                var query = "SELECT Filerecord, Filetype,Name FROM Datafile";
-                var cmd = new SqlCommand(query, con);
-                con.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    fileList.Add(rdr["Name"].ToString());
-                }
+                await myFile.CopyToAsync(fileContentStream);
+                await System.IO.File.WriteAllBytesAsync(Path.Combine(folderPath, myFile.FileName), fileContentStream.ToArray());
             }
-            ViewBag.Images = fileList;
-            return View();
+            return CreatedAtRoute(routeName: "myFile", routeValues: new { filename = myFile.FileName }, value: null); ;
         }
-        public FileContentResult GetFile(int id)
+
+        [HttpGet("{filename}", Name = "myFile")]
+        public async Task<IActionResult> Get([FromRoute] String filename)
         {
-            SqlDataReader rdr;
-            byte[] fileContent = null;
-            string fileType = "";
-            string file_Name = "";
-            const string connect = @"Server=.;Database=Demo;User id=sa;password=wintellect;";
-            using (var con = new SqlConnection(connect))
+            var filePath = Path.Combine(folderPath, filename);
+            if (System.IO.File.Exists(filePath))
             {
-                var query = "SELECT Filerecord, Filetype, Name FROM Datafile WHERE ID = @ID";
-                var cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@ID", id);
-                con.Open();
-                rdr = cmd.ExecuteReader();
-                if (rdr.HasRows)
-                {
-                    rdr.Read();
-                    fileContent = (byte[])rdr["Filerecord"];
-                    fileType = rdr["Filetype"].ToString();
-                    file_Name = rdr["Name"].ToString();
-                }
+                return File(await System.IO.File.ReadAllBytesAsync(filePath), "application/octet-stream", filename);
             }
-            return File(fileContent, fileType, file_Name);
+            return NotFound();
         }
     }
 }

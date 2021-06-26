@@ -1,21 +1,35 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplication1.Data;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApplication1
 {
+    public class SwaggerFileOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var fileUploadMime = "multipart/form-data";
+            if (operation.RequestBody == null || !operation.RequestBody.Content.Any(x => x.Key.Equals(fileUploadMime, StringComparison.InvariantCultureIgnoreCase)))
+                return;
+
+            var fileParams = context.MethodInfo.GetParameters().Where(p => p.ParameterType == typeof(IFormFile));
+            operation.RequestBody.Content[fileUploadMime].Schema.Properties =
+                fileParams.ToDictionary(k => k.Name, v => new OpenApiSchema()
+                {
+                    Type = "string",
+                    Format = "binary"
+                });
+        }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -34,6 +48,7 @@ namespace WebApplication1
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
+                c.OperationFilter<SwaggerFileOperationFilter>();
             });
         }
 
