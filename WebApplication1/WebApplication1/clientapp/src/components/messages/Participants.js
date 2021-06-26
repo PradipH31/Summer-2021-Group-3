@@ -47,7 +47,7 @@ const Participants = () => {
     }
   }, [open]);
   const partList = people.map((person, index) =>
-    <div>
+    <div key={index}>
       <ListItem
         button
         selected={selectedIndex === index}
@@ -69,7 +69,7 @@ const Participants = () => {
 
   return (
     <div className={classes.root}>
-      <List component="nav" aria-label="main mailbox folders">
+      <List component="nav" aria-label="main mailbox folders" style={{ paddingBottom: 'unset' }}>
         {partList}
       </List>
       <Dialog
