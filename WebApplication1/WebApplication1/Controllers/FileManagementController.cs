@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(
+        public async Task<IActionResult> UploadFile(
             [FromForm(Name = "myFile")] IFormFile myFile)
         {
             using (var fileContentStream = new MemoryStream())
@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{filename}", Name = "myFile")]
-        public async Task<IActionResult> Get([FromRoute] String filename)
+        public async Task<IActionResult> DownloadFile([FromRoute] String filename)
         {
             var filePath = Path.Combine(folderPath, filename);
             if (System.IO.File.Exists(filePath))
@@ -41,5 +41,6 @@ namespace WebApplication1.Controllers
             }
             return NotFound();
         }
+
     }
 }
