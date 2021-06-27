@@ -19,7 +19,7 @@ const StudentCourseList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("/Classes")
+    fetch("/api/Classes")
       .then(res => res.json())
       .then(
         (result) => {
