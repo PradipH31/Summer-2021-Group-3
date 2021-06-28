@@ -3,7 +3,7 @@ import Participants from './Participants';
 
 const Messages = () => {
     return (
-        <div className="msg-participants">
+        <div className="msg-participants" style={{paddingBottom: '1%'}}>
             <Participants />
         </div>
     );

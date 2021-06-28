@@ -1,17 +1,51 @@
-import React from 'react';
 import '../../css/student.css'
 import StudentNavbar from './StudentNavbar'
-import StudentCourse from './StudentCourse'
+import StudentCourseList from './StudentCourseList'
 import Messages from '../messages/Messages'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from "react-router-dom";
+import StudentCourse from './StudentCourse';
 
 const StudentHome = (props) => {
     return (
-        <div className="student-page">
-            <StudentNavbar page={props.page}/>
-            <div className="student-body">
-                <StudentCourse />
+        <Router>
+            <div>
+                <nav>
+                    <ul style={{
+                        listStyleType: 'unset',
+                        display: 'unset',
+                        paddingInlineStart: 'unset',
+                        marginBlockStart: 'unset',
+                        marginBlockEnd: 'unset'
+                    }}>
+                        <StudentNavbar
+                            page={props.page}
+                            style={{ marginLeft: '30%' }}
+                        />
+                    </ul>
+                </nav>
             </div>
-        </div>
+            <div className="student-body">
+                <Switch>
+                    <Route path={`/classes/:id`}>
+                        <StudentCourse />
+                    </Route>
+                    <Route path="/classes">
+                        <StudentCourseList />
+                    </Route>
+                    <Route path="/messages">
+                        <Messages />
+                    </Route>
+                    <Route path="/">
+                        <StudentCourseList />
+                    </Route>
+
+                </Switch>
+            </div>
+        </Router>
     );
 };
 
