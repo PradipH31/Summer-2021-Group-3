@@ -19,7 +19,7 @@ const StudentCourseList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("/api/Classes")
+    fetch("https://localhost:44377/api/Classes")
       .then(res => res.json())
       .then(
         (result) => {
@@ -72,7 +72,7 @@ const StudentCourseList = () => {
     itemList = items.map((item,) => {
       return (
         <div style={{ padding: "1%" }} key={item.id}>
-          <Link to={`/classes/${item.id}`}>
+          <Link to={`/classes/${item.classId}`}>
             <Card className={classes.root}>
               <CardHeader
                 avatar={
@@ -90,7 +90,7 @@ const StudentCourseList = () => {
               />
               <CardMedia
                 className={classes.media}
-                // image="/static/images/paleontology-101.jpg"
+                image={item.imageSrc}
                 title={item.className}
               />
               <CardContent>

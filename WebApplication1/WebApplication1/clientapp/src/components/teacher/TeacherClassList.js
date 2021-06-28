@@ -19,7 +19,7 @@ const TeacherClassList = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("/Classes")
+        fetch("https://localhost:44377/api/Classes")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -90,7 +90,7 @@ const TeacherClassList = () => {
                             />
                             <CardMedia
                                 className={classes.media}
-                                // image="/static/images/paleontology-101.jpg"
+                                image={item.imageSrc}
                                 title={item.className}
                             />
                             <CardContent>
