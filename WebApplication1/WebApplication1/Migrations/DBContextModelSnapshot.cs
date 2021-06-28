@@ -20,7 +20,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Features.Classes.Classes", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -34,7 +34,10 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ClassOwner")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ClassId");
 
                     b.ToTable("ClassDescription");
                 });

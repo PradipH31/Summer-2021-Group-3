@@ -17,7 +17,7 @@ const StudentCourse = () => {
     };
 
     useEffect(() => {
-        fetch(`/Classes/${id}`)
+        fetch(`https://localhost:44377/api/Classes/${id}`)
             .then(res => res.json())
             .then(
                 (result) => {
