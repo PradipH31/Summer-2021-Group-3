@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { Typography } from '@material-ui/core'
+import React, { useState } from 'react'
 
 const defaultImageSrc = "/static/images/paleontology-101.jpg"
 
@@ -50,10 +49,10 @@ function AddClass(props) {
 
     const validate = () => {
         let temp = {}
-        temp.className = values.className == "" ? false : true
-        temp.imageSrc = values.imageSrc == defaultImageSrc ? false : true
+        temp.className = values.className === "" ? false : true
+        temp.imageSrc = values.imageSrc === defaultImageSrc ? false : true
         setErrors(temp);
-        return Object.values(temp).every(x => x == true)
+        return Object.values(temp).every(x => x === true)
     }
 
     const resetForm = () => {

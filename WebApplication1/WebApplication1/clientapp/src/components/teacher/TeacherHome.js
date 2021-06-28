@@ -8,7 +8,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const TeacherHome = (props) => {
 
@@ -80,7 +80,8 @@ const TeacherHome = (props) => {
                     flexGrow: 1,
                     backgroundColor: 'gainsboro',
                     color: 'darkorange',
-                    margin: 'inherit'
+                    margin: 'inherit',
+                    height: 'max-content'
                 }}><AddClass addOrEdit={addOrEdit} /></div>
             </div>
         </Router >

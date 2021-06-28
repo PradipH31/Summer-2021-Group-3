@@ -41,8 +41,15 @@ const StudentCourse = () => {
     } else {
         return (
             <React.Fragment>
-                <h1>{items.className}</h1>
-                <h3 style={{ textAlign: 'right' }}>{items.classOwner}</h3>
+                <div
+                //  style={{
+                //     backgroundImage: `url(${items.imageSrc})`,
+                //     backgroundSize: 'contain'
+                // }}
+                >
+                    <h1>{items.className}</h1>
+                    <h3 style={{ textAlign: 'right' }}>{items.classOwner}</h3>
+                </div>
                 <Paper >
                     <Tabs
                         value={value}

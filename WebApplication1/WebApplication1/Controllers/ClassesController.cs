@@ -51,6 +51,7 @@ namespace WebApplication1.Controllers
             {
                 return NotFound();
             }
+            classes.ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, classes.ImageName);
 
             return classes;
         }
