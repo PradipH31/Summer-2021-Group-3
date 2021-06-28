@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Typography } from '@material-ui/core'
 
 const defaultImageSrc = "/static/images/paleontology-101.jpg"
 
@@ -79,13 +80,15 @@ function AddClass(props) {
     const applyErrorClass = field => ((field in errors && errors[field] === false) ? ' invalid-field' : '')
     return (
         <>
-            <div>
-                Add Class
-            </div>
+            <h1 style={{
+                backgroundColor: 'dimgrey',
+                margin: 'auto',
+                color:'navajowhite'
+            }}>Add Class</h1>
             <form autoComplete="off" noValidate
                 onSubmit={handleFormSubmit}>
                 <div>
-                    <img src={values.imageSrc} />
+                    <img src={values.imageSrc} width="100%" alt={values.imageName}/>
                     <div>
                         <div>
                             <input type="file" accept="image/*" className={"" + applyErrorClass('imageSrc')}

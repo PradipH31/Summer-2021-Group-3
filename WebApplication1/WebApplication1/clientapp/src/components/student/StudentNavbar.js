@@ -104,7 +104,7 @@ const StudentNavbar = (props) => {
 
     const log_out = () => {
         handleMenuClose();
-        props.page("login")
+        props.page("logout")
     }
 
     const menuId = 'primary-search-account-menu';

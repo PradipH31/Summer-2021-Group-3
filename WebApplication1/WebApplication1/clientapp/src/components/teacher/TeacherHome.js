@@ -11,11 +11,6 @@ import {
 import React, { useState, useEffect } from 'react';
 
 const TeacherHome = (props) => {
-    const [classList, setClassList] = useState([])
-
-    useEffect(() => {
-        refreshClassList();
-    })
 
     const classAPI = (url = 'https://localhost:44377/api/Classes') => {
         return {
@@ -27,25 +22,18 @@ const TeacherHome = (props) => {
         }
     }
 
-    function refreshClassList() {
-        // classAPI.fetchAll()
-        axios.get('https://localhost:44377/api/Classes')
-            .then(res => setClassList(res.data))
-            .catch(err => console.log(err))
-    }
-
     const addOrEdit = (formData, onSuccess) => {
         classAPI().create(formData)
             .then(res => {
                 onSuccess();
-                refreshClassList();
+                // refreshClassList();
             })
             .catch(err => console.log(err))
     }
 
-    const img = data => (
-        <img src={data.imageSrc}></img>
-    )
+    const logOut = () => {
+        props.page("logout");
+    }
 
     return (
         <Router>
@@ -58,10 +46,6 @@ const TeacherHome = (props) => {
                         marginBlockStart: 'unset',
                         marginBlockEnd: 'unset'
                     }}>
-                        {/* <StudentNavbar
-                            page={props.page}
-                            style={{ marginLeft: '30%' }}
-                        /> */}
                     </ul>
                 </nav>
             </div>
@@ -82,16 +66,23 @@ const TeacherHome = (props) => {
 
                 </Switch>
             </div>
-            <button onClick={props.page}>Log In</button>
-            <TeacherClassList />
-            
-                {/* {
-                    [...Array(Math.ceil(classList.length / 3))].map((e, i) =>
-                        <div>{img(classList[3 * i])}</div>
-                    )
-                } */}
-            
-            <AddClass addOrEdit={addOrEdit} />
+            <button onClick={logOut}>Log Out</button>
+            <div style={{
+                display: "flex",
+                margin: '1% 1%'
+            }}>
+                <div style={{
+                    flexGrow: 3,
+                }}>
+                    <TeacherClassList />
+                </div>
+                <div style={{
+                    flexGrow: 1,
+                    backgroundColor: 'gainsboro',
+                    color: 'darkorange',
+                    margin: 'inherit'
+                }}><AddClass addOrEdit={addOrEdit} /></div>
+            </div>
         </Router >
     );
 };

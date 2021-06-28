@@ -71,7 +71,7 @@ const StudentCourseList = () => {
   } else {
     itemList = items.map((item,) => {
       return (
-        <div style={{ padding: "1%" }} key={item.id}>
+        <div style={{ padding: "1%" }} key={item.classId}>
           <Link to={`/classes/${item.classId}`}>
             <Card className={classes.root}>
               <CardHeader
