@@ -29,7 +29,16 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classes>>> GetClassDescription()
         {
-            return await _context.ClassDescription.ToListAsync();
+            return await _context.ClassDescription
+                .Select(x => new Classes(){
+                    ClassId = x.ClassId,
+                    ClassName = x.ClassName,
+                    ClassDescription = x.ClassDescription,
+                    ClassOwner = x.ClassOwner,
+                    ImageName = x.ImageName,
+                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme,Request.Host, Request.PathBase, x.ImageName)
+                })
+                .ToListAsync();
         }
 
         // GET: api/Classes/5
@@ -51,7 +60,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClasses(int id, Classes classes)
         {
-            if (id != classes.Id)
+            if (id != classes.ClassId)
             {
                 return BadRequest();
             }
@@ -107,7 +116,7 @@ namespace WebApplication1.Controllers
 
         private bool ClassesExists(int id)
         {
-            return _context.ClassDescription.Any(e => e.Id == id);
+            return _context.ClassDescription.Any(e => e.ClassId == id);
         }
 
         [NonAction]
@@ -116,7 +125,7 @@ namespace WebApplication1.Controllers
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
             var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create)) 
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(fileStream);
             }

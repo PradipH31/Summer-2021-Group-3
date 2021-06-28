@@ -9,8 +9,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20210627230340_AddedImage")]
-    partial class AddedImage
+    [Migration("20210628010504_AddClass")]
+    partial class AddClass
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Features.Classes.Classes", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -39,7 +39,7 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ClassId");
 
                     b.ToTable("ClassDescription");
                 });
