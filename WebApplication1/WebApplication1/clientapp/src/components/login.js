@@ -4,6 +4,9 @@ import TextField from '@material-ui/core/Textfield';
 import '../css/login.css'
 
 const Login = (props) => {
+    const logIn = (ent) => {
+        props.page(ent);
+    }
     return (
         <div className="login-appearance">
             <h1>Log In</h1>
@@ -28,18 +31,31 @@ const Login = (props) => {
                 </div>
                 <br />
                 <label>
-                    <div className="login-button-container">
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
+                    <div
+                        className="login-button-container"
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-evenly'
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
                             className="centered-button"
-                            onClick={props.page}>
-                            Log In
+                            onClick={() => { logIn("student") }}>
+                            Log In as Student
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className="centered-button"
+                            onClick={() => { logIn("teacher") }}>
+                            Log In as Teacher
                         </Button>
                     </div>
                 </label>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 

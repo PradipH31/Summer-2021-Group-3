@@ -10,15 +10,16 @@ namespace WebApplication1.Migrations
                 name: "ClassDescription",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClassName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClassOwner = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClassOwner = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassDescription", x => x.Id);
+                    table.PrimaryKey("PK_ClassDescription", x => x.ClassId);
                 });
         }
 
