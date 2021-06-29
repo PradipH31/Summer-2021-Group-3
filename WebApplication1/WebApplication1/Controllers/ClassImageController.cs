@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
 using WebApplication1.Features.Classes;
 using System.Threading.Tasks;
-
+using System.Collections.Generic;
 
 namespace WebApplication1.Controllers
 {
@@ -13,6 +13,8 @@ namespace WebApplication1.Controllers
     public class ClassImageController : ControllerBase
     {
         private readonly DBContext _context;
+
+
         public ClassImageController(DBContext context) => _context = context;     
         [HttpPost]
         public async Task<IActionResult> PostClassImage(IFormFile postedFile)
@@ -40,15 +42,23 @@ namespace WebApplication1.Controllers
         }
 
 
-        
-
-        /*[HttpGet]
-        public FileResult DownloadFile(int? fileId)
+        [HttpGet("{id}")]
+        public ActionResult DownloadImage(int id)
         {
-            FilesEntities entities = new FilesEntities();
-            var file = entities.ClassImage.ToList().Find(p => p.id == fileId.Value);
-            return File(file.Data, file.ContentType, file.Name);
+                var ClassImageInfo = _context.ClassImages.Find(id);
+
+                if (ClassImageInfo == null)
+                    return NotFound();
+
+            byte[] imageData = ClassImageInfo.Data;
+            string imageContentType = ClassImageInfo.ContentType;
+            string imageName = ClassImageInfo.Name;
+
+            return File(imageData, imageContentType, imageName);
         }
-        */
+
+
+
+
     }
 }
