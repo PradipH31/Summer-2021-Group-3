@@ -7,5 +7,6 @@ namespace WebApplication1.Features.Auth
 {
     public class UserDTO
     {
+        public string Username { get; set; }
     }
 }
