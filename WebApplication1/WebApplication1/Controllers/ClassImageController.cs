@@ -15,7 +15,17 @@ namespace WebApplication1.Controllers
         private readonly DBContext _context;
 
 
-        public ClassImageController(DBContext context) => _context = context;     
+        public ClassImageController(DBContext context) => _context = context;
+
+        [HttpGet]
+        public ActionResult<IEnumerable<ClassImage>> GetClasses()
+        {
+            return _context.ClassImages;
+
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> PostClassImage(IFormFile postedFile)
         {
@@ -69,6 +79,8 @@ namespace WebApplication1.Controllers
 
             return ClassImageDescription;
         }
+
+
 
 
 
