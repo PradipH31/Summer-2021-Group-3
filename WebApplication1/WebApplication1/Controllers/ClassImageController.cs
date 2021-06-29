@@ -57,6 +57,19 @@ namespace WebApplication1.Controllers
             return File(imageData, imageContentType, imageName);
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult<ClassImage> DeleteClassImage(int id)
+        {
+            var ClassImageDescription = _context.ClassImages.Find(id);
+            if (ClassImageDescription == null)
+                return NotFound();
+
+            _context.ClassImages.Remove(ClassImageDescription);
+            _context.SaveChanges();
+
+            return ClassImageDescription;
+        }
+
 
 
 
