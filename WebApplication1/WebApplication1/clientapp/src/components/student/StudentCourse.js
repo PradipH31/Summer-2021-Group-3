@@ -53,9 +53,9 @@ const StudentCourse = () => {
                         textColor="primary"
                         centered
                     >
-                        <Tab label="Quiz" />
+                        <Tab label="Notebooks" />
                         <Tab label="Flashcard" />
-                        <Tab label="Announcement" />
+                        <Tab label="Class Updates" />
                     </Tabs>
                 </Paper>
             </React.Fragment>

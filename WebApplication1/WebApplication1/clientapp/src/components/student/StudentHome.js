@@ -16,7 +16,7 @@ const StudentHome = () => {
         history.push("/")
     }
     return (
-        <>
+        <div className="student-body">
             <div>
                 <nav>
                     <ul style={{
@@ -44,7 +44,7 @@ const StudentHome = () => {
                 <StudentCourseList />
             </Switch>
             </div>
-        </>
+        </div>
     );
 };
 

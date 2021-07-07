@@ -1,28 +1,37 @@
 import './App.css';
 import StudentHome from './components/student/StudentHome'
-import TeacherHome from './components/teacher/TeacherHome'
 import Login from './components/login'
-import { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import '@fontsource/roboto'
 
 function App() {
 
-  const [page, setPage] = useState("logout");
-  // let pageStatus = <StudentHome page={setPage}/>
-  let pageStatus;
-
-  if(page==="logout"){
-    // pageStatus = <TeacherHome page={setPage}/>
-    pageStatus = <Login page={setPage}/>
-  } else if(page==="student"){
-    pageStatus = <StudentHome page={setPage}/>
-  } else {
-    pageStatus = <TeacherHome page={setPage}/>
-  }
-    
   return (
     <div className="App">
-      {pageStatus}
+      {/* {pageStatus} */}
+
+      <Router>
+        <div>
+          <nav>
+          </nav>
+        </div>
+        <>
+          {/* {{
+            if sessionStorage.token {
+
+          }
+          } */}
+
+          <Switch>
+            <Route path="/classes">
+              <StudentHome />
+            </Route>
+            <Route path="/">
+              <Login />
+            </Route>
+          </Switch>
+        </>
+      </Router>
     </div>
   );
 }
