@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace WebApplication1.Controllers
             return ClassDescription;
         }
 
+        [Authorize ("Teacher, Admin")]
         [HttpPost]
         public ActionResult<Classes> ClassCreate(Classes Class)
         {
@@ -43,6 +45,7 @@ namespace WebApplication1.Controllers
             return CreatedAtAction("GetClass", new Classes { Id = Class.Id }, Class);
         }
 
+        [Authorize("Teacher, Admin")]
         [HttpDelete("{id}")]
         public ActionResult<Classes> DeleteClass(int id)
         {
