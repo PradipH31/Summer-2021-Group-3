@@ -9,7 +9,7 @@ const StudentCourse = () => {
     let { id } = useParams();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
+    const [item, setItem] = useState([]);
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -22,7 +22,7 @@ const StudentCourse = () => {
             .then(
                 (result) => {
                     setIsLoaded(true);
-                    setItems(result);
+                    setItem(result);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -41,14 +41,9 @@ const StudentCourse = () => {
     } else {
         return (
             <React.Fragment>
-                <div
-                //  style={{
-                //     backgroundImage: `url(${items.imageSrc})`,
-                //     backgroundSize: 'contain'
-                // }}
-                >
-                    <h1>{items.className}</h1>
-                    <h3 style={{ textAlign: 'right' }}>{items.classOwner}</h3>
+                <div>
+                    <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
+                    <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>
                 </div>
                 <Paper >
                     <Tabs
