@@ -1,22 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/Textfield';
 import '../css/login.css'
+import axios from 'axios'
+import { Redirect, useHistory } from 'react-router-dom';
 
-const Login = (props) => {
-    const logIn = (ent) => {
-        props.page(ent);
+const initialFieldValues = {
+    wNumber: '',
+    password: '',
+}
+
+const Login = () => {
+    const [values, setValues] = useState(initialFieldValues)
+    const [errors, setErrors] = useState({})
+
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    const resetForm = () => {
+        setValues(initialFieldValues)
+        document.getElementById('image-uploader').value = null;
+        setErrors({});
+    }
+    let history = useHistory();
+
+    const handleFormSubmit = () => {
+        axios.post('https://localhost:44377/api/security/signin', {
+            wNumber: values.wNumber,
+            password: values.password
+        }).then(function (response) {
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userId", response.data.userId);
+            // console.log(response)
+            history.push("/classes");
+        }).catch(function (error) {
+            console.log(error);
+        });
+        // addOrEdit(formData, resetForm)
+    }
+
+    const logIn = () => {
+        handleFormSubmit();
+    }
+    if (sessionStorage.token) {
+        return <Redirect to="/classes" />
     }
     return (
         <div className="login-appearance">
             <h1>Log In</h1>
-            <form>
+            <form style={{ margin: '0 30%' }}>
                 <div className="login-info-container">
                     <label>
                         <TextField
                             id="standard-number"
                             label="W Number"
                             type="number"
+                            name="wNumber"
+                            value={values.wNumber}
+                            onChange={handleInputChange}
                         />
                     </label>
                     <br />
@@ -25,6 +71,9 @@ const Login = (props) => {
                             id="standard-password-input"
                             label="Password"
                             type="password"
+                            name="password"
+                            value={values.password}
+                            onChange={handleInputChange}
                             autoComplete="current-password"
                         />
                     </label>
@@ -39,18 +88,12 @@ const Login = (props) => {
                         }}
                     >
                         <Button
+                            fullWidth={true}
                             variant="contained"
                             color="primary"
                             className="centered-button"
-                            onClick={() => { logIn("student") }}>
-                            Log In as Student
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className="centered-button"
-                            onClick={() => { logIn("teacher") }}>
-                            Log In as Teacher
+                            onClick={() => { logIn() }}>
+                            Log In
                         </Button>
                     </div>
                 </label>
