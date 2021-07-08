@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("logout")]
-        public async Task<ActionResult<UserDTO>> LogOut()
+        public async Task<ActionResult> LogOut()
         {
             await signInManager.SignOutAsync();
             return Ok();

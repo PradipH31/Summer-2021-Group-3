@@ -36,10 +36,10 @@ namespace WebApplication1.Controllers
                     return BadRequest();
                 }
 
-                if (!await _context.Roles.AnyAsync(x => x.Name == user.Role))
-                {
-                    return BadRequest();
-                }
+                //if (!await _context.Roles.AnyAsync(x => x.Name == user.Role))
+                //{
+                 //   return BadRequest();
+               // }
 
                 var identityResult = await manager.CreateAsync(newUser, user.Password);
                 if (!identityResult.Succeeded)
@@ -55,7 +55,7 @@ namespace WebApplication1.Controllers
 
                 transaction.Commit(); 
 
-                return Created(string.Empty, new UserDTO
+                return Ok(new UserDTO
                 {
                     Username = newUser.UserName
                 });
