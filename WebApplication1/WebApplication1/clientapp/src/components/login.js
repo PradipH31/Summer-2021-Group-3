@@ -35,6 +35,7 @@ const Login = () => {
         }).then(function (response) {
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("userId", response.data.userId);
+            sessionStorage.setItem("firstName", response.data.firstName);
             history.push("/classes");
         }).catch(function (error) {
             console.log(error);

@@ -18,5 +18,7 @@ namespace WebApplication1.Features
         public Class Class { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+        [NotMapped]
+        public string JupyterHubLink { get; set; }
     }
 }

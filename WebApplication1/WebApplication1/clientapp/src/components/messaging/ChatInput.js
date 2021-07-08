@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 import SendIcon from '@material-ui/icons/Send';
 
 const ChatInput = (props) => {
-    const [user, setUser] = useState('');
     const [message, setMessage] = useState('');
-    // setUser('user')
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const isUserProvided = user && user !== '';
+        // const isUserProvided = user && user !== '';
         const isMessageProvided = message && message !== '';
 
         // if (isUserProvided && isMessageProvided) {
         if (isMessageProvided) {
             // props.sendMessage(user, message);
-            props.sendMessage('user', message);
+            props.sendMessage(sessionStorage.getItem('firstName'), message);
+            setMessage('');
         }
         else {
             alert('Please insert an user and a message.');
         }
     }
 
-    const onUserUpdate = (e) => {
-        setUser(e.target.value);
-    }
+    // const onUserUpdate = (e) => {
+    //     setUser(e.target.value);
+    // }
 
     const onMessageUpdate = (e) => {
         setMessage(e.target.value);
