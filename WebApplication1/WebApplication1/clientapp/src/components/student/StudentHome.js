@@ -1,9 +1,9 @@
 import '../../css/student.css'
 import StudentNavbar from './StudentNavbar'
 import StudentCourseList from './StudentCourseList'
-import Messages from '../messages/Messages'
 import { Switch, Route, useHistory } from "react-router-dom";
 import StudentCourse from './StudentCourse';
+import Chat from '../messaging/Chat';
 
 const StudentHome = () => {
     let history = useHistory();
@@ -31,7 +31,7 @@ const StudentHome = () => {
 
                 <Switch>
                     <Route path="/classes/messages">
-                        <Messages />
+                        <Chat />
                     </Route>
                     <Route path={`/classes/:id`}>
                         <StudentCourse />

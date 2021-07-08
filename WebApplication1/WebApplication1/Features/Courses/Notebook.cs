@@ -18,6 +18,7 @@ namespace WebApplication1.Features
         public Course Class { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
-        public virtual ICollection<Course> Course { get; set; } = new List<Course>();
+        [NotMapped]
+        public string JupyterHubLink { get; set; }
     }
 }
