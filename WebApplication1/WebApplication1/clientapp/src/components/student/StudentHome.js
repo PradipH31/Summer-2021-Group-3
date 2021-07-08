@@ -2,16 +2,16 @@ import '../../css/student.css'
 import StudentNavbar from './StudentNavbar'
 import StudentCourseList from './StudentCourseList'
 import Messages from '../messages/Messages'
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import StudentCourse from './StudentCourse';
 
-const StudentHome = (props) => {
+const StudentHome = () => {
+    let history = useHistory();
+    if (!sessionStorage.token) {
+        history.push("/")
+    }
     return (
-        <Router>
+        <div className="student-body">
             <div>
                 <nav>
                     <ul style={{
@@ -22,30 +22,24 @@ const StudentHome = (props) => {
                         marginBlockEnd: 'unset'
                     }}>
                         <StudentNavbar
-                            page={props.page}
                             style={{ marginLeft: '30%' }}
                         />
                     </ul>
                 </nav>
             </div>
             <div className="student-body">
+
                 <Switch>
+                    <Route path="/classes/messages">
+                        <Messages />
+                    </Route>
                     <Route path={`/classes/:id`}>
                         <StudentCourse />
                     </Route>
-                    <Route path="/classes">
-                        <StudentCourseList />
-                    </Route>
-                    <Route path="/messages">
-                        <Messages />
-                    </Route>
-                    <Route path="/">
-                        <StudentCourseList />
-                    </Route>
-
+                    <StudentCourseList />
                 </Switch>
             </div>
-        </Router>
+        </div>
     );
 };
 

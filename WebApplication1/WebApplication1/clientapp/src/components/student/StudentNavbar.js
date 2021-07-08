@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -79,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const StudentNavbar = (props) => {
+const StudentNavbar = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -95,9 +96,11 @@ const StudentNavbar = (props) => {
         setAnchorEl(null);
     };
 
+    let history = useHistory();
     const log_out = () => {
         handleMenuClose();
-        props.page("logout")
+        sessionStorage.removeItem("token")
+        history.push("/");
     }
 
     const menuId = 'primary-search-account-menu';
@@ -112,7 +115,7 @@ const StudentNavbar = (props) => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={log_out}>Log out</MenuItem>
+            <MenuItem onClick={() => { log_out() }}>Log out</MenuItem>
         </Menu>
     );
 
@@ -144,7 +147,7 @@ const StudentNavbar = (props) => {
                                 </Badge>
                             </IconButton>
                         </Link>
-                        <Link to="/messages">
+                        <Link to="/classes/messages">
                             <IconButton
                                 aria-label="show 1 new mails"
                                 color="inherit"

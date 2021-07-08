@@ -14,12 +14,12 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClassesController : ControllerBase
+    public class ClassController : ControllerBase
     {
         private readonly DBContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ClassesController(DBContext context, IWebHostEnvironment hostEnvironment)
+        public ClassController(DBContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             this._hostEnvironment = hostEnvironment;
@@ -27,10 +27,10 @@ namespace WebApplication1.Controllers
 
         // GET: api/Classes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Classes>>> GetClassDescription()
+        public async Task<ActionResult<IEnumerable<Class>>> GetClassDescription()
         {
             return await _context.ClassDescription
-                .Select(x => new Classes(){
+                .Select(x => new Class(){
                     ClassId = x.ClassId,
                     ClassName = x.ClassName,
                     ClassDescription = x.ClassDescription,
@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Classes>> GetClasses(int id)
+        public async Task<ActionResult<Class>> GetClasses(int id)
         {
             var classes = await _context.ClassDescription.FindAsync(id);
 
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
         // PUT: api/Classes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClasses(int id, Classes classes)
+        public async Task<IActionResult> PutClasses(int id, Class classes)
         {
             if (id != classes.ClassId)
             {
@@ -90,7 +90,7 @@ namespace WebApplication1.Controllers
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Classes>> PostClasses([FromForm] Classes classes)
+        public async Task<ActionResult<Class>> PostClasses([FromForm] Class classes)
         {
             classes.ImageName = await SaveImage(classes.ImageFile);
             _context.ClassDescription.Add(classes);
