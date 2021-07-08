@@ -23,28 +23,58 @@ const useStyles = makeStyles({
     },
 });
 
+
+
 const Notebooks = (props) => {
     let { id } = props.classId
     console.log(props);
+
     const classes = useStyles();
-    return (
-        <div>
-            <Card className={classes.root}>
+
+    const TestNoteBook = () => {
+        return (
+            <Card className={classes.root} style={{
+                margin: "1%"
+            }}>
                 <CardContent>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Add in Jupyter
                     </Typography>
-                    <Typography variant="h5" component="h2">
-                        Notebook Title
+                    {/* <a href="localhost:12000/hub/user-redirect/
+                    git-pull?repo=https:%2F%2Fgithub.com%2Frevbayes%2FRevNotebooks&
+                    subPath=RB_Intro%2FRB_Intro.ipynb&app=lab"> */}
+                    <a
+                        href="#"
+                        target="_blank"
+                    >
+                        <Typography variant="h5" component="h2">
+                            Notebook Title
+                        </Typography>
+                    </a>
+                    <Typography className={classes.pos} color="textSecondary">
+                        Uploaded Date
                     </Typography>
                     <Typography variant="body2" component="p">
                         Notebook Description
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small">Open in Github</Button>
+                    <a
+                        href="#"
+                    >
+                        <Button size="small">Open in Github</Button>
+                    </a>
                 </CardActions>
-            </Card>
+            </Card >
+        );
+    }
+
+    return (
+        <div>
+            <TestNoteBook />
+            <TestNoteBook />
+            <TestNoteBook />
+            <TestNoteBook />
         </div>
     )
 }

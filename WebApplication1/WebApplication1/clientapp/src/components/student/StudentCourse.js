@@ -91,7 +91,9 @@ const StudentCourse = () => {
                     <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
                     <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>
                 </div>
-                <AppBar position="static" color="default">
+                <AppBar position="static" color="default" style={{
+                    backgroundColor:'#AED1B1'
+                }}>
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -111,7 +113,6 @@ const StudentCourse = () => {
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                        {/* Notebooks */}
                         <Notebooks classId={{ id }} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
