@@ -19,5 +19,7 @@ namespace WebApplication1.Data
         public DbSet<Class> ClassDescription { get; set; }
 
 
+        public DbSet<WebApplication1.Features.Notebook> Notebook { get; set; }
+
     }
 }
