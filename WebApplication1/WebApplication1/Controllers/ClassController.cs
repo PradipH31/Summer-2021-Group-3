@@ -27,10 +27,10 @@ namespace WebApplication1.Controllers
 
         // GET: api/Classes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Courses>>> GetClassDescription()
+        public async Task<ActionResult<IEnumerable<Course>>> GetClassDescription()
         {
             return await _context.ClassDescription
-                .Select(x => new Courses(){
+                .Select(x => new Course(){
                     ClassId = x.ClassId,
                     ClassName = x.ClassName,
                     ClassDescription = x.ClassDescription,
@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Courses>> GetClasses(int id)
+        public async Task<ActionResult<Course>> GetClasses(int id)
         {
             var classes = await _context.ClassDescription.FindAsync(id);
 
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
         // PUT: api/Classes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClasses(int id, Courses classes)
+        public async Task<IActionResult> PutClasses(int id, Course classes)
         {
             if (id != classes.ClassId)
             {
@@ -90,7 +90,7 @@ namespace WebApplication1.Controllers
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Courses>> PostClasses([FromForm] Courses classes)
+        public async Task<ActionResult<Course>> PostClasses([FromForm] Course classes)
         {
             classes.ImageName = await SaveImage(classes.ImageFile);
             _context.ClassDescription.Add(classes);

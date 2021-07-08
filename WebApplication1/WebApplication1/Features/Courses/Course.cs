@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace WebApplication1.Features.Classes
 {
-	public class Courses
+	public class Course
 	{
 		[Key]
 		public int ClassId { get; set; }
@@ -20,5 +20,6 @@ namespace WebApplication1.Features.Classes
 		public IFormFile ImageFile { get; set; }
 		[NotMapped]
 		public string ImageSrc { get; set; }
+		public virtual ICollection<Notebook> Notebooks { get; set; } = new List<Notebook>();
 	}
 }

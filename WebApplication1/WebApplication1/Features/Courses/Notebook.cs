@@ -14,9 +14,10 @@ namespace WebApplication1.Features
         public string GithubLink { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int ClassId { get; set; }
-        public Courses Class { get; set; }
+      //public int ClassId { get; set; }
+        public Course Class { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
+        public virtual ICollection<Course> Course { get; set; } = new List<Course>();
     }
 }
