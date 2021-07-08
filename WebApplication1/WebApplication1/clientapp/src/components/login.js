@@ -12,7 +12,6 @@ const initialFieldValues = {
 
 const Login = () => {
     const [values, setValues] = useState(initialFieldValues)
-    const [errors, setErrors] = useState({})
 
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -22,11 +21,11 @@ const Login = () => {
         })
     }
 
-    const resetForm = () => {
-        setValues(initialFieldValues)
-        document.getElementById('image-uploader').value = null;
-        setErrors({});
-    }
+    // const resetForm = () => {
+    //     setValues(initialFieldValues)
+    //     document.getElementById('image-uploader').value = null;
+    //     setErrors({});
+    // }
     let history = useHistory();
 
     const handleFormSubmit = () => {
@@ -36,12 +35,10 @@ const Login = () => {
         }).then(function (response) {
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("userId", response.data.userId);
-            // console.log(response)
             history.push("/classes");
         }).catch(function (error) {
             console.log(error);
         });
-        // addOrEdit(formData, resetForm)
     }
 
     const logIn = () => {

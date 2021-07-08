@@ -2,12 +2,7 @@ import '../../css/student.css'
 import StudentNavbar from './StudentNavbar'
 import StudentCourseList from './StudentCourseList'
 import Messages from '../messages/Messages'
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    useHistory
-} from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import StudentCourse from './StudentCourse';
 
 const StudentHome = () => {
@@ -34,15 +29,15 @@ const StudentHome = () => {
             </div>
             <div className="student-body">
 
-            <Switch>
-                <Route path="/classes/messages">
-                    <Messages />
-                </Route>
-                <Route path={`/classes/:id`}>
-                    <StudentCourse />
-                </Route>
-                <StudentCourseList />
-            </Switch>
+                <Switch>
+                    <Route path="/classes/messages">
+                        <Messages />
+                    </Route>
+                    <Route path={`/classes/:id`}>
+                        <StudentCourse />
+                    </Route>
+                    <StudentCourseList />
+                </Switch>
             </div>
         </div>
     );

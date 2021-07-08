@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom"
 import { CircularProgress } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Notebooks from './CourseContents/Notebooks';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -24,7 +24,7 @@ const TabPanel = (props) => {
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <Typography component={'span'}>{children}</Typography>
                 </Box>
             )}
         </div>
@@ -44,21 +44,12 @@ function a11yProps(index) {
     };
 }
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-        width: 500,
-    },
-}));
-
-
 const StudentCourse = () => {
     let { id } = useParams();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [item, setItem] = useState([]);
 
-    const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 
@@ -100,8 +91,6 @@ const StudentCourse = () => {
                     <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
                     <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>
                 </div>
-                {/* <Paper >
-                </Paper> */}
                 <AppBar position="static" color="default">
                     <Tabs
                         value={value}
@@ -122,7 +111,8 @@ const StudentCourse = () => {
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                        Notebooks
+                        {/* Notebooks */}
+                        <Notebooks classId={{ id }} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         Flashcard
