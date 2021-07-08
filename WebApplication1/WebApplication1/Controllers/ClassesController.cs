@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
+using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
 
 namespace WebApplication1.Controllers
@@ -35,7 +36,7 @@ namespace WebApplication1.Controllers
             return ClassDescription;
         }
 
-        [Authorize ("Teacher, Admin")]
+        [Authorize (Roles = "Admin, Instructor")]
         [HttpPost]
         public ActionResult<Classes> ClassCreate(Classes Class)
         {
