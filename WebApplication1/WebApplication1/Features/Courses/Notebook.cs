@@ -14,11 +14,12 @@ namespace WebApplication1.Features
         public string GithubLink { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-      //public int ClassId { get; set; }
+        public int ClassId { get; set; }
         public Course Class { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
         [NotMapped]
         public string JupyterHubLink { get; set; }
+        public virtual Course Course { get; set; }
     }
 }
