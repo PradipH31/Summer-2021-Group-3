@@ -84,7 +84,7 @@ const Notebooks = (props) => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("https://localhost:44377/api/Notebooks")
+        fetch(`https://localhost:44377/api/NotebookJH/${id}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -125,7 +125,7 @@ const Notebooks = (props) => {
                         git-pull?repo=https:%2F%2Fgithub.com%2Frevbayes%2FRevNotebooks&
                         subPath=RB_Intro%2FRB_Intro.ipynb&app=lab"> */}
                             <a
-                                href={`${item.githubLink}`}
+                                href={`${item.jupyterHubLink}`}
                                 target="_blank"
                             >
                                 <Typography variant="h5" component="h2" style={{
