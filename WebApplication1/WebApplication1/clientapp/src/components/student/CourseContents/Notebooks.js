@@ -105,8 +105,7 @@ const Notebooks = (props) => {
     } else if (!isLoaded) {
         return (
             <div>
-                {/* <CircularProgress size={'30%'} /> */}
-                Loading
+                <CircularProgress size={'10%'} />
             </div>
         );
     } else {
@@ -115,7 +114,8 @@ const Notebooks = (props) => {
             return (
                 <div key={item.notebookId}>
                     <Card className={classes.root} style={{
-                        margin: "1%"
+                        margin: "1%",
+                        backgroundImage: 'radial-gradient(circle, red, yellow, green);'
                     }}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -128,7 +128,11 @@ const Notebooks = (props) => {
                                 href={`${item.githubLink}`}
                                 target="_blank"
                             >
-                                <Typography variant="h5" component="h2">
+                                <Typography variant="h5" component="h2" style={{
+                                    backgroundColor: '#F8B77F',
+                                    color: 'white',
+                                    margin: '0% 30%  '
+                                }}>
                                     {item.title}
                                 </Typography>
                             </a>

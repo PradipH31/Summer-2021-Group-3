@@ -87,12 +87,16 @@ const StudentCourse = () => {
     } else {
         return (
             <React.Fragment>
-                <div>
+                <div style={{
+                    color: 'white',
+                    backgroundImage: "linear-gradient(to right, #2a0845, #6441A5)"
+                    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                }}>
                     <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
                     <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>
                 </div>
                 <AppBar position="static" color="default" style={{
-                    backgroundColor:'#AED1B1'
+                    backgroundColor: '#AED1B1'
                 }}>
                     <Tabs
                         value={value}
@@ -112,7 +116,7 @@ const StudentCourse = () => {
                     index={value}
                     onChangeIndex={handleChangeIndex}
                 >
-                    <TabPanel value={value} index={0} dir={theme.direction}>
+                    <TabPanel value={value} index={0} dir={theme.direction} >
                         <Notebooks classId={{ id }} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
