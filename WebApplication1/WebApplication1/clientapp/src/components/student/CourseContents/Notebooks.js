@@ -113,40 +113,42 @@ const Notebooks = (props) => {
         console.log(items)
         itemList = items.map((item,) => {
             return (
-                <Card className={classes.root} style={{
-                    margin: "1%"
-                }}>
-                    <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                            Add in Jupyter
-                        </Typography>
-                        {/* <a href="localhost:12000/hub/user-redirect/
+                <div key={item.notebookId}>
+                    <Card className={classes.root} style={{
+                        margin: "1%"
+                    }}>
+                        <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                Add in Jupyter
+                            </Typography>
+                            {/* <a href="localhost:12000/hub/user-redirect/
                         git-pull?repo=https:%2F%2Fgithub.com%2Frevbayes%2FRevNotebooks&
                         subPath=RB_Intro%2FRB_Intro.ipynb&app=lab"> */}
-                        <a
-                            href={`${item.githubLink}`}
-                            target="_blank"
-                        >
-                            <Typography variant="h5" component="h2">
-                                {item.title}
+                            <a
+                                href={`${item.githubLink}`}
+                                target="_blank"
+                            >
+                                <Typography variant="h5" component="h2">
+                                    {item.title}
+                                </Typography>
+                            </a>
+                            <Typography className={classes.pos} color="textSecondary">
+                                {item.createdDate.slice(0, 10)}
                             </Typography>
-                        </a>
-                        <Typography className={classes.pos} color="textSecondary">
-                            Uploaded Date
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            {item.description}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <a
-                            href={`${item.githubLink}`}
-                            target="_blank"
-                        >
-                            <Button size="small">Open in Github</Button>
-                        </a>
-                    </CardActions>
-                </Card >
+                            <Typography variant="body2" component="p">
+                                {item.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <a
+                                href={`${item.githubLink}`}
+                                target="_blank"
+                            >
+                                <Button size="small">Open in Github</Button>
+                            </a>
+                        </CardActions>
+                    </Card >
+                </div>
             )
         })
 
