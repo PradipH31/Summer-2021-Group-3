@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace WebApplication1.Features.Classes
 {
-	public class Classes
+	public class Class
 	{
 		[Key]
 		public int ClassId { get; set; }
