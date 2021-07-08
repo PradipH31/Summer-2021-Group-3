@@ -15,7 +15,7 @@ namespace WebApplication1.Features
         public string Title { get; set; }
         public string Description { get; set; }
         public int ClassId { get; set; }
-        public Class Class { get; set; }
+        public Courses Class { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }
