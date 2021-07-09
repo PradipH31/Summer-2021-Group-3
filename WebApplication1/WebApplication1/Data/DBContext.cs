@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Features.Classes;
 using WebApplication1.Features;
-
+using WebApplication1.Security;
 
 namespace WebApplication1.Data
 {
@@ -18,6 +18,7 @@ namespace WebApplication1.Data
 
         public DbSet<Course> ClassDescription { get; set; }
         public DbSet<Notebook> Notebook { get; set; }
+        public DbSet<User> Users { get; set; }
 
     }
 }

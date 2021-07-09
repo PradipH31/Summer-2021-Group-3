@@ -363,3 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 *.suo
 WebApplication1/WebApplication1/obj/Debug/net5.0/WebApplication1.csproj.AssemblyReference.cache
+WebApplication1/WebApplication1/obj/Debug/net5.0/WebApplication1.assets.cache
+WebApplication1/WebApplication1/obj/project.nuget.cache
+WebApplication1/WebApplication1/obj/WebApplication1.csproj.nuget.g.props
+WebApplication1/WebApplication1/obj/WebApplication1.csproj.nuget.dgspec.json
+WebApplication1/WebApplication1/obj/project.assets.json
