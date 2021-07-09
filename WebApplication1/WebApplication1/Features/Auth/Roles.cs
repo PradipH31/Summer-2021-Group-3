@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace WebApplication1.Features.Auth
@@ -13,4 +14,5 @@ namespace WebApplication1.Features.Auth
         public const string Instructor = nameof(Instructor);
         public const string Guest = nameof(Guest);
     }
-}
+   
+} 

@@ -57,6 +57,7 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AddRoles(app).GetAwaiter().GetResult();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,6 +76,23 @@ namespace WebApplication1
             {
                 endpoints.MapControllers();
             });
+        }
+        private static async Task AddRoles(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<Role>>();
+                if (roleManager.Roles.Any())
+                {
+                    return;
+                }
+
+                await roleManager.CreateAsync(new Role { Name = Roles.Admin });
+                await roleManager.CreateAsync(new Role { Name = Roles.ClassAdmin });
+                await roleManager.CreateAsync(new Role { Name = Roles.Instructor });
+                await roleManager.CreateAsync(new Role { Name = Roles.Student });
+                await roleManager.CreateAsync(new Role { Name = Roles.Guest });
+            }
         }
     }
 }
