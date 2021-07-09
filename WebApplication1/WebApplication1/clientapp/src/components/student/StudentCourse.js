@@ -10,6 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Notebooks from './CourseContents/Notebooks';
+import '../../css/studentcourse.css'
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -63,7 +64,7 @@ const StudentCourse = () => {
 
 
     useEffect(() => {
-        fetch(`https://localhost:44377/api/Classes/${id}`)
+        fetch(`https://localhost:44377/api/Class/${id}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -89,8 +90,7 @@ const StudentCourse = () => {
             <React.Fragment>
                 <div style={{
                     color: 'white',
-                    backgroundImage: "linear-gradient(to right, #2a0845, #6441A5)"
-                    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                    backgroundImage: "linear-gradient(to top, #ff0844 0%, #ffb199 100%)"
                 }}>
                     <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
                     <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>

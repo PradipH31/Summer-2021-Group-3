@@ -37,6 +37,7 @@ namespace WebApplication1.Controllers
                     CreatedDate = n.CreatedDate,
                     JupyterHubLink = getJupyter(n.GithubLink)
                 })
+                .OrderBy(n => n.CreatedDate)
                 .ToListAsync();
         }
         [NonAction]

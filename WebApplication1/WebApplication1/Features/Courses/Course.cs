@@ -20,6 +20,7 @@ namespace WebApplication1.Features.Classes
 		public IFormFile ImageFile { get; set; }
 		[NotMapped]
 		public string ImageSrc { get; set; }
+		[NotMapped]
 		public virtual ICollection<Notebook> Notebooks { get; set; } = new List<Notebook>();
 	}
 }

@@ -8,20 +8,12 @@ function App() {
 
   return (
     <div className="App">
-      {/* {pageStatus} */}
-
       <Router>
         <div>
           <nav>
           </nav>
         </div>
         <>
-          {/* {{
-            if sessionStorage.token {
-
-          }
-          } */}
-
           <Switch>
             <Route path="/classes">
               <StudentHome />

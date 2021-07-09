@@ -21,14 +21,11 @@ const StudentHome = () => {
                         marginBlockStart: 'unset',
                         marginBlockEnd: 'unset'
                     }}>
-                        <StudentNavbar
-                            style={{ marginLeft: '30%' }}
-                        />
+                        <StudentNavbar style={{ marginLeft: '30%' }} />
                     </ul>
                 </nav>
             </div>
             <div className="student-body">
-
                 <Switch>
                     <Route path="/classes/messages">
                         <Chat />

@@ -19,7 +19,7 @@ const StudentCourseList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:44377/api/Classes")
+    fetch("https://localhost:44377/api/Class")
       .then(res => res.json())
       .then(
         (result) => {
