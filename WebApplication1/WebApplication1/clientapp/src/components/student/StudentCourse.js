@@ -87,10 +87,11 @@ const StudentCourse = () => {
         );
     } else {
         return (
-            <React.Fragment>
+            // <React.Fragment>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{
                     color: 'white',
-                    backgroundImage: "linear-gradient(to top, #ff0844 0%, #ffb199 100%)"
+                    backgroundColor: '#CF998F'
                 }}>
                     <h1 style={{ marginBlockStart: 'unset', paddingTop: '5%' }}>{item.className}</h1>
                     <h3 style={{ textAlign: 'right' }}>{item.classOwner}</h3>
@@ -108,7 +109,7 @@ const StudentCourse = () => {
                     >
                         <Tab label="Notebooks" {...a11yProps(0)} />
                         <Tab label="Flashcard" {...a11yProps(1)} />
-                        <Tab label="Class Updates" {...a11yProps(2)} />
+                        <Tab label="Chat" {...a11yProps(2)} />
                     </Tabs>
                 </AppBar>
                 <SwipeableViews
@@ -123,10 +124,10 @@ const StudentCourse = () => {
                         Flashcard
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
-                        Class Updates
                     </TabPanel>
                 </SwipeableViews>
-            </React.Fragment>
+                {/* </React.Fragment> */}
+            </div >
         )
     }
 }
