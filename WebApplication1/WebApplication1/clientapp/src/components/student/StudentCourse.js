@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Notebooks from './CourseContents/Notebooks';
 import '../../css/studentcourse.css'
+import Chat from './CourseContents/Chat';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -124,6 +125,7 @@ const StudentCourse = () => {
                         Flashcard
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
+                        <Chat className={`${item.className}`} />
                     </TabPanel>
                 </SwipeableViews>
                 {/* </React.Fragment> */}

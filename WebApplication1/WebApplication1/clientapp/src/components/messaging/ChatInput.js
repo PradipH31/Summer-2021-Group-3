@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import SendIcon from '@material-ui/icons/Send';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+}));
 
 const ChatInput = (props) => {
     const [message, setMessage] = useState('');
+    const classes = useStyles();
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -28,19 +41,24 @@ const ChatInput = (props) => {
                 flexWrap: 'nowrap',
                 justifyContent: 'space-between'
             }}>
-            <label htmlFor="message" style={{ flexGrow: '1' }}>
-                Send Message:
-            </label>
-            <input type="text" id="message"
+            {/* <input type="text" id="message"
                 name="message" value={message}
                 style={{ flexGrow: '5' }}
-                onChange={onMessageUpdate} />
+                onChange={onMessageUpdate} /> */}
+            <TextField
+                id="standard-basic"
+                label="Send a message:"
+                name="message"
+                value={message}
+                style={{flexGrow: '5'}}
+                onChange={onMessageUpdate}
+            />
             <button style={{
-                backgroundImage: 'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+                backgroundColor: '#1976d2',
                 color: 'white',
                 flexGrow: '1'
             }}>
-                Send
+                <SendIcon />
             </button>
         </form >
     )

@@ -103,7 +103,7 @@ const Notebooks = (props) => {
 
         return (
             <div>
-                {itemList}
+                {itemList.length > 0 ? itemList : 'Notebooks'}
             </div>
         )
     }
