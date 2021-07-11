@@ -16,38 +16,38 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly DataContext _context;
-        private readonly UserManager<User> manager;
+        private readonly DataContext context;
+        private readonly UserManager<User> userManager;
         
-        public UserController(DataContext context, UserManager<User> manager)
+        public UserController(DataContext context, UserManager<User> userManager)
         {
-            _context = context;
-            this.manager = manager;
+            this.context = context;
+            this.userManager = userManager;
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> CreateUser(CreateUserDTO user)
+        public async Task<ActionResult<UserDTO>> CreateUser(CreateUserDTO createUser)
         {
-            var newUser = new User { UserName = user.Username };
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            var newUser = new User { UserName = createUser.Username, Email = createUser.Email};
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                if (string.Equals(user.Role, Roles.Student, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(createUser.Role, Roles.Student, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return BadRequest();
                 }
 
-                if (!await _context.Roles.AnyAsync(x => x.Name == user.Role))
+                if (!await context.Roles.AnyAsync(x => x.Name == createUser.Role))
                 {
                     return BadRequest();
                 }
-
-               // var identityResult = await manager.CreateAsync(newUser, user.Password);
-               // if (!identityResult.Succeeded)
-               // {
-                //    return BadRequest();
-               // }
-
-                var roleResult = await manager.AddToRoleAsync(newUser, user.Role);
+                
+                var identityResult = await userManager.CreateAsync(newUser, createUser.Password);
+                if (!identityResult.Succeeded)
+                {
+                   return BadRequest();
+                 }
+                
+                var roleResult = await userManager.AddToRoleAsync(newUser, createUser.Role);
                 if (!roleResult.Succeeded)
                 {
                     return BadRequest();
@@ -55,10 +55,7 @@ namespace WebApplication1.Controllers
 
                 transaction.Commit(); 
 
-                return Ok(new UserDTO
-                {
-                    Username = newUser.UserName
-                });
+                return Ok(new UserDTO { Username = newUser.UserName });
 
             }
         }
