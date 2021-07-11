@@ -17,6 +17,8 @@ using System.IO;
 using Microsoft.Extensions.FileProviders;
 using System.Text;
 using SignalRChat.Hubs;
+using Microsoft.AspNetCore.Identity;
+using WebApplication1.Features.Auth;
 
 namespace WebApplication1
 {
