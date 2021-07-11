@@ -44,6 +44,12 @@ namespace WebApplication1.Controllers
                 var identityResult = await userManager.CreateAsync(newUser, createUser.Password);
                 if (!identityResult.Succeeded)
                 {
+                   //Check useername for whitespace errors
+                   if (newUser.UserName.Contains(" "))
+                   {
+                        return BadRequest("Username cannot contain whitespace! Remove whitespace, or use '_' instead");
+                   }
+                   //Assume failure is due to improper password format
                    return BadRequest("Double check the password");
                 }
                 
