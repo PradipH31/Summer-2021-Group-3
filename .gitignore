@@ -362,4 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.suo
-WebApplication1/WebApplication1/obj/Debug/net5.0/WebApplication1.csproj.AssemblyReference.cache
+*.cache

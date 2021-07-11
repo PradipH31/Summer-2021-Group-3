@@ -32,9 +32,24 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DBContext>
+            services.AddDbContext<DataContext>
                 (opt => opt.UseSqlServer(Configuration["Data:CommandAPIConnection:ConnectionString"]));
             services.AddControllers();
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<DataContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
@@ -89,6 +104,23 @@ namespace WebApplication1
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
+        }
+        private static async Task AddRoles(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<Role>>();
+                if (roleManager.Roles.Any())
+                {
+                    return;
+                }
+
+                await roleManager.CreateAsync(new Role { Name = Roles.Admin });
+                await roleManager.CreateAsync(new Role { Name = Roles.ClassAdmin });
+                await roleManager.CreateAsync(new Role { Name = Roles.Instructor });
+                await roleManager.CreateAsync(new Role { Name = Roles.Student });
+                await roleManager.CreateAsync(new Role { Name = Roles.Guest });
+            }
         }
     }
 }
