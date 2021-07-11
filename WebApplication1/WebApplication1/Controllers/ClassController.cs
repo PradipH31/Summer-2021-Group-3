@@ -16,10 +16,10 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        private readonly DBContext _context;
+        private readonly DataContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ClassController(DBContext context, IWebHostEnvironment hostEnvironment)
+        public ClassController(DataContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             this._hostEnvironment = hostEnvironment;

@@ -10,8 +10,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210624213340_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20210711193659_FixThis")]
+    partial class FixThis
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -218,9 +218,9 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("WebApplication1.Features.Classes.Classes", b =>
+            modelBuilder.Entity("WebApplication1.Features.Classes.Course", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -234,18 +234,45 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ClassOwner")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Grade")
+                    b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("ClassId");
 
                     b.ToTable("ClassDescription");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
+                {
+                    b.Property<int>("NotebookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CourseClassId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GithubLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotebookId");
+
+                    b.HasIndex("CourseClassId");
+
+                    b.ToTable("Notebook");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -301,6 +328,15 @@ namespace WebApplication1.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
+                {
+                    b.HasOne("WebApplication1.Features.Classes.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseClassId");
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("WebApplication1.Features.Auth.Role", b =>

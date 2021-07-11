@@ -44,13 +44,13 @@ namespace WebApplication1.Controllers
                 var identityResult = await userManager.CreateAsync(newUser, createUser.Password);
                 if (!identityResult.Succeeded)
                 {
-                   return BadRequest();
-                 }
+                   return BadRequest("Double check the password");
+                }
                 
                 var roleResult = await userManager.AddToRoleAsync(newUser, createUser.Role);
                 if (!roleResult.Succeeded)
                 {
-                    return BadRequest();
+                    return BadRequest("Check the role");
                 }
 
                 transaction.Commit(); 

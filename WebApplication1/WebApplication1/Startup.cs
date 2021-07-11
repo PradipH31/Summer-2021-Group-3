@@ -77,9 +77,10 @@ namespace WebApplication1
             //.AllowAnyMethod()
             //.AllowAnyHeader());
 
+            AddRoles(app).GetAwaiter().GetResult();
+
             app.UseCors("ClientPermission");
 
-            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {

@@ -14,9 +14,9 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class NotebooksController : ControllerBase
     {
-        private readonly DBContext _context;
+        private readonly DataContext _context;
 
-        public NotebooksController(DBContext context)
+        public NotebooksController(DataContext context)
         {
             _context = context;
         }
@@ -58,7 +58,7 @@ namespace WebApplication1.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
                 if (!NotebookExists(id))
                 {

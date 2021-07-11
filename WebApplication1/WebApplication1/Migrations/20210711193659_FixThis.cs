@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApplication1.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class FixThis : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,18 +52,16 @@ namespace WebApplication1.Migrations
                 name: "ClassDescription",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClassName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassOwner = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Grade = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassDescription", x => x.Id);
+                    table.PrimaryKey("PK_ClassDescription", x => x.ClassId);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,6 +170,30 @@ namespace WebApplication1.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Notebook",
+                columns: table => new
+                {
+                    NotebookId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GithubLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CourseClassId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notebook", x => x.NotebookId);
+                    table.ForeignKey(
+                        name: "FK_Notebook_ClassDescription_CourseClassId",
+                        column: x => x.CourseClassId,
+                        principalTable: "ClassDescription",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -210,6 +232,11 @@ namespace WebApplication1.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notebook_CourseClassId",
+                table: "Notebook",
+                column: "CourseClassId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -230,13 +257,16 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ClassDescription");
+                name: "Notebook");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ClassDescription");
         }
     }
 }

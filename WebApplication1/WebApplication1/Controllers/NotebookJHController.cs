@@ -14,9 +14,9 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class NotebookJHController : ControllerBase
     {
-        private readonly DBContext _context;
+        private readonly DataContext _context;
 
-        public NotebookJHController(DBContext context)
+        public NotebookJHController(DataContext context)
         {
             _context = context;
         }

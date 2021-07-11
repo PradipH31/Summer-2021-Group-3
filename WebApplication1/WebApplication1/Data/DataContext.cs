@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Features;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
 
@@ -18,7 +19,8 @@ namespace WebApplication1.Data
 
         }
 
-        public DbSet<Classes> ClassDescription { get; set; }
+        public DbSet<Course> ClassDescription { get; set; }
+        public DbSet<Notebook> Notebook { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
