@@ -7,7 +7,7 @@ import Chat from '../messaging/Chat';
 
 const StudentHome = () => {
     let history = useHistory();
-    if (!sessionStorage.token) {
+    if (!sessionStorage.token || sessionStorage.getItem('role') === 'Teacher') {
         history.push("/")
     }
     return (
@@ -28,7 +28,15 @@ const StudentHome = () => {
             <div className="student-body">
                 <Switch>
                     <Route path="/classes/messages">
-                        <Chat />
+                        <div style={{
+                            margin: '0% 10%',
+                            backgroundColor: 'white',
+                            padding: '1%',
+                            borderRadius: '3%',
+                            marginTop: '2%'
+                        }}>
+                            <Chat />
+                        </div>
                     </Route>
                     <Route path={`/classes/:id`}>
                         <StudentCourse />

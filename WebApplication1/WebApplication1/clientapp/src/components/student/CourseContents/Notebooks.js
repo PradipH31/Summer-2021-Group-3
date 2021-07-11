@@ -25,11 +25,8 @@ const useStyles = makeStyles({
     },
 });
 
-
-
 const Notebooks = (props) => {
-    let { id } = props.classId
-    console.log(props);
+    let id = props.classId
 
     const classes = useStyles();
 
@@ -50,7 +47,7 @@ const Notebooks = (props) => {
                     setError(error);
                 }
             )
-    }, [])
+    }, [id])
 
     let itemList;
 
@@ -63,13 +60,12 @@ const Notebooks = (props) => {
             </div>
         );
     } else {
-        console.log(items)
         itemList = items.map((item,) => {
             return (
                 <div key={item.notebookId}>
                     <Card className={classes.root} style={{
                         margin: "1%",
-                        backgroundImage: 'radial-gradient(circle, red, yellow, green);'
+                        // backgroundImage: 'radial-gradient(circle, red, yellow, green);'
                     }}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>

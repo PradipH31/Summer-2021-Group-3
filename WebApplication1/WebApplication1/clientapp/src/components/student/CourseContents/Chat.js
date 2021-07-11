@@ -27,7 +27,7 @@ const Chat = (props) => {
                 .then(result => {
                     console.log('Connected!');
 
-                    connection.send('AddToGroup', grp);
+                    connection.send('AddToGroup', sessionStorage.getItem('firstName') , grp);
 
 
                     connection.on('ReceiveGroupMessage', message => {
@@ -38,6 +38,7 @@ const Chat = (props) => {
                     });
 
                     connection.on('Send', message => {
+                        console.log(message);
                         const updatedChat = [...latestChat.current];
                         updatedChat.push(message);
 

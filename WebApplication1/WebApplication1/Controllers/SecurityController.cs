@@ -41,9 +41,11 @@ namespace WebApplication1.Controllers
             if (query.Count() > 0)
             {
                 var tokenString = GenerateJWT(loginDetails.WNumber);
+                var u = query.FirstOrDefault();
                 return Ok(new { 
                     token = tokenString ,
-                    firstName = query.FirstOrDefault().FirstName
+                    firstName = u.FirstName,
+                    role = u.Role
                 });
             }
             else

@@ -20,6 +20,6 @@ namespace WebApplication1.Features
         public DateTime CreatedDate { get; set; }
         [NotMapped]
         public string JupyterHubLink { get; set; }
-        public virtual Course Course { get; set; }
+        //public virtual Course Course { get; set; }
     }
 }

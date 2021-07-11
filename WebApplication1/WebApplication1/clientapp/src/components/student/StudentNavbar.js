@@ -100,6 +100,9 @@ const StudentNavbar = () => {
     const log_out = () => {
         handleMenuClose();
         sessionStorage.removeItem("token")
+        sessionStorage.removeItem("firstName")
+        sessionStorage.removeItem("role")
+        sessionStorage.removeItem("userId")
         history.push("/");
     }
 

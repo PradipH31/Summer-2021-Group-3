@@ -119,12 +119,19 @@ const StudentCourse = () => {
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction} >
-                        <Notebooks classId={{ id }} />
+                        <Notebooks classId={id} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         Flashcard
                     </TabPanel>
-                    <TabPanel value={value} index={2} dir={theme.direction}>
+                    <TabPanel value={value} index={2} dir={theme.direction}
+                        style={{
+                            margin: '0% 20%',
+                            backgroundColor: 'white',
+                            padding: '1%',
+                            borderRadius: '3%',
+                        }}
+                    >
                         <Chat className={`${item.className}`} />
                     </TabPanel>
                 </SwipeableViews>
