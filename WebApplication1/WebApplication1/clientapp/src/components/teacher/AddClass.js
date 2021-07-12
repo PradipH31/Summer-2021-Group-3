@@ -21,10 +21,39 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
+
+const initialFieldValues = {
+    className: '',
+    classDescription: '',
+    classOwner: '',
+    imageName:'',
+    imageSrc:''
+}
 
 const AddClass = () => {
-
+    const [values, setValues] = useState(initialFieldValues)
     const [open, setOpen] = React.useState(false);
+
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    const handleImageChange = e => {
+        let imageFile = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = x => {
+            setValues({
+                ...values,
+                imageFile,
+            })
+        }
+        reader.readAsDataURL(imageFile)
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -95,22 +124,29 @@ const AddClass = () => {
                         id="className"
                         label="Class Name"
                         type="text"
+                        name="className"
+                        value={values.className}
+                        onChange={handleInputChange}
                         fullWidth
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="classDescription"
                         label="Class Description"
                         type="text"
+                        name="classDescription"
+                        value={values.classDescription}
+                        onChange={handleInputChange}
                         fullWidth
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="classOwner"
                         label="Instructor"
                         type="text"
+                        name="classOwner"
+                        value={values.classOwner}
+                        onChange={handleInputChange}
                         fullWidth
                     />
                 </DialogContent>
@@ -118,7 +154,17 @@ const AddClass = () => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={() => {
+                        handleClose()
+                        console.log(values)
+                        axios.post("https://localhost:44377/api/Class", {
+                            ClassName: values.className,
+                            ClassOwner: values.classOwner,
+                            ClassDescription: values.classDescription,
+                            ImageName: values.imageName,
+                            ImageSrc: values.imageSrc
+                        }).then(response => console.log(response))
+                    }} color="primary">
                         Save
                     </Button>
                 </DialogActions>
