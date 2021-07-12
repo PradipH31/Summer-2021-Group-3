@@ -36,10 +36,14 @@ const Login = () => {
             // sessionStorage.setItem("token", response.data.token);
             console.log(response)
             sessionStorage.setItem("userName", response.data.user.userName);
-            sessionStorage.setItem("roles", response.data.roles);
+            sessionStorage.setItem("role", response.data.roles[0]);
             // sessionStorage.setItem("userId", response.data.userId);
             // sessionStorage.setItem("firstName", response.data.firstName);            
-            history.push("/classes");
+            if (sessionStorage.getItem('role').includes("Teacher")) {
+                history.push("/class")
+            } else {
+                history.push("/classes");
+            }
         }).catch(function (error) {
             console.log(error);
         });
@@ -48,8 +52,12 @@ const Login = () => {
     const logIn = () => {
         handleFormSubmit();
     }
-    if (sessionStorage.token) {
-        return <Redirect to="/classes" />
+    if (sessionStorage.getItem('roles')) {
+        if (sessionStorage.getItem('roles').includes("Teacher")) {
+            return <Redirect to="/class" />
+        } else if (sessionStorage.getItem('roles').includes("Teacher")) {
+            return <Redirect to="/classes" />
+        }
     }
     return (
         <div className="login-appearance">

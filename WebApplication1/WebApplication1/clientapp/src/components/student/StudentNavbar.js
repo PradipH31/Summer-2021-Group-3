@@ -103,7 +103,8 @@ const StudentNavbar = () => {
         fetch("https://localhost:44377/api/Auth/logout", {
             method: 'POST'
         }).then(res => console.log(res))
-
+        sessionStorage.removeItem('userName')
+        sessionStorage.removeItem('role')
         history.push("/");
     }
 

@@ -6,10 +6,10 @@ import StudentCourse from './StudentCourse';
 import Chat from '../messaging/Chat';
 
 const StudentHome = () => {
-    // let history = useHistory();
-    // if (!sessionStorage.token) {
-    //     history.push("/")
-    // }
+    let history = useHistory();
+    if (!sessionStorage.role) {
+        history.push("/")
+    }
     return (
         <div className="student-body">
             <div>
