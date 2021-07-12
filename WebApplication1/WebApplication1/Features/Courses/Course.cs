@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using WebApplication1.Features.FileSetup;
 
 namespace WebApplication1.Features.Classes
 {
-	public class Course
+    public class Course
 	{
 		[Key]
 		public int ClassId { get; set; }
@@ -22,5 +20,6 @@ namespace WebApplication1.Features.Classes
 		public string ImageSrc { get; set; }
 		[NotMapped]
 		public virtual ICollection<Notebook> Notebooks { get; set; } = new List<Notebook>();
+		public virtual ICollection<InfoFile> CourseFiles { get; set; } = new List<InfoFile>();
 	}
 }
