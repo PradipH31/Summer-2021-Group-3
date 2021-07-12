@@ -266,6 +266,27 @@ namespace WebApplication1.Migrations
                     b.ToTable("InfoFile");
                 });
 
+            modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCard", b =>
+                {
+                    b.Property<int>("FlashCardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("State")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FlashCardId");
+
+                    b.ToTable("FlashCard");
+                });
+
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
                 {
                     b.Property<int>("NotebookId")
