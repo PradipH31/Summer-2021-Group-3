@@ -69,6 +69,71 @@ const TeacherClassList = () => {
         e.target.style.background = 'red';
     }
 
+    let [currentActive, setActive] = useState(null);
+
+    const SelectedCard = (props) => {
+        let classItem = props.class
+        return (
+            <Card className={classes.root} style={{
+                margin: "10%",
+                maxWidth: 'unset',
+                borderStyle: 'groove',
+                color: 'black',
+                cursor: 'context-menu',
+                backgroundColor: 'aliceblue'
+            }}
+            >
+                <CardContent>
+                    <Typography variant="h5" component="h2" style={{
+                        backgroundColor: '#F8B77F',
+                        margin: '0% 30%'
+                    }}>
+                        {classItem.className}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        {classItem.classDescription.substring(0, 30)}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <a href={`${classItem.githubLink}`} target="_blank" rel="noreferrer">
+                        <Button size="small">Edit</Button>
+                    </a>
+                </CardActions>
+            </Card >
+        )
+    }
+
+    const NormalCard = (props) => {
+        let classItem = props.class
+        return (
+            <Card className={classes.root} style={{
+                margin: "10%",
+                maxWidth: 'unset',
+                borderStyle: 'groove',
+                cursor: 'context-menu'
+            }}
+            >
+                <CardContent>
+                    <Typography variant="h5" component="h2" style={{
+                        backgroundColor: '#F8B77F',
+                        color: 'white',
+                        margin: '0% 30%'
+                    }}>
+                        {classItem.className}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        {classItem.classDescription.substring(0, 30)}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <a href={`${classItem.githubLink}`} target="_blank" rel="noreferrer">
+                        <Button size="small">Edit</Button>
+                    </a>
+                </CardActions>
+            </Card >
+        )
+    }
+
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -84,18 +149,21 @@ const TeacherClassList = () => {
                     onClick={() => {
                         setId(item.classId)
                         setName(item.className)
+                        setActive(item.classId)
                         window.scrollTo({
-                            top:0,
-                            left:0,
+                            top: 0,
+                            left: 0,
                             behavior: 'smooth'
                         })
                     }}>
-                    <Card className={classes.root} style={{
+                    {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
+                    {/* < Card className={classes.root} style={{
                         margin: "10%",
                         maxWidth: 'unset',
                         borderStyle: 'groove',
                         cursor: 'context-menu'
-                    }}>
+                    }}
+                    >
                         <CardContent>
                             <Typography variant="h5" component="h2" style={{
                                 backgroundColor: '#F8B77F',
@@ -113,7 +181,7 @@ const TeacherClassList = () => {
                                 <Button size="small">Edit</Button>
                             </a>
                         </CardActions>
-                    </Card >
+                    </Card > */}
                 </div >
             )
         })

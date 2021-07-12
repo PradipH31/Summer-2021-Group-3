@@ -7,7 +7,7 @@ import Chat from '../messaging/Chat';
 
 const StudentHome = () => {
     let history = useHistory();
-    if (!sessionStorage.role) {
+    if (sessionStorage.roles.includes('Instructor')) {
         history.push("/")
     }
     return (

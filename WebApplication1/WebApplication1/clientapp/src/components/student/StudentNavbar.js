@@ -104,7 +104,7 @@ const StudentNavbar = () => {
             method: 'POST'
         }).then(res => console.log(res))
         sessionStorage.removeItem('userName')
-        sessionStorage.removeItem('role')
+        sessionStorage.removeItem('roles')
         history.push("/");
     }
 

@@ -1,16 +1,18 @@
+import { Switch, Route, useHistory } from "react-router-dom";
 // import Messages from '../messages/Messages'
 import TeacherClassList from './TeacherClassList';
 import AddClass from './AddClass';
 import axios from 'axios';
 import {
     BrowserRouter as Router,
-    Switch,
-    Route
 } from "react-router-dom";
-import { useHistory } from 'react-router';
 import React from 'react';
 
 const TeacherHome = (props) => {
+    let history = useHistory();
+    if (!sessionStorage.roles.includes('Instructor')) {
+        history.push("/")
+    }
 
     const classAPI = (url = 'https://localhost:44377/api/Class') => {
         return {
@@ -30,12 +32,11 @@ const TeacherHome = (props) => {
             .catch(err => console.log(err))
     }
 
-    let history = useHistory();
     const logOut = () => {
-        sessionStorage.removeItem("token")
-        sessionStorage.removeItem("firstName")
-        sessionStorage.removeItem("role")
-        sessionStorage.removeItem("userId")
+        // sessionStorage.removeItem("token")
+        sessionStorage.removeItem("userName")
+        sessionStorage.removeItem("roles")
+        // sessionStorage.removeItem("userId")
         history.push("/");
     }
 
