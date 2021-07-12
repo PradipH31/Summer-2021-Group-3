@@ -28,14 +28,26 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
 
+const initialFieldValues = {
+    title: '',
+    description: '',
+    githubLink: ''
+}
 
+const AddNotebook = (props) => {
+    let id = props.classId
+    const [values, setValues] = useState(initialFieldValues)
 
-const AddNotebook = () => {
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
     const useStyles = makeStyles((theme) => ({
-        root: {
-            minWidth: 275,
-        },
         bullet: {
             display: 'inline-block',
             margin: '0 2px',
@@ -112,29 +124,47 @@ const AddNotebook = () => {
                         label="Notebook Name"
                         type="text"
                         fullWidth
+                        value={values.title}
+                        onChange={handleInputChange}
+                        name="title"
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="description"
                         label="Notebook Description"
                         type="email"
                         fullWidth
+                        name="description"
+                        value={values.description}
+                        onChange={handleInputChange}
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="githubLink"
                         label="Github Link"
                         type="email"
+                        name="githubLink"
                         fullWidth
+                        value={values.githubLink}
+                        onChange={handleInputChange}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={() => {
+                        handleClose()
+                        //add
+                        axios.post("https://localhost:44377/api/Notebooks", {
+                            githubLink: values.githubLink,
+                            title: values.title,
+                            description: values.description,
+                            classId: id
+                        }).then(response=>{
+                            console.log(response)
+                        })
+                    }} color="primary">
                         Save
                     </Button>
                 </DialogActions>
