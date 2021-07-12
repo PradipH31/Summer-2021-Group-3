@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Flashcards\" />
     <Folder Include="Features\Sections\" />
     <Folder Include="Features\Quizzes\" />
   </ItemGroup>
