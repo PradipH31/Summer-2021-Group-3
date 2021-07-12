@@ -38,25 +38,25 @@ namespace WebApplication1.Controllers
 
                 if (!await context.Roles.AnyAsync(x => x.Name == createUser.Role))
                 {
-                    return BadRequest();
+                    return BadRequest("Role does not exist. \nAvailable Roles: \nAdmin \nClassAdmin \nInstructor \nStudent \nGuest");
                 }
                 
                 var identityResult = await userManager.CreateAsync(newUser, createUser.Password);
                 if (!identityResult.Succeeded)
                 {
-                   //Check useername for whitespace errors
-                   if (newUser.UserName.Contains(" "))
-                   {
-                        return BadRequest("Username cannot contain whitespace! Remove whitespace, or use '_' instead");
-                   }
-                   //Assume failure is due to improper password format
-                   return BadRequest("Double check the password");
+                    if (createUser.Password != createUser.ConfirmPassword)
+                        return BadRequest("Passwords do not match");
+                    if (createUser.Email != createUser.ConfirmEmail)
+                        return BadRequest("Emails do not match");
+                    if (await context.Users.AnyAsync(x => createUser.Username == x.NormalizedUserName) && await context.Users.AnyAsync(x => createUser.Username == x.UserName))
+                        return BadRequest("User already exists");
+                    return BadRequest("Invalid Request. \nCheck username and password. \nUsername cannot contain spaces \nPassword must be 8 characters long \nPassword must contain at least 1 capital letter, symbol, and number ");
                 }
                 
                 var roleResult = await userManager.AddToRoleAsync(newUser, createUser.Role);
                 if (!roleResult.Succeeded)
                 {
-                    return BadRequest("Check the role");
+                    return BadRequest("Unable to add user to role");
                 }
 
                 transaction.Commit(); 
