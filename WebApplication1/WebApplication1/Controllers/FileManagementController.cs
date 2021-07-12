@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Features.FileSetup;
 using System;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
@@ -27,7 +29,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<InfoFile>> GetInfoFile(int id)
+        public async Task<ActionResult<InfoFile>> GetInfoFile(int id, bool download = false)
         {
             var infofile = await _context.InfoFile.FindAsync(id);
 
@@ -36,7 +38,18 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            return infofile;
+            if (!download)
+            {
+                return infofile;
+            }
+            else
+            {
+                string name = infofile.Name;
+                string contenttype = infofile.ContentType;
+                byte[] content = Convert.FromBase64String(infofile.Content);
+
+                return File(content, contenttype, name);
+            }
         }
 
         [HttpPut("{id}")]
@@ -78,19 +91,27 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpGet("{fileid}/{download}")]
-        public ActionResult Downloadfile(int fileid, bool download)
+
+        [HttpPost("{postedFile}")]
+        public async Task UploadInfoFile(IFormFile postedFile)
         {
-            InfoFile infofile = _context.InfoFile.Find(fileid);
+            byte[] bytes;
 
-            string name = infofile.Name;
-            string contenttype = infofile.ContentType;
-            byte[] content = Convert.FromBase64String(infofile.Content);
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    postedFile.OpenReadStream().CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
+                }
+            }
 
-            return File(content, contenttype, name);   
+            string name = Path.GetFileName(postedFile.FileName);
+            string contenttype = postedFile.ContentType;
+            string content = Convert.ToBase64String(bytes);
+
+            await PostInfofile(new InfoFile { Name = name, Content = content, ContentType = contenttype });
         }
-        
-        
+
 
 
         [HttpDelete("{id}")]
