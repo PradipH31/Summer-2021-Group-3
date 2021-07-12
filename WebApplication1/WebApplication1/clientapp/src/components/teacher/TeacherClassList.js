@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import CardActions from '@material-ui/core/CardActions';
 import TabComponent from './TabComponent';
+import AddClass from './AddClass';
 
 const TeacherClassList = () => {
     const [error, setError] = useState(null);
@@ -186,31 +187,7 @@ const TeacherClassList = () => {
             )
         })
 
-        const AddClass = () => {
-            return (
-                <Card className={classes.root} style={{
-                    margin: "10%",
-                    maxWidth: 'unset',
-                    borderStyle: 'groove',
-                    cursor: 'context-menu'
-                }}>
-                    <CardContent>
-                        <Typography variant="h5" component="h2" style={{
-                            backgroundColor: '#F8B77F',
-                            color: 'white',
-                            margin: '0% 30%'
-                        }}>
-                            Add Class
-                        </Typography>
-                        <Typography variant="body2" component="p">
 
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                    </CardActions>
-                </Card >
-            )
-        }
 
         return (
             <>

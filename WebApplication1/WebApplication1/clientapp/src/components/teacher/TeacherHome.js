@@ -6,10 +6,13 @@ import axios from 'axios';
 import {
     BrowserRouter as Router,
 } from "react-router-dom";
-import React from 'react';
+import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import StudentComponent from "./Student/StudentComponent";
 
 const TeacherHome = (props) => {
     let history = useHistory();
+    const [title, setTitle] = useState('Classes')
     if (!sessionStorage.roles.includes('Instructor')) {
         history.push("/")
     }
@@ -41,65 +44,90 @@ const TeacherHome = (props) => {
     }
 
     return (
-        <Router>
-            <Switch>
-                <Route path={`/classes/:id`}>
-                    {/* <StudentCourse /> */}
-                </Route>
-            </Switch>
+        <>
             <div style={{
                 backgroundColor: 'white',
                 margin: '0% 1% 1% 1%',
             }}>
                 <div style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    borderStyle: 'solid',
+                    justifyContent: 'space-between',
+                    // borderStyle: 'solid',
+                    backgroundColor: '#2196f3',
                 }}>
                     <div style={{
-                        flexGrow: '1',
-                        padding: '1%',
-                        backgroundColor: 'green',
                         color: 'white',
-                        fontSize: '20px'
+                        fontSize: '30px',
+                        paddingLeft: '5%'
                     }}>
-                        Classes
+                        {title}
                     </div>
                     <div style={{
-                        flexGrow: '1',
-                        padding: '1%',
-                        backgroundColor: 'black',
-                        color: 'white',
-                        fontSize: '20px'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        // borderStyle: 'solid',
+                        backgroundColor: '#2196f3',
+                        // alignItems: 'baseline'
                     }}>
-                        Students
-                    </div>
-                    <div
-                        onClick={logOut}
-                        style={{
-                            backgroundColor: 'red',
-                            border: 'none',
+                        <div style={{
+                            // padding: '1%',
+                            cursor: 'pointer',
+                            justifyContent: 'flex-start',
                             color: 'white',
-                            textAlign: 'center',
-                            textDecoration: 'none',
-                            display: 'inline-block',
+                            fontSize: '20px',
+                            border: 'solid',
+                            borderRadius: '1px',
+                            margin: '0 2%'
+                        }}
+                            onClick={() => {
+                                history.push("/class");
+                                setTitle("Classes")
+                            }}
+                        >
+                            Classes
+                        </div>
+                        <div style={{
+                            // padding: '1%',
+                            color: 'white',
+                            border: 'solid',
                             fontSize: '20px',
                             cursor: 'pointer',
-                            flexGrow: '1',
-                            padding: '1%'
-                        }}>
-                        Log Out
+                            borderRadius: '1px',
+                            marginRight: '2%'
+                        }}
+                            onClick={() => {
+                                history.push("/class/students");
+                                setTitle('Students')
+                            }}
+                        >
+                            Students
+                        </div>
+                        <div style={{
+                            backgroundColor: 'red',
+                            color: 'white',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            // padding: '1%',
+                            // paddingLeft: '3%'
+                        }}
+                            onClick={logOut}
+                        >
+                            Log<span style={{color:'red'}}>a</span>Out
+                        </div>
                     </div>
                 </div>
                 <br></br>
-                <div >
-
+                <Switch>
+                    <Route path={`/class/students`}>
+                        <StudentComponent />
+                    </Route>
                     <TeacherClassList />
-                    {/* <AddClass addOrEdit={addOrEdit} /> */}
+                </Switch>
+                <div >
                 </div>
             </div>
-        </Router >
+        </ >
     );
 };
 
