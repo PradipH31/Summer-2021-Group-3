@@ -31,6 +31,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<UserDTO>> Login(LoginDTO dto)
         {
             var user = await userManager.FindByNameAsync(dto.Username);
+            var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
             if (user == null)
             {
                 return NotFound();
@@ -41,9 +42,10 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
             await signInManager.SignInAsync(user, false, "Password");
-            return Ok(new UserDTO
+            return Ok(new
             {
-                Username = user.UserName
+                User = user,
+                Roles = rolesList
             });
         }
 

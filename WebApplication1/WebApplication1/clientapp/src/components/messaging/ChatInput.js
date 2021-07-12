@@ -22,7 +22,7 @@ const ChatInput = (props) => {
         const isMessageProvided = message && message !== '';
 
         if (isMessageProvided) {
-            props.sendMessage(sessionStorage.getItem('firstName'), message);
+            props.sendMessage(sessionStorage.getItem('userName'), message);
             setMessage('');
         }
         else {

@@ -99,7 +99,11 @@ const StudentNavbar = () => {
     let history = useHistory();
     const log_out = () => {
         handleMenuClose();
-        sessionStorage.removeItem("token")
+        // sessionStorage.removeItem("token")
+        fetch("https://localhost:44377/api/Auth/logout", {
+            method: 'POST'
+        }).then(res => console.log(res))
+
         history.push("/");
     }
 
