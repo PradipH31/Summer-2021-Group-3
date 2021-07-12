@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Features;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
-
+using WebApplication1.Features.FileSetup;
 
 namespace WebApplication1.Data
 {
@@ -21,6 +21,7 @@ namespace WebApplication1.Data
 
         public DbSet<Course> ClassDescription { get; set; }
         public DbSet<Notebook> Notebook { get; set; }
+        public DbSet<InfoFile> InfoFile { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
