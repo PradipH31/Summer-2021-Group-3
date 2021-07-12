@@ -39,7 +39,7 @@ const Login = () => {
             sessionStorage.setItem("role", response.data.roles[0]);
             // sessionStorage.setItem("userId", response.data.userId);
             // sessionStorage.setItem("firstName", response.data.firstName);            
-            if (sessionStorage.getItem('role').includes("Teacher")) {
+            if (sessionStorage.getItem('role').includes("Instructor")) {
                 history.push("/class")
             } else {
                 history.push("/classes");
@@ -53,9 +53,9 @@ const Login = () => {
         handleFormSubmit();
     }
     if (sessionStorage.getItem('roles')) {
-        if (sessionStorage.getItem('roles').includes("Teacher")) {
+        if (sessionStorage.getItem('roles').includes("Instructor")) {
             return <Redirect to="/class" />
-        } else if (sessionStorage.getItem('roles').includes("Teacher")) {
+        } else if (sessionStorage.getItem('roles').includes("Student")) {
             return <Redirect to="/classes" />
         }
     }

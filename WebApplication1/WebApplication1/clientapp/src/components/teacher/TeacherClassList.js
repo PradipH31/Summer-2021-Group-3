@@ -11,15 +11,20 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { CircularProgress } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
+import CardActions from '@material-ui/core/CardActions';
+import TabComponent from './TabComponent';
 
 const TeacherClassList = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
+    const [classId, setId] = useState(null);
+    const [className, setName] = useState(null);
 
     useEffect(() => {
-        fetch("https://localhost:44377/api/Classes")
+        fetch("https://localhost:44377/api/Class")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -60,6 +65,10 @@ const TeacherClassList = () => {
     const [expanded, setExpanded] = React.useState(false);
     let itemList;
 
+    const changeBackground = (e) => {
+        e.target.style.background = 'red';
+    }
+
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -71,56 +80,100 @@ const TeacherClassList = () => {
     } else {
         itemList = items.map((item,) => {
             return (
-                <div style={{ padding: "1%" }} key={item.classId}>
-                    <Link to={`/classes/${item.calssId}`}>
-                        <Card className={classes.root}>
-                            <CardHeader
-                                avatar={
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        {item.className.split('')[0]}
-                                    </Avatar>
-                                }
-                                action={
-                                    <IconButton aria-label="settings">
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                }
-                                title={item.className}
-                                subheader={item.classOwner}
-                            />
-                            <CardMedia
-                                className={classes.media}
-                                image={item.imageSrc}
-                                title={item.className}
-                            />
-                            <CardContent>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    {item.classDescription}
-                                </Typography>
-                            </CardContent>
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            </Collapse>
-                        </Card>
-                    </Link>
-                </div>
+                <div key={item.classId}
+                    onClick={() => {
+                        setId(item.classId)
+                        setName(item.className)
+                        window.scrollTo({
+                            top:0,
+                            left:0,
+                            behavior: 'smooth'
+                        })
+                    }}>
+                    <Card className={classes.root} style={{
+                        margin: "10%",
+                        maxWidth: 'unset',
+                        borderStyle: 'groove',
+                        cursor: 'context-menu'
+                    }}>
+                        <CardContent>
+                            <Typography variant="h5" component="h2" style={{
+                                backgroundColor: '#F8B77F',
+                                color: 'white',
+                                margin: '0% 30%'
+                            }}>
+                                {item.className}
+                            </Typography>
+                            <Typography variant="body2" component="p">
+                                {item.classDescription.substring(0, 30)}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <a href={`${item.githubLink}`} target="_blank" rel="noreferrer">
+                                <Button size="small">Edit</Button>
+                            </a>
+                        </CardActions>
+                    </Card >
+                </div >
             )
         })
+
+        const AddClass = () => {
+            return (
+                <Card className={classes.root} style={{
+                    margin: "10%",
+                    maxWidth: 'unset',
+                    borderStyle: 'groove',
+                    cursor: 'context-menu'
+                }}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2" style={{
+                            backgroundColor: '#F8B77F',
+                            color: 'white',
+                            margin: '0% 30%'
+                        }}>
+                            Add Class
+                        </Typography>
+                        <Typography variant="body2" component="p">
+
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                    </CardActions>
+                </Card >
+            )
+        }
+
         return (
-            <div>
-                <nav>
-                    <ul style={{
-                        marginBlockEnd: 'unset',
-                        marginBlockStart: 'unset',
-                        paddingInlineStart: 'unset',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                    }}>
+            <>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '0% 3%'
+                }}>
+                    <div
+                        style={{
+                            flexGrow: '1',
+                            margin: '1%',
+                            borderRight: 'solid'
+                        }}>
                         {itemList}
-                    </ul>
-                </nav>
-            </div>
+                        <AddClass />
+                    </div>
+                    <div
+                        style={{
+                            flexGrow: '7',
+                        }}>
+                        <div style={{
+                            fontSize: '50px',
+                            paddingBottom: '5%'
+                        }}>
+                            {className}
+                        </div>
+                        {classId ? <TabComponent classId={classId} /> : ""}
+                    </div>
+                </div>
+            </>
         );
     }
 }

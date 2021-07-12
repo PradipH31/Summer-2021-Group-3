@@ -1,4 +1,3 @@
-import '../../css/student.css'
 // import Messages from '../messages/Messages'
 import TeacherClassList from './TeacherClassList';
 import AddClass from './AddClass';
@@ -8,14 +7,14 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import { useHistory } from 'react-router';
 import React from 'react';
 
 const TeacherHome = (props) => {
 
-    const classAPI = (url = 'https://localhost:44377/api/Classes') => {
+    const classAPI = (url = 'https://localhost:44377/api/Class') => {
         return {
-            // fetchAll: (a) => axios.get(url),
-            fetchAll: () => axios.post(url),
+            fetchAll: () => axios.get(url),
             create: newRecord => axios.post(url, newRecord),
             update: (id, updatedRecord) => axios.post(url + id, updatedRecord),
             delete: id => axios.delete(url + id)
@@ -31,58 +30,73 @@ const TeacherHome = (props) => {
             .catch(err => console.log(err))
     }
 
+    let history = useHistory();
     const logOut = () => {
-        props.page("logout");
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("firstName")
+        sessionStorage.removeItem("role")
+        sessionStorage.removeItem("userId")
+        history.push("/");
     }
 
     return (
         <Router>
-            <div>
-                <nav>
-                    <ul style={{
-                        listStyleType: 'unset',
-                        display: 'unset',
-                        paddingInlineStart: 'unset',
-                        marginBlockStart: 'unset',
-                        marginBlockEnd: 'unset'
-                    }}>
-                    </ul>
-                </nav>
-            </div>
-            <div className="student-body">
-                <Switch>
-                    <Route path={`/classes/:id`}>
-                        {/* <StudentCourse /> */}
-                    </Route>
-                    <Route path="/classes">
-                        {/* <StudentCourseList /> */}
-                    </Route>
-                    <Route path="/messages">
-                        {/* <Messages /> */}
-                    </Route>
-                    <Route path="/">
-                        {/* <StudentCourseList /> */}
-                    </Route>
-
-                </Switch>
-            </div>
-            <button onClick={logOut}>Log Out</button>
+            <Switch>
+                <Route path={`/classes/:id`}>
+                    {/* <StudentCourse /> */}
+                </Route>
+            </Switch>
             <div style={{
-                display: "flex",
-                margin: '1% 1%'
+                backgroundColor: 'white',
+                margin: '0% 1% 1% 1%',
             }}>
                 <div style={{
-                    flexGrow: 3,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    borderStyle: 'solid',
                 }}>
-                    <TeacherClassList />
+                    <div style={{
+                        flexGrow: '1',
+                        padding: '1%',
+                        backgroundColor: 'green',
+                        color: 'white',
+                        fontSize: '20px'
+                    }}>
+                        Classes
+                    </div>
+                    <div style={{
+                        flexGrow: '1',
+                        padding: '1%',
+                        backgroundColor: 'black',
+                        color: 'white',
+                        fontSize: '20px'
+                    }}>
+                        Students
+                    </div>
+                    <div
+                        onClick={logOut}
+                        style={{
+                            backgroundColor: 'red',
+                            border: 'none',
+                            color: 'white',
+                            textAlign: 'center',
+                            textDecoration: 'none',
+                            display: 'inline-block',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            flexGrow: '1',
+                            padding: '1%'
+                        }}>
+                        Log Out
+                    </div>
                 </div>
-                <div style={{
-                    flexGrow: 1,
-                    backgroundColor: 'gainsboro',
-                    color: 'darkorange',
-                    margin: 'inherit',
-                    height: 'max-content'
-                }}><AddClass addOrEdit={addOrEdit} /></div>
+                <br></br>
+                <div >
+
+                    <TeacherClassList />
+                    {/* <AddClass addOrEdit={addOrEdit} /> */}
+                </div>
             </div>
         </Router >
     );
