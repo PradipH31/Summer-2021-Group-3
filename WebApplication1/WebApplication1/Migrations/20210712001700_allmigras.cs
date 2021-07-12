@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApplication1.Migrations
 {
-    public partial class FixThis : Migration
+    public partial class allmigras : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -171,6 +171,28 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InfoFile",
+                columns: table => new
+                {
+                    InfoFileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CourseClassId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InfoFile", x => x.InfoFileId);
+                    table.ForeignKey(
+                        name: "FK_InfoFile_ClassDescription_CourseClassId",
+                        column: x => x.CourseClassId,
+                        principalTable: "ClassDescription",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notebook",
                 columns: table => new
                 {
@@ -234,6 +256,11 @@ namespace WebApplication1.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InfoFile_CourseClassId",
+                table: "InfoFile",
+                column: "CourseClassId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notebook_CourseClassId",
                 table: "Notebook",
                 column: "CourseClassId");
@@ -255,6 +282,9 @@ namespace WebApplication1.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "InfoFile");
 
             migrationBuilder.DropTable(
                 name: "Notebook");

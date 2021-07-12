@@ -240,6 +240,32 @@ namespace WebApplication1.Migrations
                     b.ToTable("ClassDescription");
                 });
 
+            modelBuilder.Entity("WebApplication1.Features.FileSetup.InfoFile", b =>
+                {
+                    b.Property<int>("InfoFileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CourseClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InfoFileId");
+
+                    b.HasIndex("CourseClassId");
+
+                    b.ToTable("InfoFile");
+                });
+
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
                 {
                     b.Property<int>("NotebookId")
@@ -328,6 +354,13 @@ namespace WebApplication1.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebApplication1.Features.FileSetup.InfoFile", b =>
+                {
+                    b.HasOne("WebApplication1.Features.Classes.Course", null)
+                        .WithMany("CourseFiles")
+                        .HasForeignKey("CourseClassId");
+                });
+
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
                 {
                     b.HasOne("WebApplication1.Features.Classes.Course", "Course")
@@ -345,6 +378,11 @@ namespace WebApplication1.Migrations
             modelBuilder.Entity("WebApplication1.Features.Auth.User", b =>
                 {
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.Classes.Course", b =>
+                {
+                    b.Navigation("CourseFiles");
                 });
 #pragma warning restore 612, 618
         }
