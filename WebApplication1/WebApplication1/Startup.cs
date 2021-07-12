@@ -19,6 +19,7 @@ using System.Text;
 using SignalRChat.Hubs;
 using Microsoft.AspNetCore.Identity;
 using WebApplication1.Features.Auth;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace WebApplication1
 {
@@ -39,6 +40,10 @@ namespace WebApplication1
             services.AddControllers();
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DataContext>();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
             services.ConfigureApplicationCookie(options =>
             {
                 options.Events.OnRedirectToAccessDenied = context =>
@@ -100,6 +105,16 @@ namespace WebApplication1
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
 
             app.UseEndpoints(endpoints =>
             {
