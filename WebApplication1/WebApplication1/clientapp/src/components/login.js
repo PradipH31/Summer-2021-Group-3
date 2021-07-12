@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Redirect, useHistory } from 'react-router-dom';
 
 const initialFieldValues = {
-    wNumber: '',
+    username: '',
     password: '',
 }
 
@@ -29,13 +29,16 @@ const Login = () => {
     let history = useHistory();
 
     const handleFormSubmit = () => {
-        axios.post('https://localhost:44377/api/security/signin', {
-            wNumber: values.wNumber,
+        axios.post('https://localhost:44377/api/auth/login', {
+            username: values.username,
             password: values.password
         }).then(function (response) {
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("userId", response.data.userId);
-            sessionStorage.setItem("firstName", response.data.firstName);
+            // sessionStorage.setItem("token", response.data.token);
+            console.log(response)
+            sessionStorage.setItem("userName", response.data.user.userName);
+            sessionStorage.setItem("roles", response.data.roles);
+            // sessionStorage.setItem("userId", response.data.userId);
+            // sessionStorage.setItem("firstName", response.data.firstName);            
             history.push("/classes");
         }).catch(function (error) {
             console.log(error);
@@ -58,8 +61,8 @@ const Login = () => {
                             id="standard-number"
                             label="W Number"
                             type="number"
-                            name="wNumber"
-                            value={values.wNumber}
+                            name="username"
+                            value={values.username}
                             onChange={handleInputChange}
                         />
                     </label>
