@@ -40,10 +40,7 @@ namespace WebApplication1
             services.AddControllers();
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DataContext>();
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+         
             services.ConfigureApplicationCookie(options =>
             {
                 options.Events.OnRedirectToAccessDenied = context =>
@@ -56,6 +53,10 @@ namespace WebApplication1
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+            });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
             });
             services.AddSwaggerGen(c =>
             {
@@ -106,6 +107,14 @@ namespace WebApplication1
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSpaStaticFiles();
+           
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/hubs/chat");
+            });
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
@@ -114,12 +123,6 @@ namespace WebApplication1
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
         }
