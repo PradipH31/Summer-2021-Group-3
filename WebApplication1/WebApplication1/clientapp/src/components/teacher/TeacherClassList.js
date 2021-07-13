@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { Link } from "react-router-dom";
 import CardActions from '@material-ui/core/CardActions';
 import TabComponent from './TabComponent';
 import AddClass from './AddClass';
@@ -155,32 +148,33 @@ const TeacherClassList = () => {
     } else {
         itemList = items.map((item,) => {
             return (
-                <Card className={classes.root} style={{
-                    margin: "10%",
-                    maxWidth: 'unset',
-                    borderStyle: 'groove',
-                    cursor: 'context-menu'
-                }}
-                >
-                    <div key={item.classId}
-                        onClick={() => {
-                            setId(item.classId)
-                            setName(item.className)
-                            setActive(item.classId)
-                            window.scrollTo({
-                                top: 0,
-                                left: 0,
-                                behavior: 'smooth'
-                            })
-                        }}>
-                        {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
-                    </div >
-                    <CardActions style={{ justifyContent: 'space-between' }}>
-                        <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
-                        <Button size="small" onClick={() => { handleClickOpenDelete(item.classId) }}>Delete</Button>
-                    </CardActions>
-                </Card>
-
+                <div key={item.classId}>
+                    <Card className={classes.root} style={{
+                        margin: "10%",
+                        maxWidth: 'unset',
+                        borderStyle: 'groove',
+                        cursor: 'context-menu'
+                    }}
+                    >
+                        <div key={item.classId}
+                            onClick={() => {
+                                setId(item.classId)
+                                setName(item.className)
+                                setActive(item.classId)
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'smooth'
+                                })
+                            }}>
+                            {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
+                        </div >
+                        <CardActions style={{ justifyContent: 'space-between' }}>
+                            <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
+                            <Button size="small" onClick={() => { handleClickOpenDelete(item.classId) }}>Delete</Button>
+                        </CardActions>
+                    </Card>
+                </div>
             )
         })
 
@@ -193,10 +187,11 @@ const TeacherClassList = () => {
                 }}>
                     <div
                         style={{
-                            flexGrow: '1',
+                            flexGrow: '3',
                             margin: '1%',
                             borderRight: 'solid'
                         }}>
+                        <span style={{ fontSize: '30px' }}>Classes</span>
                         {itemList}
                         <Dialog open={openEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
                             <DialogTitle id="form-dialog-title">Edit Class</DialogTitle>
@@ -271,7 +266,7 @@ const TeacherClassList = () => {
                     </div>
                     <div
                         style={{
-                            flexGrow: '7',
+                            flexGrow: '5',
                         }}>
                         <div style={{
                             fontSize: '50px',

@@ -1,32 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom"
-import { CircularProgress } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { Link } from "react-router-dom";
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 
@@ -37,8 +19,10 @@ const initialFieldValues = {
 }
 
 const AddNotebook = (props) => {
+
     let id = props.classId
     const [values, setValues] = useState(initialFieldValues)
+    const [error, setError] = useState('');
 
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -46,6 +30,17 @@ const AddNotebook = (props) => {
             ...values,
             [name]: value
         })
+        if (e.target.name === 'githubLink') {
+            const pattern = /https:\/\/github.com\/.*\/blob\/master\/.*ipynb/
+            const result = pattern.test(e.target.value)
+            if (result === true) {
+                console.log("it works")
+                setError('')
+            } else {
+                console.log("it doesn't work")
+                setError('github')
+            }
+        }
     }
     const useStyles = makeStyles((theme) => ({
         bullet: {
@@ -79,8 +74,17 @@ const AddNotebook = (props) => {
         avatar: {
             backgroundColor: red[500],
         },
+        error: {
+            borderStyle: 'groove'
+        }
     }));
+    const useErrorStyles = makeStyles((theme) => ({
+        borderStyle: 'groove',
+        color: 'green'
+    }
+    ));
     const classes = useStyles();
+    const errorClass = useErrorStyles();
 
     const [open, setOpen] = React.useState(false);
 
@@ -119,6 +123,7 @@ const AddNotebook = (props) => {
                 <DialogContent>
                     <TextField
                         autoFocus
+                        required
                         margin="dense"
                         id="title"
                         label="Notebook Name"
@@ -130,6 +135,7 @@ const AddNotebook = (props) => {
                     />
                     <TextField
                         margin="dense"
+                        required
                         id="description"
                         label="Notebook Description"
                         type="email"
@@ -138,32 +144,49 @@ const AddNotebook = (props) => {
                         value={values.description}
                         onChange={handleInputChange}
                     />
-                    <TextField
-                        margin="dense"
-                        id="githubLink"
-                        label="Github Link"
-                        type="email"
-                        name="githubLink"
-                        fullWidth
-                        value={values.githubLink}
-                        onChange={handleInputChange}
-                    />
+                    {error === "github" ?
+                        <TextField
+                            margin="dense"
+                            id="githubLink"
+                            label="Github Link"
+                            type="email"
+                            name="githubLink"
+                            fullWidth
+                            error
+                            value={values.githubLink}
+                            onChange={handleInputChange}
+                        />
+                        :
+                        <TextField
+                            margin="dense"
+                            id="githubLink"
+                            label="Github Link"
+                            type="email"
+                            name="githubLink"
+                            fullWidth
+                            value={values.githubLink}
+                            onChange={handleInputChange}
+                        />}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={() => {
-                        handleClose()
-                        //add
-                        axios.post("https://localhost:44377/api/Notebooks", {
-                            githubLink: values.githubLink,
-                            title: values.title,
-                            description: values.description,
-                            classId: id
-                        }).then(response=>{
-                            console.log(response)
-                        })
+                        if (error === "") {
+                            handleClose()
+                            //add
+                            axios.post("https://localhost:44377/api/Notebooks", {
+                                githubLink: values.githubLink,
+                                title: values.title,
+                                description: values.description,
+                                classId: id
+                            }).then(response => {
+                                console.log(response)
+                            })
+                        } else {
+                            console.log('Github Error')
+                        }
                     }} color="primary">
                         Save
                     </Button>
