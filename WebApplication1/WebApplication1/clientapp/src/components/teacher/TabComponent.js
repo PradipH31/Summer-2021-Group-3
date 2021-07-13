@@ -119,12 +119,12 @@ function TabComponent(props) {
                     Class Updates
                 </TabPanel>
                 <TabPanel value={value} index={2} dir={theme.direction}
-                    style={{
-                        margin: '0% 20%',
-                        backgroundColor: 'white',
-                        padding: '1%',
-                        borderRadius: '3%',
-                    }}
+                    // style={{
+                    //     margin: '0% 20%',
+                    //     backgroundColor: 'white',
+                    //     padding: '1%',
+                    //     borderRadius: '3%',
+                    // }}
                 >
                     Students
                 </TabPanel>

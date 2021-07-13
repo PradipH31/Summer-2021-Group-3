@@ -13,9 +13,9 @@ import StudentComponent from "./Student/StudentComponent";
 const TeacherHome = (props) => {
     let history = useHistory();
     const [title, setTitle] = useState('Classes')
-    if(sessionStorage.getItem('roles') === null){
+    if (sessionStorage.getItem('roles') === null) {
         history.push("/")
-    }else if (!sessionStorage.getItem('roles').includes('Instructor')) {
+    } else if (!sessionStorage.getItem('roles').includes('Instructor')) {
         history.push("/")
     }
 
@@ -46,11 +46,8 @@ const TeacherHome = (props) => {
     }
 
     return (
-        <>
-            <div style={{
-                backgroundColor: 'white',
-                margin: '0% 1% 1% 1%',
-            }}>
+        <div>
+            <div>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -60,7 +57,8 @@ const TeacherHome = (props) => {
                     <div style={{
                         color: 'white',
                         fontSize: '30px',
-                        paddingLeft: '5%'
+                        paddingLeft: '5%',
+                        // margin: '1'
                     }}>
                         {title}
                     </div>
@@ -80,7 +78,7 @@ const TeacherHome = (props) => {
                             fontSize: '20px',
                             border: 'solid',
                             borderRadius: '1px',
-                            margin: '0 2%'
+                            margin: '5% 5%'
                         }}
                             onClick={() => {
                                 history.push("/class");
@@ -96,7 +94,7 @@ const TeacherHome = (props) => {
                             fontSize: '20px',
                             cursor: 'pointer',
                             borderRadius: '1px',
-                            marginRight: '2%'
+                            margin: '5% 5% 5% 0%'
                         }}
                             onClick={() => {
                                 history.push("/class/students");
@@ -106,19 +104,27 @@ const TeacherHome = (props) => {
                             Students
                         </div>
                         <div style={{
-                            backgroundColor: 'red',
                             color: 'white',
+                            border: 'solid',
                             fontSize: '20px',
                             cursor: 'pointer',
+                            borderRadius: '1px',
+                            margin: '5% 5% 5% 0%',
+                            backgroundColor: 'red',
                             // padding: '1%',
                             // paddingLeft: '3%'
                         }}
                             onClick={logOut}
                         >
-                            Log<span style={{color:'red'}}>a</span>Out
+                            Log<span style={{ color: 'red' }}>a</span>Out
                         </div>
                     </div>
                 </div>
+            </div>
+            <div style={{
+                backgroundColor: 'white',
+                margin: '0% 1% 1% 1%',
+            }}>
                 <br></br>
                 <Switch>
                     <Route path={`/class/students`}>
@@ -126,10 +132,8 @@ const TeacherHome = (props) => {
                     </Route>
                     <TeacherClassList />
                 </Switch>
-                <div >
-                </div>
             </div>
-        </ >
+        </div >
     );
 };
 

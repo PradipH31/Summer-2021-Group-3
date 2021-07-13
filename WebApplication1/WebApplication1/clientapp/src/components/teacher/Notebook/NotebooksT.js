@@ -61,7 +61,9 @@ const NotebooksT = (props) => {
     } else {
         itemList = items.map((item,) => {
             return (
-                <div key={item.notebookId}>
+                <div key={item.notebookId} style={{
+                    paddingBottom: 'unset'
+                }}>
                     <Card className={classes.root} style={{
                         margin: "1%",
                         borderStyle: 'solid',
@@ -102,8 +104,15 @@ const NotebooksT = (props) => {
                                     </div>
                                 </div>
                             </div>
-                            <CardActions>
-                                Edit Delete
+                            <CardActions style={{
+                                justifyContent: 'space-between'
+                            }} >
+                                <Button>
+                                    Edit
+                                </Button>
+                                <Button>
+                                    Delete
+                                </Button>
                             </CardActions>
                         </CardContent>
                     </Card >
