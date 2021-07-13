@@ -10,19 +10,38 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import CardActions from '@material-ui/core/CardActions';
 import TabComponent from './TabComponent';
 import AddClass from './AddClass';
+import axios from 'axios';
+
+const initialFieldValues = {
+    className: '',
+    classDescription: '',
+    classOwner: '',
+    imageName: '',
+    imageSrc: ''
+}
 
 const TeacherClassList = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
     const [classId, setId] = useState(null);
+    const [values, setValues] = useState(initialFieldValues)
+    const [open, setOpen] = React.useState(false);
     const [className, setName] = useState(null);
+
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
 
     useEffect(() => {
         fetch("https://localhost:44377/api/Class")
@@ -62,6 +81,14 @@ const TeacherClassList = () => {
         },
     }));
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     let itemList;
@@ -72,66 +99,119 @@ const TeacherClassList = () => {
 
     let [currentActive, setActive] = useState(null);
 
+    // let EditDialog = () => {
+    //     return (
+    //         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    //             <DialogTitle id="form-dialog-title">Add Class</DialogTitle>
+    //             <DialogContent>
+    //                 <TextField
+    //                     autoFocus
+    //                     margin="dense"
+    //                     id="className"
+    //                     label="Class Name"
+    //                     type="text"
+    //                     name="className"
+    //                     value={values.className}
+    //                     onChange={handleInputChange}
+    //                     fullWidth
+    //                 />
+    //                 <TextField
+    //                     margin="dense"
+    //                     id="classDescription"
+    //                     label="Class Description"
+    //                     type="text"
+    //                     name="classDescription"
+    //                     value={values.classDescription}
+    //                     onChange={handleInputChange}
+    //                     fullWidth
+    //                 />
+    //                 <TextField
+    //                     margin="dense"
+    //                     id="classOwner"
+    //                     label="Instructor"
+    //                     type="text"
+    //                     name="classOwner"
+    //                     value={values.classOwner}
+    //                     onChange={handleInputChange}
+    //                     fullWidth
+    //                 />
+    //             </DialogContent>
+    //             <DialogActions>
+    //                 <Button onClick={handleClose} color="primary">
+    //                     Cancel
+    //                 </Button>
+    //                 <Button onClick={() => {
+    //                     handleClose()
+    //                     console.log(values)
+    //                     axios.post("https://localhost:44377/api/Class", {
+    //                         a: 'a'
+    //                     }).then(response => console.log(response))
+    //                 }} color="primary">
+    //                     Save
+    //                 </Button>
+    //             </DialogActions>
+    //         </Dialog>
+    //     )
+    // }
+
+    let DeleteDialog = (props) => {
+        // console.log(id)
+        return (
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={() => {
+                        handleClose()
+                        console.log(values)
+                        axios.delete(`https://localhost:44377/api/Class/${props.classId}`, {})
+                            .then(response => console.log(response))
+                    }} color="secondary">
+                        Yes, delete.
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        )
+    }
+
+
     const SelectedCard = (props) => {
         let classItem = props.class
         return (
-            <Card className={classes.root} style={{
-                margin: "10%",
-                maxWidth: 'unset',
-                borderStyle: 'groove',
+            <CardContent style={{
                 color: 'black',
-                cursor: 'context-menu',
                 backgroundColor: 'aliceblue'
-            }}
-            >
-                <CardContent>
-                    <Typography variant="h5" component="h2" style={{
-                        backgroundColor: '#F8B77F',
-                        margin: '0% 30%'
-                    }}>
-                        {classItem.className}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        {classItem.classDescription.substring(0, 30)}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <a href={`${classItem.githubLink}`} target="_blank" rel="noreferrer">
-                        <Button size="small">Edit</Button>
-                    </a>
-                </CardActions>
-            </Card >
+            }}>
+                <Typography variant="h5" component="h2" style={{
+                    backgroundColor: '#F8B77F',
+                    margin: '0% 20%'
+                }}>
+                    {classItem.className}
+                </Typography>
+                <Typography variant="body2" component="p">
+                    {classItem.classDescription.substring(0, 30)}
+                </Typography>
+            </CardContent>
         )
     }
 
     const NormalCard = (props) => {
         let classItem = props.class
         return (
-            <Card className={classes.root} style={{
-                margin: "10%",
-                maxWidth: 'unset',
-                borderStyle: 'groove',
-                cursor: 'context-menu'
-            }}
-            >
-                <CardContent>
-                    <Typography variant="h5" component="h2" style={{
-                        backgroundColor: '#F8B77F',
-                        color: 'white',
-                        margin: '0% 30%'
-                    }}>
-                        {classItem.className}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        {classItem.classDescription.substring(0, 30)}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <a href={`${classItem.githubLink}`} target="_blank" rel="noreferrer">
-                        <Button size="small">Edit</Button>
-                    </a>
-                </CardActions>
-            </Card >
+            <CardContent>
+                <Typography variant="h5" component="h2" style={{
+                    backgroundColor: '#F8B77F',
+                    color: 'white',
+                    margin: '0% 20%'
+                }}>
+                    {classItem.className}
+                </Typography>
+                <Typography variant="body2" component="p">
+                    {classItem.classDescription.substring(0, 30)}
+                </Typography>
+            </CardContent>
         )
     }
 
@@ -146,44 +226,34 @@ const TeacherClassList = () => {
     } else {
         itemList = items.map((item,) => {
             return (
-                <div key={item.classId}
-                    onClick={() => {
-                        setId(item.classId)
-                        setName(item.className)
-                        setActive(item.classId)
-                        window.scrollTo({
-                            top: 0,
-                            left: 0,
-                            behavior: 'smooth'
-                        })
-                    }}>
-                    {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
-                    {/* < Card className={classes.root} style={{
-                        margin: "10%",
-                        maxWidth: 'unset',
-                        borderStyle: 'groove',
-                        cursor: 'context-menu'
-                    }}
-                    >
-                        <CardContent>
-                            <Typography variant="h5" component="h2" style={{
-                                backgroundColor: '#F8B77F',
-                                color: 'white',
-                                margin: '0% 30%'
-                            }}>
-                                {item.className}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                {item.classDescription.substring(0, 30)}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <a href={`${item.githubLink}`} target="_blank" rel="noreferrer">
-                                <Button size="small">Edit</Button>
-                            </a>
-                        </CardActions>
-                    </Card > */}
-                </div >
+                <Card className={classes.root} style={{
+                    margin: "10%",
+                    maxWidth: 'unset',
+                    borderStyle: 'groove',
+                    cursor: 'context-menu'
+                }}
+                >
+                    <div key={item.classId}
+                        onClick={() => {
+                            setId(item.classId)
+                            setName(item.className)
+                            setActive(item.classId)
+                            window.scrollTo({
+                                top: 0,
+                                left: 0,
+                                behavior: 'smooth'
+                            })
+                        }}>
+                        {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
+                    </div >
+                    <CardActions style={{ justifyContent: 'space-between' }}>
+                        <Button size="small">Edit</Button>
+                        {/* <EditDialog /> */}
+                        <Button size="small" onClick={handleClickOpen}>Delete</Button>
+                        <DeleteDialog classId={item.classId}/>
+                    </CardActions>
+                </Card>
+
             )
         })
 

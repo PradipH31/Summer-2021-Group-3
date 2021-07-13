@@ -13,7 +13,9 @@ import StudentComponent from "./Student/StudentComponent";
 const TeacherHome = (props) => {
     let history = useHistory();
     const [title, setTitle] = useState('Classes')
-    if (!sessionStorage.roles.includes('Instructor')) {
+    if(sessionStorage.getItem('roles') === null){
+        history.push("/")
+    }else if (!sessionStorage.getItem('roles').includes('Instructor')) {
         history.push("/")
     }
 
