@@ -36,10 +36,10 @@ const Login = () => {
             // sessionStorage.setItem("token", response.data.token);
             console.log(response)
             sessionStorage.setItem("userName", response.data.user.userName);
-            sessionStorage.setItem("role", response.data.roles[0]);
+            sessionStorage.setItem("roles", response.data.roles);
             // sessionStorage.setItem("userId", response.data.userId);
             // sessionStorage.setItem("firstName", response.data.firstName);            
-            if (sessionStorage.getItem('role').includes("Teacher")) {
+            if (sessionStorage.getItem('roles').includes("Instructor")) {
                 history.push("/class")
             } else {
                 history.push("/classes");
@@ -53,9 +53,9 @@ const Login = () => {
         handleFormSubmit();
     }
     if (sessionStorage.getItem('roles')) {
-        if (sessionStorage.getItem('roles').includes("Teacher")) {
+        if (sessionStorage.getItem('roles').includes("Instructor")) {
             return <Redirect to="/class" />
-        } else if (sessionStorage.getItem('roles').includes("Teacher")) {
+        } else if (sessionStorage.getItem('roles').includes("Student")) {
             return <Redirect to="/classes" />
         }
     }
@@ -66,6 +66,7 @@ const Login = () => {
                 <div className="login-info-container">
                     <label>
                         <TextField
+                            autoFocus
                             id="standard-number"
                             label="W Number"
                             type="number"

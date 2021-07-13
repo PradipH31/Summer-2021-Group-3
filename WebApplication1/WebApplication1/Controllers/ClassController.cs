@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,60 +12,47 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ClassController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ClassController(DataContext context, IWebHostEnvironment hostEnvironment)
+        public ClassController(DataContext context)
         {
             _context = context;
-            this._hostEnvironment = hostEnvironment;
         }
 
-        // GET: api/Classes
+        // GET: api/Class
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetClassDescription()
         {
-            return await _context.ClassDescription
-                .Select(x => new Course(){
-                    ClassId = x.ClassId,
-                    ClassName = x.ClassName,
-                    ClassDescription = x.ClassDescription,
-                    ClassOwner = x.ClassOwner,
-                    ImageName = x.ImageName,
-                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme,Request.Host, Request.PathBase, x.ImageName)
-                })
-                .ToListAsync();
+            return await _context.ClassDescription.ToListAsync();
         }
 
-        // GET: api/Classes/5
+        // GET: api/Class/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetClasses(int id)
+        public async Task<ActionResult<Course>> GetCourse(int id)
         {
-            var classes = await _context.ClassDescription.FindAsync(id);
+            var course = await _context.ClassDescription.FindAsync(id);
 
-            if (classes == null)
+            if (course == null)
             {
                 return NotFound();
             }
-            classes.ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, classes.ImageName);
 
-            return classes;
+            return course;
         }
 
-        // PUT: api/Classes/5
+        // PUT: api/Class/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClasses(int id, Course classes)
+        public async Task<IActionResult> PutCourse(int id, Course course)
         {
-            if (id != classes.ClassId)
+            if (id != course.ClassId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(classes).State = EntityState.Modified;
+            _context.Entry(course).State = EntityState.Modified;
 
             try
             {
@@ -76,7 +60,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClassesExists(id))
+                if (!CourseExists(id))
                 {
                     return NotFound();
                 }
@@ -89,50 +73,36 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        // POST: api/Classes
+        // POST: api/Class
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostClasses([FromForm] Course classes)
+        public async Task<ActionResult<Course>> PostCourse(Course course)
         {
-            classes.ImageName = await SaveImage(classes.ImageFile);
-            _context.ClassDescription.Add(classes);
+            _context.ClassDescription.Add(course);
             await _context.SaveChangesAsync();
 
-            return StatusCode(201);
+            return CreatedAtAction("GetCourse", new { id = course.ClassId }, course);
         }
 
-        // DELETE: api/Classes/5
+        // DELETE: api/Class/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClasses(int id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
-            var classes = await _context.ClassDescription.FindAsync(id);
-            if (classes == null)
+            var course = await _context.ClassDescription.FindAsync(id);
+            if (course == null)
             {
                 return NotFound();
             }
 
-            _context.ClassDescription.Remove(classes);
+            _context.ClassDescription.Remove(course);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ClassesExists(int id)
+        private bool CourseExists(int id)
         {
             return _context.ClassDescription.Any(e => e.ClassId == id);
-        }
-
-        [NonAction]
-        public async Task<string> SaveImage(IFormFile imageFile)
-        {
-            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(fileStream);
-            }
-            return imageName;
         }
     }
 }

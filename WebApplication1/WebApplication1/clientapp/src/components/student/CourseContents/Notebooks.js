@@ -69,7 +69,9 @@ const Notebooks = (props) => {
                 <div key={item.notebookId}>
                     <Card className={classes.root} style={{
                         margin: "1%",
-                        backgroundImage: 'radial-gradient(circle, red, yellow, green);'
+                        borderStyle: 'solid',
+                        borderWidth: '1px'
+                        // backgroundImage: 'radial-gradient(circle, red, yellow, green);'
                     }}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>

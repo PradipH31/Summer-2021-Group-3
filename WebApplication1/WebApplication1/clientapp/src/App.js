@@ -2,6 +2,7 @@ import './App.css';
 import StudentHome from './components/student/StudentHome'
 import Login from './components/login'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import TeacherHome from './components/teacher/TeacherHome'
 import '@fontsource/roboto'
 
 function App() {
@@ -15,6 +16,9 @@ function App() {
         </div>
         <>
           <Switch>
+            <Route path="/class">
+              <TeacherHome />
+            </Route>
             <Route path="/classes">
               <StudentHome />
             </Route>

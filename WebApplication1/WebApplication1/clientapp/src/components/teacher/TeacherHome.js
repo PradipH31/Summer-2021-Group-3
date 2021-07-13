@@ -1,21 +1,27 @@
-import '../../css/student.css'
+import { Switch, Route, useHistory } from "react-router-dom";
 // import Messages from '../messages/Messages'
 import TeacherClassList from './TeacherClassList';
 import AddClass from './AddClass';
 import axios from 'axios';
 import {
     BrowserRouter as Router,
-    Switch,
-    Route
 } from "react-router-dom";
-import React from 'react';
+import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import StudentComponent from "./Student/StudentComponent";
 
 const TeacherHome = (props) => {
+    let history = useHistory();
+    const [title, setTitle] = useState('Classes')
+    if (sessionStorage.getItem('roles') === null) {
+        history.push("/")
+    } else if (!sessionStorage.getItem('roles').includes('Instructor')) {
+        history.push("/")
+    }
 
-    const classAPI = (url = 'https://localhost:44377/api/Classes') => {
+    const classAPI = (url = 'https://localhost:44377/api/Class') => {
         return {
-            // fetchAll: (a) => axios.get(url),
-            fetchAll: () => axios.post(url),
+            fetchAll: () => axios.get(url),
             create: newRecord => axios.post(url, newRecord),
             update: (id, updatedRecord) => axios.post(url + id, updatedRecord),
             delete: id => axios.delete(url + id)
@@ -32,59 +38,102 @@ const TeacherHome = (props) => {
     }
 
     const logOut = () => {
-        props.page("logout");
+        // sessionStorage.removeItem("token")
+        sessionStorage.removeItem("userName")
+        sessionStorage.removeItem("roles")
+        // sessionStorage.removeItem("userId")
+        history.push("/");
     }
 
     return (
-        <Router>
+        <div>
             <div>
-                <nav>
-                    <ul style={{
-                        listStyleType: 'unset',
-                        display: 'unset',
-                        paddingInlineStart: 'unset',
-                        marginBlockStart: 'unset',
-                        marginBlockEnd: 'unset'
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    // borderStyle: 'solid',
+                    backgroundColor: '#2196f3',
+                }}>
+                    <div style={{
+                        color: 'white',
+                        fontSize: '30px',
+                        paddingLeft: '5%',
+                        // margin: '1'
                     }}>
-                    </ul>
-                </nav>
+                        {title}
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        // borderStyle: 'solid',
+                        backgroundColor: '#2196f3',
+                        // alignItems: 'baseline'
+                    }}>
+                        <div style={{
+                            // padding: '1%',
+                            cursor: 'pointer',
+                            justifyContent: 'flex-start',
+                            color: 'white',
+                            fontSize: '20px',
+                            border: 'solid',
+                            borderRadius: '1px',
+                            margin: '5% 5%'
+                        }}
+                            onClick={() => {
+                                history.push("/class");
+                                setTitle("Classes")
+                            }}
+                        >
+                            Classes
+                        </div>
+                        <div style={{
+                            // padding: '1%',
+                            color: 'white',
+                            border: 'solid',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            borderRadius: '1px',
+                            margin: '5% 5% 5% 0%'
+                        }}
+                            onClick={() => {
+                                history.push("/class/students");
+                                setTitle('Students')
+                            }}
+                        >
+                            Students
+                        </div>
+                        <div style={{
+                            color: 'white',
+                            border: 'solid',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            borderRadius: '1px',
+                            margin: '5% 5% 5% 0%',
+                            backgroundColor: 'red',
+                            // padding: '1%',
+                            // paddingLeft: '3%'
+                        }}
+                            onClick={logOut}
+                        >
+                            Log<span style={{ color: 'red' }}>a</span>Out
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="student-body">
+            <div style={{
+                backgroundColor: 'white',
+                margin: '0% 1% 1% 1%',
+            }}>
+                <br></br>
                 <Switch>
-                    <Route path={`/classes/:id`}>
-                        {/* <StudentCourse /> */}
+                    <Route path={`/class/students`}>
+                        <StudentComponent />
                     </Route>
-                    <Route path="/classes">
-                        {/* <StudentCourseList /> */}
-                    </Route>
-                    <Route path="/messages">
-                        {/* <Messages /> */}
-                    </Route>
-                    <Route path="/">
-                        {/* <StudentCourseList /> */}
-                    </Route>
-
+                    <TeacherClassList />
                 </Switch>
             </div>
-            <button onClick={logOut}>Log Out</button>
-            <div style={{
-                display: "flex",
-                margin: '1% 1%'
-            }}>
-                <div style={{
-                    flexGrow: 3,
-                }}>
-                    <TeacherClassList />
-                </div>
-                <div style={{
-                    flexGrow: 1,
-                    backgroundColor: 'gainsboro',
-                    color: 'darkorange',
-                    margin: 'inherit',
-                    height: 'max-content'
-                }}><AddClass addOrEdit={addOrEdit} /></div>
-            </div>
-        </Router >
+        </div >
     );
 };
 

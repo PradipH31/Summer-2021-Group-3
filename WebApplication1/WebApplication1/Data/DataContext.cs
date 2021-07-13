@@ -10,6 +10,7 @@ using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
 using WebApplication1.Features.Courses;
 using WebApplication1.Features.FileSetup;
+using WebApplication1.Features.FlashCards;
 
 namespace WebApplication1.Data
 {
@@ -23,8 +24,7 @@ namespace WebApplication1.Data
         public DbSet<Course> ClassDescription { get; set; }
         public DbSet<Notebook> Notebook { get; set; }
         public DbSet<InfoFile> InfoFile { get; set; }
-        //public DbSet<Enrollment> EnrollmentList { get; set; }
-        
+        public DbSet<FlashCard> FlashCard { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -1,0 +1,10 @@
+﻿namespace WebApplication1.Features.FlashCards
+{
+    public class FlashCard
+    {
+        public int FlashCardId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public byte State { get; set; } = 0;
+    }
+}
