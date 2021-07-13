@@ -66,6 +66,7 @@ const Login = () => {
                 <div className="login-info-container">
                     <label>
                         <TextField
+                            autoFocus
                             id="standard-number"
                             label="W Number"
                             type="number"

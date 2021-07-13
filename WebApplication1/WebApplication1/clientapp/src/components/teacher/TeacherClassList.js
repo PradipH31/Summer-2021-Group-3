@@ -19,6 +19,7 @@ import AddClass from './AddClass';
 import axios from 'axios';
 
 const initialFieldValues = {
+    classId: '',
     className: '',
     classDescription: '',
     classOwner: '',
@@ -32,8 +33,10 @@ const TeacherClassList = () => {
     const [items, setItems] = useState([]);
     const [classId, setId] = useState(null);
     const [values, setValues] = useState(initialFieldValues)
-    const [open, setOpen] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [className, setName] = useState(null);
+    const [delId, setDelId] = useState('');
 
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -81,101 +84,27 @@ const TeacherClassList = () => {
         },
     }));
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpenEdit = (editClass) => {
+        setOpenEdit(true);
+        setValues(editClass)
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleClickOpenDelete = (delId) => {
+        setOpenDelete(true);
+        setDelId(delId);
     };
+
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
+    };
+
+    const handleCloseDelete = () => {
+        setOpenDelete(false);
+    }
 
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
     let itemList;
-
-    const changeBackground = (e) => {
-        e.target.style.background = 'red';
-    }
-
     let [currentActive, setActive] = useState(null);
-
-    // let EditDialog = () => {
-    //     return (
-    //         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-    //             <DialogTitle id="form-dialog-title">Add Class</DialogTitle>
-    //             <DialogContent>
-    //                 <TextField
-    //                     autoFocus
-    //                     margin="dense"
-    //                     id="className"
-    //                     label="Class Name"
-    //                     type="text"
-    //                     name="className"
-    //                     value={values.className}
-    //                     onChange={handleInputChange}
-    //                     fullWidth
-    //                 />
-    //                 <TextField
-    //                     margin="dense"
-    //                     id="classDescription"
-    //                     label="Class Description"
-    //                     type="text"
-    //                     name="classDescription"
-    //                     value={values.classDescription}
-    //                     onChange={handleInputChange}
-    //                     fullWidth
-    //                 />
-    //                 <TextField
-    //                     margin="dense"
-    //                     id="classOwner"
-    //                     label="Instructor"
-    //                     type="text"
-    //                     name="classOwner"
-    //                     value={values.classOwner}
-    //                     onChange={handleInputChange}
-    //                     fullWidth
-    //                 />
-    //             </DialogContent>
-    //             <DialogActions>
-    //                 <Button onClick={handleClose} color="primary">
-    //                     Cancel
-    //                 </Button>
-    //                 <Button onClick={() => {
-    //                     handleClose()
-    //                     console.log(values)
-    //                     axios.post("https://localhost:44377/api/Class", {
-    //                         a: 'a'
-    //                     }).then(response => console.log(response))
-    //                 }} color="primary">
-    //                     Save
-    //                 </Button>
-    //             </DialogActions>
-    //         </Dialog>
-    //     )
-    // }
-
-    let DeleteDialog = (props) => {
-        // console.log(id)
-        return (
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={() => {
-                        handleClose()
-                        console.log(values)
-                        axios.delete(`https://localhost:44377/api/Class/${props.classId}`, {})
-                            .then(response => console.log(response))
-                    }} color="secondary">
-                        Yes, delete.
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        )
-    }
-
 
     const SelectedCard = (props) => {
         let classItem = props.class
@@ -247,17 +176,13 @@ const TeacherClassList = () => {
                         {!(currentActive && currentActive === item.classId) ? <NormalCard class={item} /> : <SelectedCard class={item} />}
                     </div >
                     <CardActions style={{ justifyContent: 'space-between' }}>
-                        <Button size="small">Edit</Button>
-                        {/* <EditDialog /> */}
-                        <Button size="small" onClick={handleClickOpen}>Delete</Button>
-                        <DeleteDialog classId={item.classId}/>
+                        <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
+                        <Button size="small" onClick={() => { handleClickOpenDelete(item.classId) }}>Delete</Button>
                     </CardActions>
                 </Card>
 
             )
         })
-
-
 
         return (
             <>
@@ -273,6 +198,75 @@ const TeacherClassList = () => {
                             borderRight: 'solid'
                         }}>
                         {itemList}
+                        <Dialog open={openEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Edit Class</DialogTitle>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="className"
+                                    label="Class Name"
+                                    type="text"
+                                    name="className"
+                                    value={values.className}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="classDescription"
+                                    label="Class Description"
+                                    type="text"
+                                    name="classDescription"
+                                    value={values.classDescription}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    margin="dense"
+                                    id="classOwner"
+                                    label="Instructor"
+                                    type="text"
+                                    name="classOwner"
+                                    value={values.classOwner}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    onClick={handleCloseEdit}
+                                    color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={() => {
+                                    handleCloseEdit()
+                                    axios.put(`https://localhost:44377/api/Class/${values.classId}`, {
+                                        classId: values.classId,
+                                        className: values.className,
+                                        classDescription: values.classDescription,
+                                        classOwner: values.classOwner
+                                    }).then(response => console.log(response))
+                                }} color="primary">
+                                    Save
+                                </Button>
+                            </DialogActions>
+                        </Dialog >
+                        <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
+                            <DialogActions>
+                                <Button onClick={handleCloseDelete} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={() => {
+                                    handleCloseDelete()
+                                    axios.delete(`https://localhost:44377/api/Class/${delId}`, {})
+                                        .then(response => console.log(response))
+                                }} color="secondary">
+                                    Yes, delete.
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                         <AddClass />
                     </div>
                     <div
