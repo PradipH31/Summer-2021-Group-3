@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using WebApplication1.Features.FileSetup;
+using WebApplication1.Features.Courses;
+using WebApplication1.Features.Auth;
 
 namespace WebApplication1.Features.Classes
 {
@@ -21,5 +23,6 @@ namespace WebApplication1.Features.Classes
 		[NotMapped]
 		public virtual ICollection<Notebook> Notebooks { get; set; } = new List<Notebook>();
 		public virtual ICollection<InfoFile> CourseFiles { get; set; } = new List<InfoFile>();
+
 	}
 }

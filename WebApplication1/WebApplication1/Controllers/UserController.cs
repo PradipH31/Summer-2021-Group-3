@@ -65,5 +65,12 @@ namespace WebApplication1.Controllers
 
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> getUserList(UserInfoDTO userInfo)
+        {
+            return await context.Users.ToListAsync();
+            
+        }
     }
 }
