@@ -115,5 +115,15 @@ namespace WebApplication1.Controllers
 
             return Ok();
         }
+        [HttpDelete("Enrollment")]
+        public async Task<ActionResult> RemoveUserFromCourse(int userId, int classId)
+        {
+            var course = await _context.ClassDescription.FindAsync(classId);
+            var User = await _context.Users.FindAsync(userId);
+
+            User.Courses.Remove(course);
+
+            return Ok();
+        }
     }
 }
