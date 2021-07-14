@@ -104,5 +104,16 @@ namespace WebApplication1.Controllers
         {
             return _context.ClassDescription.Any(e => e.ClassId == id);
         }
+
+        [HttpPost("Enrollment")]
+        public async Task<ActionResult> AddUserToCourse(int userId, int classId)
+        {
+            var course = await _context.ClassDescription.FindAsync(classId);
+            var User = await _context.Users.FindAsync(userId);
+
+            User.Courses.Add(course);
+
+            return Ok();
+        }
     }
 }

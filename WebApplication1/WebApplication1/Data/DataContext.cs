@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Features;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
-using WebApplication1.Features.Courses;
 using WebApplication1.Features.FileSetup;
 using WebApplication1.Features.FlashCards;
 
