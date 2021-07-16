@@ -60,55 +60,23 @@ const Login = () => {
         }
     }
     return (
-        <div className="login-appearance">
-            <h1>Log In</h1>
-            <form style={{ margin: '0 30%' }}>
-                <div className="login-info-container">
-                    <label>
-                        <TextField
-                            autoFocus
-                            id="standard-number"
-                            label="W Number"
-                            type="number"
-                            name="username"
-                            value={values.username}
-                            onChange={handleInputChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        <TextField
-                            id="standard-password-input"
-                            label="Password"
-                            type="password"
-                            name="password"
-                            value={values.password}
-                            onChange={handleInputChange}
-                            autoComplete="current-password"
-                        />
-                    </label>
-                </div>
-                <br />
-                <label>
-                    <div
-                        className="login-button-container"
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-evenly'
-                        }}
-                    >
-                        <Button
-                            fullWidth={true}
-                            variant="contained"
-                            color="primary"
-                            className="centered-button"
-                            onClick={() => { logIn() }}>
-                            Log In
-                        </Button>
+        <div class="login-page">
+            <div class="form">
+                <div class="login">
+                    <div class="login-header">
+                        <h3>Southeastern University Login</h3>
+                        <p>Please enter your WNumber and password to login.</p>
                     </div>
-                </label>
-            </form >
-        </div >
+                </div>
+                <form class="login-form">
+                    <input type="text" placeholder="username" />
+                    <input type="password" placeholder="password" />
+                    <button>login</button>
+                    <p class="message">Not registered? <a href="#">Create an account</a>
+                    </p>
+                </form>
+            </div>
+        </div>
     )
 }
 
