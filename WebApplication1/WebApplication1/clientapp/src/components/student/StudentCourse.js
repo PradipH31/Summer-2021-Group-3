@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import Notebooks from './CourseContents/Notebooks';
 import '../../css/studentcourse.css'
 import Chat from './CourseContents/Chat';
+import Flashcard from '../Flashcards/Flashcard';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -122,7 +123,7 @@ const StudentCourse = () => {
                         <Notebooks classId={{ id }} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                        Flashcard
+                   <Flashcard />
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
                         <Chat className={`${item.className}`} />
