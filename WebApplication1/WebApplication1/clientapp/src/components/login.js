@@ -15,6 +15,7 @@ const Login = () => {
 
     const handleInputChange = e => {
         const { name, value } = e.target;
+        console.log(e.target.value)
         setValues({
             ...values,
             [name]: value
@@ -69,9 +70,23 @@ const Login = () => {
                     </div>
                 </div>
                 <form class="login-form">
-                    <input type="text" placeholder="username" />
-                    <input type="password" placeholder="password" />
-                    <button>login</button>
+                    <input
+                        name="username"
+                        value={values.username}
+                        onChange={handleInputChange}
+                        type="text"
+                        placeholder="username"
+                    />
+                    <input
+                        name="password"
+                        value={values.password}
+                        onChange={handleInputChange}
+                        autoComplete="current-password"
+                        type="password"
+                        placeholder="password"
+                    />
+                    <button onClick={() => { logIn() }}>
+                        login</button>
                     <p class="message">Not registered? <a href="#">Create an account</a>
                     </p>
                 </form>
