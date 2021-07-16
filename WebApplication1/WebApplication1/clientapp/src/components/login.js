@@ -61,15 +61,15 @@ const Login = () => {
         }
     }
     return (
-        <div class="login-page">
-            <div class="form">
-                <div class="login">
-                    <div class="login-header">
+        <div className="login-page">
+            <div className="form">
+                <div className="login">
+                    <div className="login-header">
                         <h3>Southeastern University Login</h3>
                         <p>Please enter your WNumber and password to login.</p>
                     </div>
                 </div>
-                <form class="login-form">
+                <form className="login-form">
                     <input
                         name="username"
                         value={values.username}
@@ -87,7 +87,7 @@ const Login = () => {
                     />
                     <button onClick={() => { logIn() }}>
                         login</button>
-                    <p class="message">Not registered? <a href="#">Create an account</a>
+                    <p className="message">Not registered? <a href="#">Create an account</a>
                     </p>
                 </form>
             </div>
