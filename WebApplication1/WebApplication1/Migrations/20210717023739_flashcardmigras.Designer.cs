@@ -10,16 +10,31 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210712224826_RemoveImageFile")]
-    partial class RemoveImageFile
+    [Migration("20210717023739_flashcardmigras")]
+    partial class flashcardmigras
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CourseUser", b =>
+                {
+                    b.Property<int>("CoursesClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesClassId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("CourseUser");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
@@ -275,15 +290,38 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("State")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("FlashCardSetId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FlashCardId");
 
+                    b.HasIndex("FlashCardSetId");
+
                     b.ToTable("FlashCard");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCardSet", b =>
+                {
+                    b.Property<int>("FlashCardSetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FlashCardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FlashCardSetId");
+
+                    b.ToTable("FlashCardSet");
                 });
 
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
@@ -317,6 +355,21 @@ namespace WebApplication1.Migrations
                     b.HasIndex("CourseClassId");
 
                     b.ToTable("Notebook");
+                });
+
+            modelBuilder.Entity("CourseUser", b =>
+                {
+                    b.HasOne("WebApplication1.Features.Classes.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Features.Auth.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -381,6 +434,17 @@ namespace WebApplication1.Migrations
                         .HasForeignKey("CourseClassId");
                 });
 
+            modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCard", b =>
+                {
+                    b.HasOne("WebApplication1.Features.FlashCards.FlashCardSet", "flashCardSet")
+                        .WithMany("flashCard")
+                        .HasForeignKey("FlashCardSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("flashCardSet");
+                });
+
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
                 {
                     b.HasOne("WebApplication1.Features.Classes.Course", "Course")
@@ -403,6 +467,11 @@ namespace WebApplication1.Migrations
             modelBuilder.Entity("WebApplication1.Features.Classes.Course", b =>
                 {
                     b.Navigation("CourseFiles");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCardSet", b =>
+                {
+                    b.Navigation("flashCard");
                 });
 #pragma warning restore 612, 618
         }

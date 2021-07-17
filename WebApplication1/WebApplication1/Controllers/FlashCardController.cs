@@ -8,7 +8,7 @@ using WebApplication1.Data;
 using WebApplication1.Features.FlashCards;
 
 namespace WebApplication1.Controllers
-{
+{ 
     [Route("api/[controller]")]
     [ApiController]
     public class FlashCardController : ControllerBase
@@ -29,11 +29,10 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<ActionResult<FlashCard>> PostFlashCard(FlashCard flashcard)
         {
-            flashcard.State = 0;
             _context.FlashCard.Add(flashcard);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFlashCard", new { id = flashcard.FlashCardId }, flashcard);
+            return CreatedAtAction("PostFlashCard", new { id = flashcard.FlashCardId }, flashcard);
         }
 
 
