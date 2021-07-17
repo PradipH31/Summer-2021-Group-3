@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<InfoFile>> GetInfoFile(int courseId, int id, bool download = false)
+        public async Task<ActionResult<InfoFile>> GetInfoFile(int courseId, int id, bool download = false, string? saveas = null)
         {
             var infofile =  _context.InfoFile.Where(a => a.CourseId == courseId).First(b => b.InfoFileId == id);
 
@@ -47,7 +47,26 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                string name = infofile.Name;
+
+                string name;
+
+
+                name = infofile.Name;
+                
+                if(saveas != null)
+                {
+                    if(Path.GetExtension(name) == Path.GetExtension(saveas))
+                    {
+                        name = saveas;
+                    }
+                    else
+                    {
+                        return BadRequest("Extension of file being downloaded must be the same as extension of original file.");
+                        {
+
+                        }
+                    }
+                }
                 string contenttype = infofile.ContentType;
                 byte[] content = Convert.FromBase64String(infofile.Content);
 
@@ -57,7 +76,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPatch("{courseid}/{infofileid}")]
-        public async Task<IActionResult> UpdateSetInfo(int courseid, int infofileid, string? name = null)
+        public async Task<IActionResult> UpdateFileInfo(int courseid, int infofileid, string? name = null)
         {
 
             if (name != null)
@@ -65,12 +84,12 @@ namespace WebApplication1.Controllers
                 {
                     {
 
-                        var nameparts = _context.InfoFile.Where(a => a.CourseId == courseid).First(b => b.InfoFileId == infofileid).Name.Split(".");
-                        var filetype = nameparts[^1];
+                        var nameparts = _context.InfoFile.Where(a => a.CourseId == courseid).First(b => b.InfoFileId == infofileid).Name;
+                        var filetype = Path.GetExtension(nameparts);
 
-                        var newnametype = name.Split(".")[^1];
+                        var newnametype = Path.GetExtension(name);
 
-
+                        //Cannot convert file types
                         if (!filetype.Equals(newnametype))
                             return BadRequest("File extension on the new file name must be the same as the old file name.");
 
@@ -100,14 +119,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("{courseid}/{user}/{repo}/{filepath}")]
-        public async Task PostFromGithub(int courseid, string user, string repo, string filepath)
+        public async Task PostFromGithub(int courseid, string user, string repo, string filepath, string? saveas = null)
         {
             //Generate random header for anonymous access (only works for public repositories)
             Random header = new Random();
             var client = new GitHubClient(new ProductHeaderValue(header.Next().ToString()));
             client.Credentials = new Credentials("token", AuthenticationType.Anonymous);
 
-            //Base base 64 string of file. Oktokit gets byte[] of fille content from github
+            //Base base 64 string of file. Oktokit gets byte[] of file content from github
             //and convert turns it into a base64 string so it can be converted into
             //an InfoFile
             var content = await client.Repository.Content.GetRawContent(user, repo, filepath);
@@ -116,10 +135,17 @@ namespace WebApplication1.Controllers
             //Gets Mime type of file based on file name from large set of Mime types 
             var contenttype = MimeMapping.MimeUtility.GetMimeMapping(filepath);
 
-            //Gets name of file from filepath
-            string[] subdirs = filepath.Split("/");
-            string name = subdirs[^1];
+            string name;
 
+            //Gets name of file from filepath
+            if (saveas == null)
+            {
+                name = filepath.Substring(filepath.LastIndexOf("%") + 3);
+            }
+            else
+            {
+                name = saveas;
+            }
             //Push InfoFile to database
             await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent, CourseId = courseid});
 
