@@ -22,11 +22,16 @@ namespace WebApplication1.Controllers
 
         }
 
+
+        //Return all flashcard sets. Doesn't show individual flashcards
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlashCardSet>>> GetFlashCardSet()
         {
-            return await _context.FlashCardSet.Include(c => c.flashCard).ToListAsync();
+            return await _context.FlashCardSet.ToListAsync();
         }
+
+        //Create a flashcardset
 
         [HttpPost]
         public async Task<ActionResult<FlashCardSet>> PostFlashCardSet(FlashCardSet flashcardset)
@@ -38,29 +43,61 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FlashCardSet>> GetFlashCardSet(int id)
+        //Make flashcard set name and descriptions updateable
+
+        [HttpPatch("{userid}/{flashcardsetid}")]
+        public async Task<IActionResult> UpdateSetInfo(int userid, int flashcardsetid, string? title = null, string? description = null)
         {
-            var flashcardset = await _context.FlashCardSet.FindAsync(id);
+
+
+            if (description != null)
+                if (description.Length > 0)
+                {
+                    {
+                        _context.FlashCardSet.Where(a => a.UserId == userid).First(b => b.FlashCardSetId == flashcardsetid).Description = description;
+                    }
+                }
+
+            if (title != null)
+                if (title.Length > 0)
+                {
+                    {
+                        _context.FlashCardSet.Where(a => a.UserId == userid).First(b => b.FlashCardSetId == flashcardsetid).Title = title;
+                    }
+                }
+
+            await _context.SaveChangesAsync();
+
+
+            return NoContent();
+        }
+
+
+
+
+        //Return a flashcardset by its id. Flashcards are shown.
+
+        [HttpGet("{id}/{userid}")]
+        public async Task<ActionResult<FlashCardSet>> GetFlashCardSet(int flashcardsetid, int userid)
+        {
+            var flashcardset = _context.FlashCardSet.Include(c => c.flashCard).Where(a => a.UserId == userid).First(b => b.FlashCardSetId == flashcardsetid);
 
             if (flashcardset == null)
             {
                 return NotFound();
             }
 
-            flashcardset.flashCard = _context.FlashCard.Where<FlashCard>(a => a.FlashCardSetId == id).ToArray<FlashCard>();
-
             return flashcardset;
         }
 
 
 
-
+        //Delete a flashcard set referenced by its id and by the user id
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFlashCardSet(int id)
+        public async Task<IActionResult> DeleteFlashCardSet(int flashcardsetid, int userid)
         {
-            var flashcardset = await _context.FlashCardSet.FindAsync(id);
+            var flashcardset = _context.FlashCardSet.Where(a => a.UserId == userid).First(b => b.FlashCardSetId == flashcardsetid); ;
             if (flashcardset == null)
             {
                 return NotFound();
