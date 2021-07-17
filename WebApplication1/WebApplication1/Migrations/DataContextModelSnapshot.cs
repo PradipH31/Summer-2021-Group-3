@@ -247,6 +247,9 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ClassOwner")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("InfoFileId")
+                        .HasColumnType("int");
+
                     b.HasKey("ClassId");
 
                     b.ToTable("ClassDescription");
@@ -265,7 +268,7 @@ namespace WebApplication1.Migrations
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CourseClassId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -273,7 +276,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("InfoFileId");
 
-                    b.HasIndex("CourseClassId");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("InfoFile");
                 });
@@ -293,6 +296,9 @@ namespace WebApplication1.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("FlashCardId");
 
@@ -317,7 +323,12 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("FlashCardSetId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FlashCardSet");
                 });
@@ -427,9 +438,13 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Features.FileSetup.InfoFile", b =>
                 {
-                    b.HasOne("WebApplication1.Features.Classes.Course", null)
+                    b.HasOne("WebApplication1.Features.Classes.Course", "Course")
                         .WithMany("CourseFiles")
-                        .HasForeignKey("CourseClassId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCard", b =>
@@ -441,6 +456,17 @@ namespace WebApplication1.Migrations
                         .IsRequired();
 
                     b.Navigation("flashCardSet");
+                });
+
+            modelBuilder.Entity("WebApplication1.Features.FlashCards.FlashCardSet", b =>
+                {
+                    b.HasOne("WebApplication1.Features.Auth.User", "user")
+                        .WithMany("FlashCardSet")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("WebApplication1.Features.Notebook", b =>
@@ -459,6 +485,8 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Features.Auth.User", b =>
                 {
+                    b.Navigation("FlashCardSet");
+
                     b.Navigation("Roles");
                 });
 
