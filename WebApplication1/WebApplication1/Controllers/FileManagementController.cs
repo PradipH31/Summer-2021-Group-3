@@ -26,10 +26,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InfoFile>>> GetInfoFile()
+        public ActionResult<IEnumerable<InfoFile>> GetInfoFile()
         {
-            return await _context.InfoFile.ToListAsync();
+            //return await _context.InfoFile
+            var results =  _context.InfoFile.FromSqlRaw("SELECT InfoFileId, Name, ContentType, Content = NULL, CourseId FROM InfoFile");
+
+            return results.ToList<InfoFile>();
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<InfoFile>> GetInfoFile(int courseId, int id, bool download = false, string? saveas = null)
