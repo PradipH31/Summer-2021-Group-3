@@ -6,8 +6,7 @@ const Message = (props) => {
         <div
             className="msg-participants"
             style={{
-                paddingBottom: '1%',
-                display: 'flex'
+                paddingBottom: '1%'
             }}
         >
             <div
@@ -19,7 +18,6 @@ const Message = (props) => {
             </div>
             <div
                 style={{
-                    flexGrow: '11',
                     backgroundColor: '#F8B77F',
                     color: 'white',
                 }}
@@ -28,18 +26,19 @@ const Message = (props) => {
                     style={{
                         textTransform: 'capitalize',
                         textAlign: 'left',
-                        color:'black'
+                        color: 'black'
                     }}
                 >
                     {props.user}
                 </div>
                 <div
                     style={{
-                        paddingLeft: '1em'
-                    }}                
+                        paddingLeft: '1em',
+                        backgroundColor: !props.user ? 'black' : 'inherit'
+                    }}
                 >
                     {props.message}
-                    </div>
+                </div>
             </div>
         </div >
     );

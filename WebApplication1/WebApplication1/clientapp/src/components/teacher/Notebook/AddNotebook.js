@@ -22,7 +22,7 @@ const AddNotebook = (props) => {
 
     let id = props.classId
     const [values, setValues] = useState(initialFieldValues)
-    const [error, setError] = useState('');
+    const [error, setError] = useState('none');
 
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -172,24 +172,27 @@ const AddNotebook = (props) => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={() => {
-                        if (error === "") {
-                            handleClose()
-                            //add
-                            axios.post("https://localhost:44377/api/Notebooks", {
-                                githubLink: values.githubLink,
-                                title: values.title,
-                                description: values.description,
-                                classId: id
-                            }).then(response => {
-                                console.log(response)
-                            })
-                        } else {
-                            console.log('Github Error')
-                        }
-                    }} color="primary">
+                    {error === "" ? <Button onClick={() => {
+                        handleClose()
+                        axios.post("https://localhost:44377/api/Notebooks", {
+                            githubLink: values.githubLink,
+                            title: values.title,
+                            description: values.description,
+                            classId: id
+                        }).then(response => {
+                            console.log(response)
+                        })
+                    }}
+                        color="primary">
                         Save
                     </Button>
+                        :
+                        <Button
+                            disabled
+                            color="primary">
+                            Save
+                        </Button>}
+
                 </DialogActions>
             </Dialog>
         </ >

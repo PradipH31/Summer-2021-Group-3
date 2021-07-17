@@ -66,7 +66,7 @@ const Login = () => {
                 <div className="login">
                     <div className="login-header">
                         <h3>Southeastern University Login</h3>
-                        <p>Please enter your WNumber and password to login.</p>
+                        <p>Please enter your username and password to login.</p>
                     </div>
                 </div>
                 <form className="login-form">
@@ -75,7 +75,7 @@ const Login = () => {
                         value={values.username}
                         onChange={handleInputChange}
                         type="text"
-                        placeholder="username"
+                        placeholder="Username"
                     />
                     <input
                         name="password"
@@ -83,7 +83,7 @@ const Login = () => {
                         onChange={handleInputChange}
                         autoComplete="current-password"
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                     />
                     <div className="login-button" onClick={() => { logIn() }}>
                         login</div>
