@@ -72,5 +72,6 @@ namespace WebApplication1.Controllers
             return await context.Users.ToListAsync();
             
         }
+
     }
 }
