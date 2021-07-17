@@ -14,7 +14,9 @@ namespace WebApplication1.Features.FlashCards
         public string Description { get; set; }
         public int FlashCardId { get; set; }
         public virtual ICollection<FlashCard> flashCard { get; set; } = new List<FlashCard>(); 
-        //public virtual User user { get; set; }
+
+        public int UserId { get; set; }
+        public virtual User user { get; set; }
 
 
     }
