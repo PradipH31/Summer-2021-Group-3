@@ -19,7 +19,6 @@ namespace WebApplication1.Controllers
     public class FileManagementController : ControllerBase
     {
         private readonly DataContext _context;
-        private object urlfetch;
 
         public FileManagementController(DataContext context)
         {
@@ -33,9 +32,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<InfoFile>> GetInfoFile(int id, bool download = false)
+        public async Task<ActionResult<InfoFile>> GetInfoFile(int courseId, int id, bool download = false)
         {
-            var infofile = await _context.InfoFile.FindAsync(id);
+            var infofile =  _context.InfoFile.Where(a => a.CourseId == courseId).First(b => b.InfoFileId == id);
 
             if (infofile == null)
             {
@@ -56,34 +55,40 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInfoFile(int id, InfoFile infofile)
+
+        [HttpPatch("{courseid}/{infofileid}")]
+        public async Task<IActionResult> UpdateSetInfo(int courseid, int infofileid, string? name = null)
         {
-            if (id != infofile.InfoFileId)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(infofile).State = EntityState.Modified;
+            if (name != null)
+                if (name.Length > 0)
+                {
+                    {
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
-            {
-                if (!InfoFileExists(id))
-                {
-                    return NotFound();
+                        var nameparts = _context.InfoFile.Where(a => a.CourseId == courseid).First(b => b.InfoFileId == infofileid).Name.Split(".");
+                        var filetype = nameparts[^1];
+
+                        var newnametype = name.Split(".")[^1];
+
+
+                        if (!filetype.Equals(newnametype))
+                            return BadRequest("File extension on the new file name must be the same as the old file name.");
+
+
+                        _context.InfoFile.Where(a => a.CourseId == courseid).First(b => b.InfoFileId == infofileid).Name = name;
+                    }
                 }
-                else
-                {
-                    throw;
-                }
-            }
+
+
+            await _context.SaveChangesAsync();
+
 
             return NoContent();
         }
+
+
+
+
 
         [HttpPost]
         public async Task<ActionResult<InfoFile>> PostInfofile(InfoFile infofile)
@@ -94,8 +99,8 @@ namespace WebApplication1.Controllers
             return CreatedAtAction("GetInfoFile", new { id = infofile.InfoFileId }, infofile);
         }
 
-        [HttpPost("{user}/{repo}/{filepath}")]
-        public async Task PostFromGithub(string user, string repo, string filepath)
+        [HttpPost("{courseid}/{user}/{repo}/{filepath}")]
+        public async Task PostFromGithub(int courseid, string user, string repo, string filepath)
         {
             //Generate random header for anonymous access (only works for public repositories)
             Random header = new Random();
@@ -116,16 +121,13 @@ namespace WebApplication1.Controllers
             string name = subdirs[^1];
 
             //Push InfoFile to database
-            await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent });
+            await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent, CourseId = courseid});
 
         }
 
 
-
-
-
-        [HttpPost("{postedFile}")]
-        public async Task UploadInfoFile(IFormFile postedFile)
+        [HttpPost("{postedFile}/{courseid}")]
+        public async Task UploadInfoFile(IFormFile postedFile, int courseid)
         {
             byte[] bytes;
 
@@ -141,15 +143,15 @@ namespace WebApplication1.Controllers
             string contenttype = postedFile.ContentType;
             string content = Convert.ToBase64String(bytes);
 
-            await PostInfofile(new InfoFile { Name = name, Content = content, ContentType = contenttype });
+            await PostInfofile(new InfoFile { Name = name, Content = content, ContentType = contenttype, CourseId = courseid});
         }
 
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInfoFile(int id)
+        [HttpDelete("{courseid}/{infofileid}")]
+        public async Task<IActionResult> DeleteInfoFile(int courseid, int infofileid)
         {
-            var infofile = await _context.InfoFile.FindAsync(id);
+            var infofile = _context.InfoFile.Where(a => a.CourseId == courseid).First(b => b.InfoFileId == infofileid);
             if (infofile == null)
             {
                 return NotFound();
@@ -161,9 +163,9 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        private bool InfoFileExists(int id)
+        private bool InfoFileExists(int courseid, int infofileid)
         {
-            return _context.InfoFile.Any(e => e.InfoFileId == id);
+            return _context.InfoFile.Where(a => a.CourseId == courseid).Any(b => b.InfoFileId == infofileid);
         }
     }
 }
