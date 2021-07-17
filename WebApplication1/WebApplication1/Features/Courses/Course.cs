@@ -22,6 +22,8 @@ namespace WebApplication1.Features.Classes
         public string ImageSrc { get; set; }
         [NotMapped]
         public virtual ICollection<Notebook> Notebooks { get; set; } = new List<Notebook>();
+
+        public int InfoFileId { get; set; }
         public virtual ICollection<InfoFile> CourseFiles { get; set; } = new List<InfoFile>();
         public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
