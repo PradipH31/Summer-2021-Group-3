@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using WebApplication1.Features.FileSetup;
 using WebApplication1.Features.Auth;
+using WebApplication1.Features.Courses;
 
 namespace WebApplication1.Features.Classes
 {
@@ -25,6 +26,6 @@ namespace WebApplication1.Features.Classes
 
         public int InfoFileId { get; set; }
         public virtual ICollection<InfoFile> CourseFiles { get; set; } = new List<InfoFile>();
-        public virtual ICollection<User> Users { get; set; } = new List<User>();
+        public virtual ICollection<Enrollment> Users { get; set; } = new List<Enrollment>();
     }
 }

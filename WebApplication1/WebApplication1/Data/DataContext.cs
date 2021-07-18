@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Features;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
+using WebApplication1.Features.Courses;
 using WebApplication1.Features.FileSetup;
 using WebApplication1.Features.FlashCards;
 
@@ -36,6 +37,18 @@ namespace WebApplication1.Data
 
             UserRoleBuilder.HasOne(x => x.User)
                 .WithMany(x => x.Roles)
+                .HasForeignKey(x => x.UserId);
+
+            var EnrollmentBuilder = builder.Entity<Enrollment>();
+
+            EnrollmentBuilder.HasKey(x => new { x.UserId, x.ClassId });
+
+            EnrollmentBuilder.HasOne(x => x.Course)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.ClassId);
+
+            EnrollmentBuilder.HasOne(x => x.User)
+                .WithMany(x => x.Courses)
                 .HasForeignKey(x => x.UserId);
         }
     }
