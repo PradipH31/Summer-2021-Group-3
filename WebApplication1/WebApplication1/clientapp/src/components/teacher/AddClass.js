@@ -27,8 +27,8 @@ const initialFieldValues = {
     className: '',
     classDescription: '',
     classOwner: '',
-    imageName:'',
-    imageSrc:''
+    imageName: '',
+    imageSrc: ''
 }
 
 const AddClass = () => {

@@ -4,8 +4,19 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+
+const initialFieldValues = {
+    notebookId: '',
+    githubLink: '',
+    title: '',
+    description: '',
+    classId: '',
+    createdDate: '',
+    jupyterHubLink: '',
+}
 
 const useStyles = makeStyles({
     root: {
@@ -25,13 +36,45 @@ const useStyles = makeStyles({
 });
 
 const NotebooksT = (props) => {
-    let id = props.classId
-
-    const classes = useStyles();
-
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
+    const [classId, setId] = useState(null);
+    const [values, setValues] = useState(initialFieldValues)
+    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
+    const [className, setName] = useState(null);
+    const [delId, setDelId] = useState('');
+    let id = props.classId
+
+    const handleClickOpenEdit = (editClass) => {
+        setOpenEdit(true);
+        console.log('open edit')
+        setValues(editClass)
+    };
+
+    const handleClickOpenDelete = (delId) => {
+        setOpenDelete(true);
+        setDelId(delId);
+    };
+
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
+    };
+
+    const handleCloseDelete = () => {
+        setOpenDelete(false);
+    }
+
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    const classes = useStyles();
 
     useEffect(() => {
         fetch(`https://localhost:44377/api/NotebookJH/${id}`)
@@ -90,7 +133,7 @@ const NotebooksT = (props) => {
                                     display: 'flex',
                                     flexDirection: 'space-between',
                                     paddingLeft: '3%',
-                                    textAlign:'left'
+                                    textAlign: 'left'
                                 }}>
                                     <div style={{
                                         display: 'flex',
@@ -111,12 +154,8 @@ const NotebooksT = (props) => {
                             <CardActions style={{
                                 justifyContent: 'space-between'
                             }} >
-                                <Button>
-                                    Edit
-                                </Button>
-                                <Button>
-                                    Delete
-                                </Button>
+                                <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
+                                <Button size="small" onClick={() => { handleClickOpenDelete(item.notebookId) }}>Delete</Button>
                             </CardActions>
                         </CardContent>
                     </Card >
@@ -127,6 +166,78 @@ const NotebooksT = (props) => {
         return (
             <div>
                 {itemList.length > 0 ? itemList : 'Notebooks'}
+                <Dialog open={openEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Edit Class</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="title"
+                            label="Notebook Name"
+                            type="text"
+                            fullWidth
+                            value={values.title}
+                            onChange={handleInputChange}
+                            name="title"
+                        />
+                        <TextField
+                            margin="dense"
+                            required
+                            id="description"
+                            label="Notebook Description"
+                            type="email"
+                            fullWidth
+                            name="description"
+                            value={values.description}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            id="githubLink"
+                            label="Github Link"
+                            name="githubLink"
+                            fullWidth
+                            value={values.githubLink}
+                            onChange={handleInputChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={handleCloseEdit}
+                            color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => {
+                            handleCloseEdit()
+                            axios.put(`https://localhost:44377/api/Notebooks/${values.notebookId}`, {
+                                notebookId: values.notebookId,
+                                githubLink: values.githubLink,
+                                title: values.title,
+                                description: values.description,
+                                classId: values.classId
+                            }).then(response => console.log(response))
+                        }} color="primary">
+                            Save
+                        </Button>
+                    </DialogActions>
+                </Dialog >
+                <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleCloseDelete} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => {
+                            handleCloseDelete()
+                            axios.delete(`https://localhost:44377/api/Notebooks/${delId}`, {})
+                                .then(response => console.log(response))
+                        }} color="secondary">
+                            Yes, delete.
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
         )
     }

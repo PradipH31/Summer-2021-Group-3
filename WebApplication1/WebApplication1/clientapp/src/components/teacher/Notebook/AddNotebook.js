@@ -149,7 +149,6 @@ const AddNotebook = (props) => {
                             margin="dense"
                             id="githubLink"
                             label="Github Link"
-                            type="email"
                             name="githubLink"
                             fullWidth
                             error
@@ -161,7 +160,6 @@ const AddNotebook = (props) => {
                             margin="dense"
                             id="githubLink"
                             label="Github Link"
-                            type="email"
                             name="githubLink"
                             fullWidth
                             value={values.githubLink}
