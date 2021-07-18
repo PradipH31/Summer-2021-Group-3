@@ -116,7 +116,7 @@ const AddClass = () => {
                 </Card >
             </div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Add Class</DialogTitle>
+                <DialogTitle id="form-dialog-title"><center>Add Class</center></DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

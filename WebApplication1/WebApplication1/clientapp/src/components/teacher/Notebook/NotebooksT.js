@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { Typography } from '@material-ui/core';
 
 const initialFieldValues = {
     notebookId: '',
@@ -105,7 +106,8 @@ const NotebooksT = (props) => {
         itemList = items.map((item,) => {
             return (
                 <div key={item.notebookId} style={{
-                    paddingBottom: 'unset'
+                    paddingBottom: 'unset',
+                    margin: '3% 20%'
                 }}>
                     <Card className={classes.root} style={{
                         margin: "1%",
@@ -125,9 +127,9 @@ const NotebooksT = (props) => {
                                     paddingRight: '3%',
                                     textAlign: 'left'
                                 }}>
-                                    <div>Name</div>
-                                    <div>Description</div>
-                                    <div>Github Link</div>
+                                    <Typography>Name</Typography>
+                                    <Typography>Description</Typography>
+                                    <Typography>Github Link</Typography>
                                 </div>
                                 <div style={{
                                     display: 'flex',
@@ -139,25 +141,26 @@ const NotebooksT = (props) => {
                                         display: 'flex',
                                         flexDirection: 'column'
                                     }}>
-                                        <div >
+                                        <Typography >
                                             {item.title.substring(0, 30)}
-                                        </div>
-                                        <div variant="body2" component="p">
+                                        </Typography>
+                                        <Typography>
                                             {item.description.substring(0, 30)}
-                                        </div>
-                                        <div>
+                                        </Typography>
+                                        <Typography>
                                             {item.githubLink.substring(0, 40)}...
-                                        </div>
+                                        </Typography>
                                     </div>
                                 </div>
                             </div>
-                            <CardActions style={{
-                                justifyContent: 'space-between'
-                            }} >
-                                <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
-                                <Button size="small" onClick={() => { handleClickOpenDelete(item.notebookId) }}>Delete</Button>
-                            </CardActions>
                         </CardContent>
+                        <CardActions style={{
+                            justifyContent: 'space-between',
+
+                        }} >
+                            <Button size="small" onClick={() => { handleClickOpenEdit(item) }}>Edit</Button>
+                            <Button size="small" onClick={() => { handleClickOpenDelete(item.notebookId) }}>Delete</Button>
+                        </CardActions>
                     </Card >
                 </div >
             )
@@ -167,7 +170,7 @@ const NotebooksT = (props) => {
             <div>
                 {itemList.length > 0 ? itemList : 'Notebooks'}
                 <Dialog open={openEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Edit Class</DialogTitle>
+                    <DialogTitle id="form-dialog-title"><center>Edit Class</center></DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
@@ -223,7 +226,7 @@ const NotebooksT = (props) => {
                     </DialogActions>
                 </Dialog >
                 <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
+                    <DialogTitle id="form-dialog-title"><center>Are you sure you want to delete?</center></DialogTitle>
                     <DialogActions>
                         <Button onClick={handleCloseDelete} color="primary">
                             Cancel

@@ -100,7 +100,7 @@ const AddNotebook = (props) => {
                 }}>
                     <CardContent>
                         <Typography variant="h5" component="h2" style={{
-                            backgroundColor: '#F8B77F',
+                            backgroundColor: '#8B7BE0',
                             color: 'white',
                             margin: '0% 30%  '
                         }}>
@@ -142,11 +142,14 @@ const AddNotebook = (props) => {
                     </Button>
                     <Button onClick={() => {
                         handleClose()
+                        const regex = /\//gi
+                        values.githubpath = values.githubpath.replace(
+                            regex, "%2F"
+                        )
                         axios.post(`https://localhost:44377/api/FileManagement/${values.courseid}/${values.githubpath}/false?saveas=${values.fileName}`, {
-                            // githubLink: values.githubLink,
-                            // title: values.title,
-                            // description: values.description,
-                            // classId: id
+                            githubpath: values.githubpath,
+                            courseid: values.courseid,
+                            fileName: values.fileName,
                         }).then(response => {
                             console.log(response)
                         })
