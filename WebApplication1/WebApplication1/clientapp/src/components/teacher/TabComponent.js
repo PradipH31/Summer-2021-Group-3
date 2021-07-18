@@ -18,6 +18,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import AddNotebook from './Notebook/AddNotebook';
+import ClassFilesT from './ClassFiles/ClassFilesT';
 
 const useStyles = makeStyles({
     root: {
@@ -116,15 +117,15 @@ function TabComponent(props) {
                     {classId ? <AddNotebook classId={classId} /> : ""}
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    Class Files
+                    {classId ? <ClassFilesT classId={classId} /> : ""}
                 </TabPanel>
                 <TabPanel value={value} index={2} dir={theme.direction}
-                    // style={{
-                    //     margin: '0% 20%',
-                    //     backgroundColor: 'white',
-                    //     padding: '1%',
-                    //     borderRadius: '3%',
-                    // }}
+                // style={{
+                //     margin: '0% 20%',
+                //     backgroundColor: 'white',
+                //     padding: '1%',
+                //     borderRadius: '3%',
+                // }}
                 >
                     Students
                 </TabPanel>
