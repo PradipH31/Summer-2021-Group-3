@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
+using WebApplication1.Features.Courses;
 
 namespace WebApplication1.Controllers
 {
@@ -31,21 +33,21 @@ namespace WebApplication1.Controllers
         {
             var currUser = userManager.GetUserId(HttpContext.User);
             var userId = Int32.Parse(currUser);
-            if (User.IsInRole("Student"))
-            {
-                var user = await _context.Users.FindAsync(userId);
-                var courses = user.Courses.ToList();
-                //return courses;
-                //var courses = await _context.Set<Course>().Where(x => x.c).Select(x =>
-                //    new EnrollUserDTO
-                //    {
-                //        courseId = x.ClassId,
-                //        Course = x.ClassName,
-                //        Instructor = x.ClassOwner
+            //if (User.IsInRole("Student"))
+            //{
+            //    var user = await _context.Users.FindAsync(userId);
+            //    var courses = user.Courses.ToList();
+            //    //return courses;
+            //    //var courses = await _context.Set<Course>().Where(x => x.c).Select(x =>
+            //    //    new EnrollUserDTO
+            //    //    {
+            //    //        courseId = x.ClassId,
+            //    //        Course = x.ClassName,
+            //    //        Instructor = x.ClassOwner
 
-                //    }).ToListAsync();
-                return Ok(courses);
-            }
+            //    //    }).ToListAsync();
+            //    return Ok(courses);
+            //}
             return await _context.ClassDescription.ToListAsync();
         }
 
@@ -125,50 +127,55 @@ namespace WebApplication1.Controllers
             return _context.ClassDescription.Any(e => e.ClassId == id);
         }
 
-        [HttpPost("Enrollment")]
-        public async Task<ActionResult<Course>> AddUserToCourse(int userId, int classId)
-        {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                var User = await _context.Users.FindAsync(userId);
-                if(User == null)
-                {
-                    return BadRequest("User does not exist");
-                }
+    //    [Authorize(Roles = "Admin, Instructor")]
+    //    [HttpPost("Enrollment")]
+    //    public async Task<ActionResult> AddUserToCourse(int userId, int classId)
+    //    {
+    //        using (var transaction = await _context.Database.BeginTransactionAsync())
+    //        {
+    //            var User = await _context.Users.FindAsync(userId);
+    //            if (User == null)
+    //            {
+    //                return BadRequest("User does not exist");
+    //            }
 
-                var data = await _context.Set<Course>().FirstOrDefaultAsync(x => x.ClassId == classId);
-                if(data == null)
-                {
-                    return BadRequest();
-                }
-                //var enroll = await _context.Set<Course>().Where(x => x.ClassId == classId).Select(x =>
-                //    new EnrollUserDTO
-                //    {
-                //        courseId = x.ClassId,
-                //        Course = x.ClassName,
-                //        Instructor = x.ClassOwner
-
-                //    }).ToListAsync();
-
-                var addClassToUser = _context.Set<User>().FirstOrDefault(x => x.Id == userId);
-                addClassToUser.Courses.Add(new Course { ClassId = data.ClassId, ClassDescription = data.ClassDescription, ClassName = data.ClassName, ClassOwner = data.ClassOwner});
+    //            var Course = await _context.ClassDescription.FindAsync(classId);
+    //            if (Course == null)
+    //            {
+    //                return BadRequest("Course does not exist");
+    //            }
 
                 
-                transaction.Commit();
-                var count = User.Courses.Count();
 
-                return Ok(count);
-            }
-        }
-        [HttpDelete("Enrollment")]
-        public async Task<ActionResult> RemoveUserFromCourse(int userId, int classId)
-        {
-            var course = await _context.ClassDescription.FindAsync(classId);
-            var User = await _context.Users.FindAsync(userId);
+    //            transaction.Commit();
 
-            User.Courses.Remove(course);
+    //            return Ok();
+    //        }
+    //    }
 
-            return Ok();
-        }
+    //    [Authorize(Roles = "Admin, Instructor")]
+    //    [HttpDelete("Enrollment")]
+    //    public async Task<ActionResult> RemoveUserFromCourse(int userId, int classId)
+    //    {
+    //        using (var transaction = await _context.Database.BeginTransactionAsync())
+    //        {
+    //            var User = await _context.Users.FindAsync(userId);
+    //            if (User == null)
+    //            {
+    //                return BadRequest("User does not exist");
+    //            }
+
+    //            var data = await _context.Set<Enrollment>().FirstOrDefaultAsync(x => x.ClassId == classId);
+    //            if (data == null)
+    //            {
+    //                return BadRequest("Course does not exist");
+    //            }
+
+    //            var addClassToUser = _context.Set<User>().FirstOrDefault(x => x.Id == userId);
+    //            addClassToUser.Courses.Remove(data);
+
+    //            return Ok();
+    //        }           
+    //    }
     }
 }

@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Instructor")]
+       // [Authorize(Roles = "Admin, Instructor")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> getUserList()
         {
