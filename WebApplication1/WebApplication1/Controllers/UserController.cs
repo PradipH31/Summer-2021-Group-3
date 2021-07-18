@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace WebApplication1.Controllers
             this.userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<UserDTO>> CreateUser(CreateUserDTO createUser)
         {
@@ -65,6 +67,8 @@ namespace WebApplication1.Controllers
 
             }
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost("Roles")]
         public async Task<IActionResult> AddRoleToUser (int userId, string role)
         {
@@ -88,6 +92,7 @@ namespace WebApplication1.Controllers
                 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Roles")]
         public async Task<IActionResult> RemoveRoleFromUser(int userId, string role)
         {
@@ -110,6 +115,7 @@ namespace WebApplication1.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Instructor")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> getUserList()
         {

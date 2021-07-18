@@ -63,8 +63,7 @@ namespace WebApplication1.Controllers
             return course;
         }
 
-        // PUT: api/Class/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin, Instructor")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(int id, Course course)
         {
@@ -105,7 +104,7 @@ namespace WebApplication1.Controllers
             return CreatedAtAction("GetCourse", new { id = course.ClassId }, course);
         }
 
-        // DELETE: api/Class/5
+        [Authorize(Roles = "Admin, Instructor")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
