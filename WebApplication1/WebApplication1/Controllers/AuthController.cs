@@ -42,11 +42,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
             await signInManager.SignInAsync(user, false, "Password");
-            return Ok(new
-            {
-                User = user,
-                Roles = rolesList
-            });
+            return Ok(new { User = user, Roles = rolesList });
         }
 
         [HttpPost("logout")]

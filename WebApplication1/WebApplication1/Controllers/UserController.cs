@@ -67,10 +67,11 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> getUserList(UserInfoDTO userInfo)
+        public async Task<ActionResult<IEnumerable<User>>> getUserList()
         {
-            return await context.Users.ToListAsync();
-            
+            var users = await userManager.Users.ToListAsync();
+            return users;
+
         }
     }
 }
