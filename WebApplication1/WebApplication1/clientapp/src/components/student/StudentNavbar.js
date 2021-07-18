@@ -15,6 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
 import { useHistory } from 'react-router';
+import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
-    root:{
+    root: {
         backgroundImage: 'linear-gradient(45deg, #328f8a, #08ac4b)'
     },
 }));
@@ -164,6 +165,16 @@ const StudentNavbar = () => {
                                 onClick={() => { setHeader("Messages") }}>
                                 <Badge badgeContent={1} color="secondary">
                                     <MailIcon />
+                                </Badge>
+                            </IconButton>
+                        </Link>
+                        <Link to="/classes/flashcards">
+                            <IconButton
+                                aria-label="show 1 new mails"
+                                color="inherit"
+                                onClick={() => { setHeader("Flashcards") }}>
+                                <Badge color="secondary">
+                                    <ViewCarouselIcon />
                                 </Badge>
                             </IconButton>
                         </Link>
