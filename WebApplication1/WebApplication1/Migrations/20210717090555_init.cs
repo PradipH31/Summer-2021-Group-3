@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApplication1.Migrations
 {
-    public partial class allmigras : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,26 +57,11 @@ namespace WebApplication1.Migrations
                     ClassName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassOwner = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    InfoFileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClassDescription", x => x.ClassId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FlashCard",
-                columns: table => new
-                {
-                    FlashCardId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    State = table.Column<byte>(type: "tinyint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FlashCard", x => x.FlashCardId);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,6 +171,52 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FlashCardSet",
+                columns: table => new
+                {
+                    FlashCardSetId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlashCardId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlashCardSet", x => x.FlashCardSetId);
+                    table.ForeignKey(
+                        name: "FK_FlashCardSet_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseUser",
+                columns: table => new
+                {
+                    CoursesClassId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseUser", x => new { x.CoursesClassId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_CourseUser_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseUser_ClassDescription_CoursesClassId",
+                        column: x => x.CoursesClassId,
+                        principalTable: "ClassDescription",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InfoFile",
                 columns: table => new
                 {
@@ -194,17 +225,17 @@ namespace WebApplication1.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CourseClassId = table.Column<int>(type: "int", nullable: true)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InfoFile", x => x.InfoFileId);
                     table.ForeignKey(
-                        name: "FK_InfoFile_ClassDescription_CourseClassId",
-                        column: x => x.CourseClassId,
+                        name: "FK_InfoFile_ClassDescription_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "ClassDescription",
                         principalColumn: "ClassId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,7 +248,7 @@ namespace WebApplication1.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", defaultValueSql: "getdate()", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CourseClassId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -229,6 +260,28 @@ namespace WebApplication1.Migrations
                         principalTable: "ClassDescription",
                         principalColumn: "ClassId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FlashCard",
+                columns: table => new
+                {
+                    FlashCardId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    FlashCardSetId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlashCard", x => x.FlashCardId);
+                    table.ForeignKey(
+                        name: "FK_FlashCard_FlashCardSet_FlashCardSetId",
+                        column: x => x.FlashCardSetId,
+                        principalTable: "FlashCardSet",
+                        principalColumn: "FlashCardSetId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -271,9 +324,24 @@ namespace WebApplication1.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InfoFile_CourseClassId",
+                name: "IX_CourseUser_UsersId",
+                table: "CourseUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FlashCard_FlashCardSetId",
+                table: "FlashCard",
+                column: "FlashCardSetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FlashCardSet_UserId",
+                table: "FlashCardSet",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InfoFile_CourseId",
                 table: "InfoFile",
-                column: "CourseClassId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notebook_CourseClassId",
@@ -299,6 +367,9 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CourseUser");
+
+            migrationBuilder.DropTable(
                 name: "FlashCard");
 
             migrationBuilder.DropTable(
@@ -311,10 +382,13 @@ namespace WebApplication1.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "FlashCardSet");
 
             migrationBuilder.DropTable(
                 name: "ClassDescription");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

@@ -5,6 +5,9 @@
         public int FlashCardId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public byte State { get; set; } = 0;
+        public int UserId { get; set; }
+        public int FlashCardSetId { get; set; }
+        public virtual FlashCardSet flashCardSet { get; set; }
+
     }
 }

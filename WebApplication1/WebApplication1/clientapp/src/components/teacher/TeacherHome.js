@@ -51,14 +51,12 @@ const TeacherHome = (props) => {
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    // borderStyle: 'solid',
-                    backgroundColor: '#2196f3',
+                    backgroundImage: 'linear-gradient(45deg, #328f8a, #08ac4b)'
                 }}>
                     <div style={{
                         color: 'white',
                         fontSize: '30px',
                         paddingLeft: '5%',
-                        // margin: '1'
                     }}>
                         {title}
                     </div>
@@ -66,9 +64,7 @@ const TeacherHome = (props) => {
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
-                        // borderStyle: 'solid',
-                        backgroundColor: '#2196f3',
-                        // alignItems: 'baseline'
+                        backgroundImage: 'linear-gradient(315deg, #328f8a, #08ac4b)'
                     }}>
                         <div style={{
                             // padding: '1%',

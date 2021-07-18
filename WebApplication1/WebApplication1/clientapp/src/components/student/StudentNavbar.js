@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
+    root:{
+        backgroundImage: 'linear-gradient(45deg, #328f8a, #08ac4b)'
+    },
 }));
 
 const StudentNavbar = () => {
@@ -126,7 +129,9 @@ const StudentNavbar = () => {
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" classes={{
+                root: classes.root,
+            }}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -162,14 +167,6 @@ const StudentNavbar = () => {
                                 </Badge>
                             </IconButton>
                         </Link>
-                        <IconButton
-                            aria-label="show 3 new notifications"
-                            color="inherit"
-                            onClick={() => setHeader("Notification")}>
-                            <Badge badgeContent={3} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
                         <IconButton
                             edge="end"
                             aria-label="account of current user"

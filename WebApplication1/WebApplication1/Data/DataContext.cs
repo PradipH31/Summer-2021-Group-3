@@ -20,6 +20,8 @@ namespace WebApplication1.Data
         public DbSet<Notebook> Notebook { get; set; }
         public DbSet<InfoFile> InfoFile { get; set; }
         public DbSet<FlashCard> FlashCard { get; set; }
+        public DbSet<FlashCardSet> FlashCardSet { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -15,6 +15,7 @@ const Login = () => {
 
     const handleInputChange = e => {
         const { name, value } = e.target;
+        console.log(e.target.value)
         setValues({
             ...values,
             [name]: value
@@ -60,55 +61,37 @@ const Login = () => {
         }
     }
     return (
-        <div className="login-appearance">
-            <h1>Log In</h1>
-            <form style={{ margin: '0 30%' }}>
-                <div className="login-info-container">
-                    <label>
-                        <TextField
-                            autoFocus
-                            id="standard-number"
-                            label="W Number"
-                            type="number"
-                            name="username"
-                            value={values.username}
-                            onChange={handleInputChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        <TextField
-                            id="standard-password-input"
-                            label="Password"
-                            type="password"
-                            name="password"
-                            value={values.password}
-                            onChange={handleInputChange}
-                            autoComplete="current-password"
-                        />
-                    </label>
-                </div>
-                <br />
-                <label>
-                    <div
-                        className="login-button-container"
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-evenly'
-                        }}
-                    >
-                        <Button
-                            fullWidth={true}
-                            variant="contained"
-                            color="primary"
-                            className="centered-button"
-                            onClick={() => { logIn() }}>
-                            Log In
-                        </Button>
+        <div className="login-page">
+            <div className="form">
+                <div className="login">
+                    <div className="login-header">
+                        <h3>Southeastern University Login</h3>
+                        <p>Please enter your username and password to login.</p>
                     </div>
-                </label>
-            </form >
-        </div >
+                </div>
+                <form className="login-form">
+                    <input
+                        name="username"
+                        value={values.username}
+                        onChange={handleInputChange}
+                        type="text"
+                        placeholder="Username"
+                    />
+                    <input
+                        name="password"
+                        value={values.password}
+                        onChange={handleInputChange}
+                        autoComplete="current-password"
+                        type="password"
+                        placeholder="Password"
+                    />
+                    <div className="login-button" onClick={() => { logIn() }}>
+                        login</div>
+                    <p className="message">Not registered? <a href="#">Create an account</a>
+                    </p>
+                </form>
+            </div>
+        </div>
     )
 }
 
