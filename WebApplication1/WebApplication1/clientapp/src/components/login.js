@@ -85,8 +85,11 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                     />
-                    <div className="login-button" onClick={() => { logIn() }}>
-                        login</div>
+                    <button className="login-button" onClick={(e) => {
+                        e.preventDefault();
+                        logIn()
+                    }}>
+                        login</button>
                     <p className="message">Not registered? <a href="#">Create an account</a>
                     </p>
                 </form>
