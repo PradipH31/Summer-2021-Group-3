@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
 
 namespace WebApplication1.Controllers
@@ -15,16 +17,35 @@ namespace WebApplication1.Controllers
     public class ClassController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly UserManager<User> userManager;
 
-        public ClassController(DataContext context)
+        public ClassController(DataContext context, UserManager<User> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: api/Class
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetClassDescription()
         {
+            var currUser = userManager.GetUserId(HttpContext.User);
+            var userId = Int32.Parse(currUser);
+            if (User.IsInRole("Student"))
+            {
+                var user = await _context.Users.FindAsync(userId);
+                var courses = user.Courses.ToList();
+                //return courses;
+                //var courses = await _context.Set<Course>().Where(x => x.c).Select(x =>
+                //    new EnrollUserDTO
+                //    {
+                //        courseId = x.ClassId,
+                //        Course = x.ClassName,
+                //        Instructor = x.ClassOwner
+
+                //    }).ToListAsync();
+                return Ok(courses);
+            }
             return await _context.ClassDescription.ToListAsync();
         }
 
@@ -106,14 +127,39 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("Enrollment")]
-        public async Task<ActionResult> AddUserToCourse(int userId, int classId)
+        public async Task<ActionResult<Course>> AddUserToCourse(int userId, int classId)
         {
-            var course = await _context.ClassDescription.FindAsync(classId);
-            var User = await _context.Users.FindAsync(userId);
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                var User = await _context.Users.FindAsync(userId);
+                if(User == null)
+                {
+                    return BadRequest("User does not exist");
+                }
 
-            User.Courses.Add(course);
+                var data = await _context.Set<Course>().FirstOrDefaultAsync(x => x.ClassId == classId);
+                if(data == null)
+                {
+                    return BadRequest();
+                }
+                //var enroll = await _context.Set<Course>().Where(x => x.ClassId == classId).Select(x =>
+                //    new EnrollUserDTO
+                //    {
+                //        courseId = x.ClassId,
+                //        Course = x.ClassName,
+                //        Instructor = x.ClassOwner
 
-            return Ok();
+                //    }).ToListAsync();
+
+                var addClassToUser = _context.Set<User>().FirstOrDefault(x => x.Id == userId);
+                addClassToUser.Courses.Add(new Course { ClassId = data.ClassId, ClassDescription = data.ClassDescription, ClassName = data.ClassName, ClassOwner = data.ClassOwner});
+
+                
+                transaction.Commit();
+                var count = User.Courses.Count();
+
+                return Ok(count);
+            }
         }
         [HttpDelete("Enrollment")]
         public async Task<ActionResult> RemoveUserFromCourse(int userId, int classId)
