@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Features.Courses
+namespace WebApplication1.Features.DTOs
 {
     public class CourseDTO
     {

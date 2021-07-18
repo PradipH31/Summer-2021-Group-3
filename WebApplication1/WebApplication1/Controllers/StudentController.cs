@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.Features.Auth;
+using WebApplication1.Features.DTOs;
 
 namespace WebApplication1.Controllers
 {

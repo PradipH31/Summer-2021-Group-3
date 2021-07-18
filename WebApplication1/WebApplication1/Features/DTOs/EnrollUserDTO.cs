@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Features.Classes;
 
-namespace WebApplication1.Features.Auth
+namespace WebApplication1.Features.DTOs
 {
     public class EnrollUserDTO
     {

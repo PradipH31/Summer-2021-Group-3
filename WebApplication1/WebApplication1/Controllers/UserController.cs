@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
 using WebApplication1.Features.Auth;
-
+using WebApplication1.Features.DTOs;
 
 namespace WebApplication1.Controllers
 {
@@ -63,6 +63,50 @@ namespace WebApplication1.Controllers
 
                 return Ok(new UserDTO { Username = newUser.UserName });
 
+            }
+        }
+        [HttpPost("Roles")]
+        public async Task<IActionResult> AddRoleToUser (int userId, string role)
+        {
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                var user = await context.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    return BadRequest("User does not exist");
+                }
+                var roleResult = await userManager.AddToRoleAsync(user, role);
+                if (!roleResult.Succeeded)
+                {
+                    return BadRequest("Unable to add user to role");
+                }
+
+                transaction.Commit();
+
+                return Ok(user.UserName);
+            }
+                
+        }
+
+        [HttpDelete("Roles")]
+        public async Task<IActionResult> RemoveRoleFromUser(int userId, string role)
+        {
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                var user = await context.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    return BadRequest("User does not exist");
+                }
+                var roleResult = await userManager.RemoveFromRoleAsync(user, role);
+                if (!roleResult.Succeeded)
+                {
+                    return BadRequest("Unable to remove user from role");
+                }
+
+                transaction.Commit();
+
+                return Ok(user.UserName);
             }
         }
 
