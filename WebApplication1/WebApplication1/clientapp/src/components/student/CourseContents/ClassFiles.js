@@ -66,25 +66,29 @@ function ClassFiles(props) {
         console.log(items)
         itemList = items.map((item,) => {
             return (
-                <div key={item.notebookId}>
-                    <Card className={classes.root} style={{
-                        margin: "1%",
-                        borderStyle: 'solid',
-                        borderWidth: '1px'
-                        // backgroundImage: 'radial-gradient(circle, red, yellow, green);'
+                <div key={item.infoFileId}
+                    style={{
+                        margin: '3% 30%'
                     }}>
-                        <CardContent>
-                            <Link to={`/api/FileManagement/${item.infoFileId}?courseId=${item.courseId}&download=true`} target="_blank">
+                    <Link to={`/api/FileManagement/${item.infoFileId}?courseId=${item.courseId}&download=true`} target="_blank">
+
+                        <Card className={classes.root} style={{
+                            margin: "1%",
+                            borderStyle: 'solid',
+                            borderWidth: '1px'
+                            // backgroundImage: 'radial-gradient(circle, red, yellow, green);'
+                        }}>
+                            <CardContent>
                                 <Typography variant="h5" component="h2" style={{
-                                    backgroundColor: '#F8B77F',
+                                    backgroundColor: '#8B7BE0',
                                     color: 'white',
-                                    margin: '0% 30%  '
+                                    // margin: '0% 30%  '
                                 }}>
                                     {item.name}
                                 </Typography>
-                            </Link>
-                        </CardContent>
-                    </Card >
+                            </CardContent>
+                        </Card >
+                    </Link>
                 </div >
             )
         })

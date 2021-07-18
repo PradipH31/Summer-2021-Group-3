@@ -110,7 +110,7 @@ const TeacherClassList = () => {
                     backgroundColor: '#F8B77F',
                     margin: '0% 20%'
                 }}>
-                    {classItem.className}
+                    {classItem.className.substring(0, 30)}
                 </Typography>
                 <Typography variant="body2" component="p">
                     {classItem.classDescription.substring(0, 30)}
@@ -128,7 +128,7 @@ const TeacherClassList = () => {
                     color: 'white',
                     margin: '0% 20%'
                 }}>
-                    {classItem.className}
+                    {classItem.className.substring(0, 30)}
                 </Typography>
                 <Typography variant="body2" component="p">
                     {classItem.classDescription.substring(0, 30)}
@@ -188,6 +188,7 @@ const TeacherClassList = () => {
                     <div
                         style={{
                             flexGrow: '3',
+                            flexShrink: '3',
                             margin: '1%',
                             borderRight: 'solid'
                         }}>
@@ -267,6 +268,7 @@ const TeacherClassList = () => {
                     <div
                         style={{
                             flexGrow: '5',
+                            flexShrink: '5',
                         }}>
                         <div style={{
                             fontSize: '50px',
