@@ -4,12 +4,13 @@ import StudentCourseList from './StudentCourseList'
 import { Switch, Route, useHistory } from "react-router-dom";
 import StudentCourse from './StudentCourse';
 import Chat from '../messaging/Chat';
+import Flashcard from '../Flashcards/Flashcard';
 
 const StudentHome = () => {
     let history = useHistory();
-    if(sessionStorage.getItem('roles') === null){
+    if (sessionStorage.getItem('roles') === null) {
         history.push("/")
-    }else if (sessionStorage.getItem('roles').includes('Instructor')) {
+    } else if (sessionStorage.getItem('roles').includes('Instructor')) {
         history.push("/")
     }
     return (
@@ -29,6 +30,9 @@ const StudentHome = () => {
             </div>
             <div className="student-body">
                 <Switch>
+                    <Route path="/classes/flashcards">
+                        <Flashcard />
+                    </Route>
                     <Route path="/classes/messages">
                         <Chat />
                     </Route>

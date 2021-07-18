@@ -13,16 +13,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 
 const initialFieldValues = {
-    title: '',
-    description: '',
-    githubLink: ''
+    courseid: '',
+    githubpath: '',
+    fileName: ''
 }
 
 const AddNotebook = (props) => {
 
     let id = props.classId
     const [values, setValues] = useState(initialFieldValues)
-    const [error, setError] = useState('none');
+    values.courseid = id;
 
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -30,17 +30,6 @@ const AddNotebook = (props) => {
             ...values,
             [name]: value
         })
-        if (e.target.name === 'githubLink') {
-            const pattern = /https:\/\/github.com\/.*\/blob\/master\/.*ipynb/
-            const result = pattern.test(e.target.value)
-            if (result === true) {
-                console.log("it works")
-                setError('')
-            } else {
-                console.log("it doesn't work")
-                setError('github')
-            }
-        }
     }
     const useStyles = makeStyles((theme) => ({
         bullet: {
@@ -96,6 +85,8 @@ const AddNotebook = (props) => {
         setOpen(false);
     };
 
+    console.log(values)
+
     return (
         <>
             <div onClick={handleClickOpen} style={{
@@ -109,74 +100,56 @@ const AddNotebook = (props) => {
                 }}>
                     <CardContent>
                         <Typography variant="h5" component="h2" style={{
-                            backgroundColor: '#F8B77F',
+                            backgroundColor: '#8B7BE0',
                             color: 'white',
                             margin: '0% 30%  '
                         }}>
-                            Add Notebook
+                            Add File From Github
                         </Typography>
                     </CardContent>
                 </Card >
             </div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title"><center>Add Notebook</center></DialogTitle>
+                <DialogTitle id="form-dialog-title"><center>Add File</center></DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         required
                         margin="dense"
-                        id="title"
-                        label="Notebook Name"
+                        id="githubpath"
+                        label="Github Path"
                         type="text"
                         fullWidth
-                        value={values.title}
+                        value={values.githubpath}
                         onChange={handleInputChange}
-                        name="title"
+                        name="githubpath"
                     />
                     <TextField
-                        margin="dense"
                         required
-                        id="description"
-                        label="Notebook Description"
-                        type="email"
+                        margin="dense"
+                        id="fileName"
+                        label="File Name"
+                        type="text"
                         fullWidth
-                        name="description"
-                        value={values.description}
+                        value={values.fileName}
                         onChange={handleInputChange}
+                        name="fileName"
                     />
-                    {error === "github" ?
-                        <TextField
-                            margin="dense"
-                            id="githubLink"
-                            label="Github Link"
-                            name="githubLink"
-                            fullWidth
-                            error
-                            value={values.githubLink}
-                            onChange={handleInputChange}
-                        />
-                        :
-                        <TextField
-                            margin="dense"
-                            id="githubLink"
-                            label="Github Link"
-                            name="githubLink"
-                            fullWidth
-                            value={values.githubLink}
-                            onChange={handleInputChange}
-                        />}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    {error === "" ? <Button onClick={() => {
+                    <Button onClick={() => {
                         handleClose()
-                        axios.post("https://localhost:44377/api/Notebooks", {
-                            githubLink: values.githubLink,
-                            title: values.title,
-                            description: values.description,
-                            classId: id
+                        const regex = /\//gi
+                        values.githubpath = values.githubpath.replace(
+                            regex, "%2F"
+                        )
+                        axios.post(`https://localhost:44377/api/FileManagement/${values.courseid}/${values.githubpath}/false?saveas=${values.fileName}`, {
+                            githubpath: values.githubpath,
+                            courseid: values.courseid,
+                            fileName: values.fileName,
                         }).then(response => {
                             console.log(response)
                         })
@@ -184,13 +157,6 @@ const AddNotebook = (props) => {
                         color="primary">
                         Save
                     </Button>
-                        :
-                        <Button
-                            disabled
-                            color="primary">
-                            Save
-                        </Button>}
-
                 </DialogActions>
             </Dialog>
         </ >

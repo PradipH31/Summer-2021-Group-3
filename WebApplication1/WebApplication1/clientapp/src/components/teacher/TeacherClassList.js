@@ -195,7 +195,7 @@ const TeacherClassList = () => {
                         <span style={{ fontSize: '30px' }}>Classes</span>
                         {itemList}
                         <Dialog open={openEdit} onClose={handleCloseEdit} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">Edit Class</DialogTitle>
+                            <DialogTitle id="form-dialog-title"><center>Edit Class</center></DialogTitle>
                             <DialogContent>
                                 <TextField
                                     autoFocus
@@ -249,7 +249,7 @@ const TeacherClassList = () => {
                             </DialogActions>
                         </Dialog >
                         <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">Are you sure you want to delete?</DialogTitle>
+                            <DialogTitle id="form-dialog-title"><center>Are you sure you want to delete?</center></DialogTitle>
                             <DialogActions>
                                 <Button onClick={handleCloseDelete} color="primary">
                                     Cancel
