@@ -13,6 +13,7 @@ import Notebooks from './CourseContents/Notebooks';
 import '../../css/studentcourse.css'
 import Chat from './CourseContents/Chat';
 import Flashcard from '../Flashcards/Flashcard';
+import ClassFiles from './CourseContents/ClassFiles';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -110,7 +111,7 @@ const StudentCourse = () => {
                         aria-label="full width tabs example"
                     >
                         <Tab label="Notebooks" {...a11yProps(0)} />
-                        <Tab label="Flashcard" {...a11yProps(1)} />
+                        <Tab label="Class Files" {...a11yProps(1)} />
                         <Tab label="Chat" {...a11yProps(2)} />
                     </Tabs>
                 </AppBar>
@@ -123,7 +124,7 @@ const StudentCourse = () => {
                         <Notebooks classId={{ id }} />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                   <Flashcard />
+                        <ClassFiles classId={id} />
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
                         <Chat className={`${item.className}`} />

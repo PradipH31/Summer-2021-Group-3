@@ -102,7 +102,7 @@ function TabComponent(props) {
                     aria-label="full width tabs example"
                 >
                     <Tab label="Notebooks" {...a11yProps(0)} />
-                    <Tab label="Class Updates" {...a11yProps(1)} />
+                    <Tab label="Class Files" {...a11yProps(1)} />
                     <Tab label="Students" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
@@ -116,7 +116,7 @@ function TabComponent(props) {
                     {classId ? <AddNotebook classId={classId} /> : ""}
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    Class Updates
+                    Class Files
                 </TabPanel>
                 <TabPanel value={value} index={2} dir={theme.direction}
                     // style={{

@@ -29,16 +29,25 @@ namespace WebApplication1.Controllers
         public ActionResult<IEnumerable<InfoFile>> GetInfoFile()
         {
             //return await _context.InfoFile
-            var results =  _context.InfoFile.FromSqlRaw("SELECT InfoFileId, Name, ContentType, Content = NULL, CourseId FROM InfoFile");
+            var results = _context.InfoFile.FromSqlRaw("SELECT InfoFileId, Name, ContentType, Content = NULL, CourseId FROM InfoFile");
 
             return results.ToList<InfoFile>();
         }
 
+        [HttpGet("course/{courseId}")]
+        public ActionResult<IEnumerable<InfoFile>> GetCourseInfoFile(int courseId)
+        {
+            //return await _context.InfoFile
+            var results = _context.InfoFile.FromSqlRaw("SELECT InfoFileId, Name, ContentType,Content = NULL, CourseId FROM InfoFile")
+                .Where(i => i.CourseId == courseId);
+
+            return results.ToList<InfoFile>();
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<InfoFile>> GetInfoFile(int courseId, int id, bool download = false, string? saveas = null)
         {
-            var infofile =  _context.InfoFile.Where(a => a.CourseId == courseId).First(b => b.InfoFileId == id);
+            var infofile = _context.InfoFile.Where(a => a.CourseId == courseId).First(b => b.InfoFileId == id);
 
             if (infofile == null)
             {
@@ -56,10 +65,10 @@ namespace WebApplication1.Controllers
 
 
                 name = infofile.Name;
-                
-                if(saveas != null)
+
+                if (saveas != null)
                 {
-                    if(Path.GetExtension(name) == Path.GetExtension(saveas))
+                    if (Path.GetExtension(name) == Path.GetExtension(saveas))
                     {
                         name = saveas;
                     }
@@ -151,12 +160,12 @@ namespace WebApplication1.Controllers
                 name = saveas;
             }
             //Push InfoFile to database
-            await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent, CourseId = courseid});
+            await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent, CourseId = courseid });
 
         }
 
 
-        [HttpPost("{postedFile}/{courseid}")]
+        [HttpPost("{courseid}")]
         public async Task UploadInfoFile(IFormFile postedFile, int courseid)
         {
             byte[] bytes;
@@ -173,7 +182,7 @@ namespace WebApplication1.Controllers
             string contenttype = postedFile.ContentType;
             string content = Convert.ToBase64String(bytes);
 
-            await PostInfofile(new InfoFile { Name = name, Content = content, ContentType = contenttype, CourseId = courseid});
+            await PostInfofile(new InfoFile { Name = name, Content = content, ContentType = contenttype, CourseId = courseid });
         }
 
 
