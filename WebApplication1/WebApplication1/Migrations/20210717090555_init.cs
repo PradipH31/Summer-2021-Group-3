@@ -248,7 +248,7 @@ namespace WebApplication1.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClassId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", defaultValueSql: "getdate()", nullable: false),
                     CourseClassId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

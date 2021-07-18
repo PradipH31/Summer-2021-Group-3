@@ -131,17 +131,28 @@ namespace WebApplication1.Controllers
             return CreatedAtAction("GetInfoFile", new { id = infofile.InfoFileId }, infofile);
         }
 
-        [HttpPost("{courseid}/{user}/{repo}/{filepath}")]
-        public async Task PostFromGithub(int courseid, string user, string repo, string filepath, string? saveas = null)
+
+
+        [HttpPost("{courseid}/{githubpath}/{usegit}")]
+        public async Task PostFromGithub(int courseid, string githubpath, bool usegit, string? saveas = null)
         {
             //Generate random header for anonymous access (only works for public repositories)
             Random header = new Random();
             var client = new GitHubClient(new ProductHeaderValue(header.Next().ToString()));
             client.Credentials = new Credentials("token", AuthenticationType.Anonymous);
 
+
+            var allsegments = githubpath.Split("%2F");
+
+            var user = allsegments[0];
+            var repo = allsegments[1];
+
+            var filepath = String.Join("/", allsegments.Skip(2).Take(allsegments.Length - 2).ToArray());
+
             //Base base 64 string of file. Oktokit gets byte[] of file content from github
             //and convert turns it into a base64 string so it can be converted into
             //an InfoFile
+
             var content = await client.Repository.Content.GetRawContent(user, repo, filepath);
             string sfcontent = Convert.ToBase64String(content);
 
@@ -153,7 +164,7 @@ namespace WebApplication1.Controllers
             //Gets name of file from filepath
             if (saveas == null)
             {
-                name = filepath.Substring(filepath.LastIndexOf("%") + 3);
+                name = allsegments[^1];
             }
             else
             {
@@ -161,6 +172,7 @@ namespace WebApplication1.Controllers
             }
             //Push InfoFile to database
             await PostInfofile(new InfoFile { Name = name, ContentType = contenttype, Content = sfcontent, CourseId = courseid });
+
 
         }
 

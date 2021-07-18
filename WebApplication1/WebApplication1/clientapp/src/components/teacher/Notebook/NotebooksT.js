@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
-        minWidth: 275,
+        // minWidth: 275,
     },
     bullet: {
         display: 'inline-block',
@@ -72,13 +72,15 @@ const NotebooksT = (props) => {
                         <CardContent>
                             <div style={{
                                 display: 'flex',
-                                textAlign: 'left',
+                                // textAlign: 'left',
                                 // justifyContent: 'space-between'
                             }}>
                                 <div style={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    borderRight: 'solid',
+                                    // borderRight: 'solid',
+                                    paddingRight: '3%',
+                                    textAlign: 'left'
                                 }}>
                                     <div>Name</div>
                                     <div>Description</div>
@@ -86,20 +88,22 @@ const NotebooksT = (props) => {
                                 </div>
                                 <div style={{
                                     display: 'flex',
-                                    flexDirection: 'space-between'
+                                    flexDirection: 'space-between',
+                                    paddingLeft: '3%',
+                                    textAlign:'left'
                                 }}>
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'column'
                                     }}>
                                         <div >
-                                            {item.title}
+                                            {item.title.substring(0, 30)}
                                         </div>
                                         <div variant="body2" component="p">
-                                            {item.description}
+                                            {item.description.substring(0, 30)}
                                         </div>
                                         <div>
-                                            {item.githubLink}
+                                            {item.githubLink.substring(0, 40)}...
                                         </div>
                                     </div>
                                 </div>
