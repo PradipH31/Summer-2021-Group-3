@@ -13,6 +13,8 @@ const initialFieldValues = {
 const Login = () => {
     const [values, setValues] = useState(initialFieldValues)
 
+    const [errors, setError] = useState('');
+
     const handleInputChange = e => {
         const { name, value } = e.target;
         console.log(e.target.value)
@@ -34,12 +36,9 @@ const Login = () => {
             username: values.username,
             password: values.password
         }).then(function (response) {
-            // sessionStorage.setItem("token", response.data.token);
             console.log(response)
             sessionStorage.setItem("userName", response.data.user.userName);
             sessionStorage.setItem("roles", response.data.roles);
-            // sessionStorage.setItem("userId", response.data.userId);
-            // sessionStorage.setItem("firstName", response.data.firstName);            
             if (sessionStorage.getItem('roles').includes("Instructor")) {
                 history.push("/class")
             } else {
@@ -47,6 +46,8 @@ const Login = () => {
             }
         }).catch(function (error) {
             console.log(error);
+            setError('login')
+            console.log(errors)
         });
     }
 
@@ -70,21 +71,50 @@ const Login = () => {
                     </div>
                 </div>
                 <form className="login-form">
-                    <input
-                        name="username"
-                        value={values.username}
-                        onChange={handleInputChange}
-                        type="text"
-                        placeholder="Username"
-                    />
-                    <input
-                        name="password"
-                        value={values.password}
-                        onChange={handleInputChange}
-                        autoComplete="current-password"
-                        type="password"
-                        placeholder="Password"
-                    />
+                    {errors === 'login' ?
+                        <TextField
+                            error
+                            autoFocus
+                            name="username"
+                            value={values.username}
+                            onChange={handleInputChange}
+                            type="text"
+                            placeholder="Username"
+                        />
+                        :
+                        <TextField
+                            autoFocus
+                            name="username"
+                            value={values.username}
+                            onChange={handleInputChange}
+                            type="text"
+                            placeholder="Username"
+                        />
+                    }
+                    <br />
+                    <br />
+                    {errors === 'login' ?
+                        <TextField
+                            error
+                            name="password"
+                            value={values.password}
+                            onChange={handleInputChange}
+                            autoComplete="current-password"
+                            type="password"
+                            placeholder="Password"
+                        />
+                        :
+                        <TextField
+                            name="password"
+                            value={values.password}
+                            onChange={handleInputChange}
+                            autoComplete="current-password"
+                            type="password"
+                            placeholder="Password"
+                        />
+                    }
+                    <br />
+                    <br />
                     <button className="login-button" onClick={(e) => {
                         e.preventDefault();
                         logIn()
