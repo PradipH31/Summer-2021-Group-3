@@ -170,10 +170,8 @@ namespace WebApplication1.Controllers
                     return BadRequest("Course does not exist");
                 }
 
-                var enrollment = new Enrollment { ClassId = classId, UserId = userId };
-
                 var removeUserFromCourse = await _context.Set<User>().FirstOrDefaultAsync(x => x.Id == userId);
-                removeUserFromCourse.Courses.Remove(enrollment);
+                removeUserFromCourse.Courses.Remove(new Enrollment { ClassId = classId, UserId = userId });
                 await _context.SaveChangesAsync();
 
                 transaction.Commit();

@@ -119,8 +119,11 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> getUserList()
         {
-            var users = await userManager.Users.ToListAsync();
-            return users;
+            var users = await context.Set<User>().Select(x => new UserDTO 
+            { 
+                Username = x.UserName
+            }).ToListAsync();
+            return Ok(users);
 
         }
 
