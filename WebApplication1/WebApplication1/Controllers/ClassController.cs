@@ -34,17 +34,17 @@ namespace WebApplication1.Controllers
         {
             var currUser = userManager.GetUserId(HttpContext.User);
             var userId = Int32.Parse(currUser);
-            if (User.IsInRole("Student"))
-            {
-                var user = await _context.Users.FindAsync(userId);
-                var courses = await _context.Set<Enrollment>().Where(x => x.UserId == userId).Select(x => new EnrollUserDTO
-                {
-                    courseId = x.Course.ClassId,
-                    Course = x.Course.ClassName,
-                    Instructor = x.Course.ClassOwner
-                }).ToListAsync();
-                return Ok(courses);
-            }
+            //if (User.IsInRole("Student"))
+            //{
+            //    var user = await _context.Users.FindAsync(userId);
+            //    var courses = await _context.Set<Enrollment>().Where(x => x.UserId == userId).Select(x => new EnrollUserDTO
+            //    {
+            //        courseId = x.Course.ClassId,
+            //        Course = x.Course.ClassName,
+            //        Instructor = x.Course.ClassOwner
+            //    }).ToListAsync();
+            //    return Ok(courses);
+            //}
             return await _context.ClassDescription.ToListAsync();
         }
 
