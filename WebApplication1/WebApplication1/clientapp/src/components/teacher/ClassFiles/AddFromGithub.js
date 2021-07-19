@@ -110,7 +110,7 @@ const AddNotebook = (props) => {
                 </Card >
             </div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title"><center>Add File</center></DialogTitle>
+                <DialogTitle id="form-dialog-title"><center>Add File from Github</center></DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

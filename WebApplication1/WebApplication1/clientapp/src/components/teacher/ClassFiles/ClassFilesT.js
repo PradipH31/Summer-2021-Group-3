@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { CircularProgress } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import AddFromGithub from "./AddFromGithub"
+import AddFile from './AddFile';
 
 const useStyles = makeStyles({
     root: {
@@ -99,6 +100,7 @@ function ClassFilesT(props) {
             <div>
                 {itemList.length > 0 ? itemList : 'Class Files'}
                 <AddFromGithub classId={id} />
+                <AddFile classId={id} />
             </div>
         )
     }
