@@ -5,10 +5,12 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Dialog, DialogActions, DialogTitle } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import AddFromGithub from "./AddFromGithub"
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddFile from './AddFile';
+import axios from 'axios';
 
 const useStyles = makeStyles({
     root: {
@@ -35,7 +37,18 @@ function ClassFilesT(props) {
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [delId, setDelId] = useState('');
+    const [open, setOpen] = React.useState(false);
     const [items, setItems] = useState([]);
+
+    const handleClickOpen = (delId) => {
+        setOpen(true);
+        setDelId(delId);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         fetch(`https://localhost:44377/api/FileManagement/course/${id}`)
@@ -70,7 +83,9 @@ function ClassFilesT(props) {
             return (
                 <div key={item.infoFileId}
                     style={{
-                        margin: '3% 30%'
+                        margin: '3% 30%',
+                        display: 'flex',
+
                     }}>
                     <Link to={`/api/FileManagement/${item.infoFileId}?courseId=${item.courseId}&download=true`} target="_blank">
 
@@ -91,6 +106,13 @@ function ClassFilesT(props) {
                             </CardContent>
                         </Card >
                     </Link>
+                    {/* <Card> */}
+                    <CardContent>
+                        <Button onClick={() => { handleClickOpen(item.infoFileId) }}>
+                            <DeleteIcon />
+                        </Button>
+                    </CardContent>
+                    {/* </Card> */}
                 </div >
             )
         })
@@ -101,6 +123,21 @@ function ClassFilesT(props) {
                 {itemList.length > 0 ? itemList : 'Class Files'}
                 <AddFromGithub classId={id} />
                 <AddFile classId={id} />
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title"><center>Are you sure you want to delete?</center></DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => {
+                            handleClose()
+                            axios.delete(`https://localhost:44377/api/FileManagement/${id}/${delId}`, {})
+                                .then(response => console.log(response))
+                        }} color="secondary">
+                            Yes, delete.
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }
