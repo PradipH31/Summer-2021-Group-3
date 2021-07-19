@@ -11,6 +11,7 @@ using WebApplication1.Data;
 using WebApplication1.Features.Auth;
 using WebApplication1.Features.Classes;
 using WebApplication1.Features.Courses;
+using WebApplication1.Features.DTOs;
 
 namespace WebApplication1.Controllers
 {
@@ -33,21 +34,17 @@ namespace WebApplication1.Controllers
         {
             var currUser = userManager.GetUserId(HttpContext.User);
             var userId = Int32.Parse(currUser);
-            //if (User.IsInRole("Student"))
-            //{
-            //    var user = await _context.Users.FindAsync(userId);
-            //    var courses = user.Courses.ToList();
-            //    //return courses;
-            //    //var courses = await _context.Set<Course>().Where(x => x.c).Select(x =>
-            //    //    new EnrollUserDTO
-            //    //    {
-            //    //        courseId = x.ClassId,
-            //    //        Course = x.ClassName,
-            //    //        Instructor = x.ClassOwner
-
-            //    //    }).ToListAsync();
-            //    return Ok(courses);
-            //}
+            if (User.IsInRole("Student"))
+            {
+                var user = await _context.Users.FindAsync(userId);
+                var courses = await _context.Set<Enrollment>().Where(x => x.UserId == userId).Select(x => new EnrollUserDTO
+                {
+                    courseId = x.Course.ClassId,
+                    Course = x.Course.ClassName,
+                    Instructor = x.Course.ClassOwner
+                }).ToListAsync();
+                return Ok(courses);
+            }
             return await _context.ClassDescription.ToListAsync();
         }
 
@@ -127,55 +124,62 @@ namespace WebApplication1.Controllers
             return _context.ClassDescription.Any(e => e.ClassId == id);
         }
 
-    //    [Authorize(Roles = "Admin, Instructor")]
-    //    [HttpPost("Enrollment")]
-    //    public async Task<ActionResult> AddUserToCourse(int userId, int classId)
-    //    {
-    //        using (var transaction = await _context.Database.BeginTransactionAsync())
-    //        {
-    //            var User = await _context.Users.FindAsync(userId);
-    //            if (User == null)
-    //            {
-    //                return BadRequest("User does not exist");
-    //            }
+        [Authorize(Roles = "Admin, Instructor")]
+        [HttpPost("Enrollment")]
+        public async Task<ActionResult<Enrollment>> AddUserToCourse(int userId, int classId)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                var User = await _context.Users.FindAsync(userId);
+                if (User == null)
+                {
+                    return BadRequest("User does not exist");
+                }
 
-    //            var Course = await _context.ClassDescription.FindAsync(classId);
-    //            if (Course == null)
-    //            {
-    //                return BadRequest("Course does not exist");
-    //            }
+                var Course = await _context.ClassDescription.FindAsync(classId);
+                if (Course == null)
+                {
+                    return BadRequest("Course does not exist");
+                }
 
-                
+                var addCourseToUser = await _context.Set<User>().FirstOrDefaultAsync(x => x.Id == userId);
+                addCourseToUser.Courses.Add(new Enrollment { ClassId = classId, UserId = userId });
+                await _context.SaveChangesAsync();
 
-    //            transaction.Commit();
+                transaction.Commit();
 
-    //            return Ok();
-    //        }
-    //    }
+                return Ok();
+            }
+        }
 
-    //    [Authorize(Roles = "Admin, Instructor")]
-    //    [HttpDelete("Enrollment")]
-    //    public async Task<ActionResult> RemoveUserFromCourse(int userId, int classId)
-    //    {
-    //        using (var transaction = await _context.Database.BeginTransactionAsync())
-    //        {
-    //            var User = await _context.Users.FindAsync(userId);
-    //            if (User == null)
-    //            {
-    //                return BadRequest("User does not exist");
-    //            }
+        [Authorize(Roles = "Admin, Instructor")]
+        [HttpDelete("Enrollment")]
+        public async Task<ActionResult<Enrollment>> RemoveUserFromCourse(int userId, int classId)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                var User = await _context.Users.FindAsync(userId);
+                if (User == null)
+                {
+                    return BadRequest("User does not exist");
+                }
 
-    //            var data = await _context.Set<Enrollment>().FirstOrDefaultAsync(x => x.ClassId == classId);
-    //            if (data == null)
-    //            {
-    //                return BadRequest("Course does not exist");
-    //            }
+                var Course = await _context.ClassDescription.FindAsync(classId);
+                if (Course == null)
+                {
+                    return BadRequest("Course does not exist");
+                }
 
-    //            var addClassToUser = _context.Set<User>().FirstOrDefault(x => x.Id == userId);
-    //            addClassToUser.Courses.Remove(data);
+                var enrollment = new Enrollment { ClassId = classId, UserId = userId };
 
-    //            return Ok();
-    //        }           
-    //    }
+                var removeUserFromCourse = await _context.Set<User>().FirstOrDefaultAsync(x => x.Id == userId);
+                removeUserFromCourse.Courses.Remove(enrollment);
+                await _context.SaveChangesAsync();
+
+                transaction.Commit();
+
+                return Ok();
+            }
+        }
     }
 }
